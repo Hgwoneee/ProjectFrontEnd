@@ -1,0 +1,98 @@
+import React, { Component } from 'react';
+import { Route } from "react-router-dom";
+import cookie from 'react-cookies';
+import axios from "axios";
+import $ from 'jquery';
+
+// css
+import '../css/new.css';
+
+// header
+import Header from './Header/Header';
+
+// main
+import MainForm from './Main/MainForm';
+
+
+// footer
+import Footer from './Footer/Footer';
+
+// login
+import LoginForm from './LoginForm';
+
+// member
+import CarRegister from './Member/CarRegister';
+import Register from './Member/Register';
+import Modify from './Member/Modify';
+
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      memId: '',
+      memPw: '',
+    }
+  }
+
+  componentDidMount() {
+    if (window.location.pathname.indexOf('/login') != -1) {
+      $('.menulist').hide()
+      $('.hd_top').hide()
+    }
+    // ???
+    if (window.location.pathname.indexOf('/PwChangeForm') == -1) {
+      let memId = '';
+      let memPw = '';
+      axios.post('/api/member/loginCookie', {
+        memId: cookie.load('memId'),
+        memPw: cookie.load('memPw')
+      }).then(response => {
+        if (response.data.memId == undefined) {
+          this.noPermission();
+        } else {
+          
+        }
+      }).catch(error => {
+        this.noPermission();
+      })
+    }
+  }
+
+  noPermission = (e) => {
+    if (window.location.hash != 'nocookie') {
+      this.remove_cookie();
+      window.location.href = '/login/#nocookie';
+    }
+  };
+
+  remove_cookie = (e) => {
+    cookie.remove('memId', { path: '/' });
+    cookie.remove('memNickName', { path: '/' });
+    cookie.remove('memPw', { path: '/' });
+  }
+
+  render() {
+    return (
+
+      <div className="App">
+
+        <Header />
+        <Route exact path='/' component={LoginForm} />
+        <Route path='/login' component={LoginForm} />
+
+        <Route path='/MainForm' component={MainForm} />
+    
+        <Route path='/Register' component={Register} />
+        <Route path='/Modify/' component={Modify} />
+        <Route path='/CarRegister' component={CarRegister} />
+
+        <Footer />
+      </div>
+
+    );
+
+  };
+}
+
+export default App;
