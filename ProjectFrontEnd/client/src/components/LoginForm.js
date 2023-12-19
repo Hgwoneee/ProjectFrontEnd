@@ -73,7 +73,9 @@ class LoginForm extends Component {
                         <br></br>
                         <div className="s_bt" type="button" onClick={(e) => this.submitClick(e)} >로그인</div>
                         <br></br>
-                        <div className="s_bt" type="button" onClick={(e) => this.registerClick(e)} >회원가입</div>
+                        <Link to={"/Register"}>
+                            <div className="s_bt" type="button">회원가입</div>
+                        </Link>
                     </div>
                 </div>
             </section>

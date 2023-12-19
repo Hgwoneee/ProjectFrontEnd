@@ -8,6 +8,11 @@ class Footer extends Component {
     if (window.location.pathname.indexOf('/login') != -1) {
         $('.footer').hide()
     }
+
+    if (window.location.pathname.indexOf('/Register') != -1) {
+      $('.footer').hide()
+  }
+
   }
 
   render () {

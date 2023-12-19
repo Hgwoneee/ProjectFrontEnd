@@ -21,6 +21,12 @@ class Header extends Component {
             $('.logo').hide()
         }
 
+        if (window.location.pathname.indexOf('/Register') != -1) {
+            $('.menulist').hide()
+            $('.hd_top').hide()
+            $('.logo').hide()
+        }
+
         var cookie_memId = cookie.load('memId')
         var cookie_memNickName = cookie.load('memNickName')
         var cookie_memPw = cookie.load('memPw')
