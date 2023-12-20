@@ -10,7 +10,7 @@ class LoginForm extends Component {
         this.memId_val = $('#memId_val').val();
         this.memPw_val = $('#memPw_val').val();
         if (this.memId_val === '' || this.memPw_val === '') {
-            this.sweetalert('이메일과 비밀번호를 확인해주세요.', '', 'error', '닫기')
+            this.sweetalert('이메일과 비밀번호를 입력해주세요.', '', 'error', '닫기') 
         } else {
             axios.post('/api/member/loginPost', {
                 memId: this.memId_val,
@@ -24,15 +24,15 @@ class LoginForm extends Component {
                     if (response.data.memId != undefined) {
                         const expires = new Date()
                         expires.setMinutes(expires.getMinutes() + 60)
-                        cookie.save('memId', response.data.memId
+                        cookie.save('memId', memId
                             , { path: '/', expires })
-                        cookie.save('memNickName', response.data.memNickName
+                        cookie.save('memNickName', memNickName
                             , { path: '/', expires })
-                        cookie.save('memPw', response.data.memPw
+                        cookie.save('memPw', memPw
                             , { path: '/', expires })
-                        setTimeout(function () {
-                            window.location.href = '/MainForm';
-                        }.bind(this), 1000);
+                        
+                        window.location.href = '/MainForm';
+                        
                     } else {
                         this.sweetalert('이메일과 비밀번호를 확인해주세요.', '', 'error', '닫기')
                     }
@@ -71,7 +71,9 @@ class LoginForm extends Component {
                         </div>
                         
                         <br></br>
+                        <Link>
                         <div className="s_bt" type="button" onClick={(e) => this.submitClick(e)} >로그인</div>
+                        </Link>
                         <br></br>
                         <Link to={"/Register"}>
                             <div className="s_bt" type="button">회원가입</div>

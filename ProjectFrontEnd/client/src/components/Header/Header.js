@@ -98,8 +98,8 @@ class Header extends Component {
                                 onMouseLeave={this.myInfoLeave}><b>내정보</b>
                                 <div className="box0 box1">
                                     <ul>
-                                        <li><a href='/CarRegister' >차량정보등록</a></li>
-                                        <li><a href='/Modify' >내 정보 수정</a></li>
+                                        <li><Link to ={'/CarRegister'}>차량정보등록</Link></li>
+                                        <li><Link to ={'/Modify'}>내 정보 수정</Link></li>
                                         <li><a href="javascript:" onClick={this.logout}>로그아웃</a></li>
                                     </ul>
                                 </div>

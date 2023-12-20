@@ -41,9 +41,8 @@ class App extends Component {
       $('.hd_top').hide()
     }
     // ???
-    if (window.location.pathname.indexOf('/PwChangeForm') == -1) {
-      let memId = '';
-      let memPw = '';
+    if (window.location.pathname.indexOf('/MainForm') != -1) {
+      
       axios.post('/api/member/loginCookie', {
         memId: cookie.load('memId'),
         memPw: cookie.load('memPw')
