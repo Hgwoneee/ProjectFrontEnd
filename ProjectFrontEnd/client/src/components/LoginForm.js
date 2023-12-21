@@ -50,6 +50,11 @@ class LoginForm extends Component {
         })
     }
    
+    handleOnKeyPress = e => {
+        if (e.key === 'Enter') {
+            this.submitClick(); // Enter 입력이 되면 클릭 이벤트 실행
+        }
+      };
 
     render() {
         return (
@@ -67,7 +72,7 @@ class LoginForm extends Component {
                             <span className="ic_2">
                                 <img src={require("../img/main/m_log_i2.png")} alt="" />
                             </span>
-                            <input type="password" id="memPw_val" placeholder="비밀번호" />
+                            <input type="password" id="memPw_val" placeholder="비밀번호"  onKeyPress={this.handleOnKeyPress} />
                         </div>
                         
                         <br></br>

@@ -147,15 +147,15 @@ class Modify extends Component {
                     try {
                         if (response.data == "SUCCESS") {
                             if (type == 'modify') {
-                                this.sweetalert('수정되었습니다.','','success','확인')
+                                this.sweetalertModify('수정되었습니다. \n 다시 로그인해주세요.','','success','확인')
                             }
-                            setTimeout(function () {
-                                cookie.remove('memId', { path: '/' });
-                                cookie.remove('memNickName', { path: '/' });
-                                cookie.remove('memPw', { path: '/' });
-                                window.location.href = '/login';
-                            }.bind(this), 1500
-                            );
+                            // setTimeout(function () {
+                            //     cookie.remove('memId', { path: '/' });
+                            //     cookie.remove('memNickName', { path: '/' });
+                            //     cookie.remove('memPw', { path: '/' });
+                            //     window.location.href = '/login';
+                            // }.bind(this), 3000
+                            // );
                         }
                     }
                     catch (error) {
@@ -199,6 +199,20 @@ class Modify extends Component {
             confirmButtonText: confirmButtonText
         })
     }
+
+    sweetalertModify = (title, contents, icon, confirmButtonText) => {
+        Swal.fire({
+            title: title,
+            text: contents,
+            icon: icon,
+            confirmButtonText: confirmButtonText
+        }).then(function(){
+            cookie.remove('memId', { path: '/' });
+            cookie.remove('memNickName', { path: '/' });
+            cookie.remove('memPw', { path: '/' });
+            window.location.href = '/login';
+            })
+    }
     
     deleteMember = (e) => {
         var event_target = e.target
@@ -228,11 +242,6 @@ class Modify extends Component {
                     '',
                     'success'
                 )
-                setTimeout(function () {
-                    this.props.history.push('/MainForm');
-                }.bind(this), 1500
-                );
-
                 cookie.remove('memId', { path: '/' });
                 cookie.remove('memNickName', { path: '/' });
                 cookie.remove('memPw', { path: '/' });
@@ -275,7 +284,7 @@ class Modify extends Component {
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <th>비밀번호</th>
+                                                <th>새 비밀번호</th>
                                                 <td>
                                                     <input id="memPw_val" type="password" name="memPw"
                                                         placeholder="비밀번호를 입력해주세요." onKeyPress={this.memPwKeyPress} />
