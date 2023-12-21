@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from "axios";
 import Swal from 'sweetalert2';
 import $ from 'jquery';
+import cookie from 'react-cookies';
 
 class CarRegister extends Component {
     constructor(props) {
@@ -10,12 +11,15 @@ class CarRegister extends Component {
             selectedBrand: '',
             selectedModel: '',
             subCarOptionsList: [], // Initialize as an empty array
+            memNickName: cookie.load('memNickName')
         };
     }
 
+   
+
 
     submitClick = async (type, e) => {
-        this.fnSignInsert = async (type, e) => {
+            
             var jsonstr = $("form[name='frm']").serialize();
             jsonstr = decodeURIComponent(jsonstr);
             var Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
@@ -24,10 +28,10 @@ class CarRegister extends Component {
             alert(Json_form);
             var Json_data = JSON.parse(Json_form);
 
-            axios.post('/api/member/carRegister', Json_data)
+            axios.post('/api/car/regi', Json_data)
             .then(response => {
                 try {
-                    if (response.data == "success") {
+                    if (response.data == "succ") {
                         if (type == 'signup') {
                             this.sweetalertSucc('차량정보가 등록 되었습니다.', false)
                         }
@@ -42,7 +46,7 @@ class CarRegister extends Component {
                 }
             })
             .catch(error => { alert('2. 작업중 오류가 발생하였습니다.'); return false; });
-        }
+        
     };
 
 
@@ -193,7 +197,7 @@ class CarRegister extends Component {
 
                                                 <th>브랜드</th>
                                                 <td>
-                                                    <select value={selectedBrand} onChange={this.handleBrandChange} id="email2_val" name="brandName" className="main-car" >
+                                                    <select value={selectedBrand} onChange={this.handleBrandChange} id="email2_val" name="carBrand" className="main-car" >
                                                         <option value="">브랜드를 선택하세요</option>
                                                         <option value='Hyundai'>현대자동차</option>
                                                         <option value='Kia'>기아자동차</option>
@@ -232,7 +236,7 @@ class CarRegister extends Component {
                                             <tr>
                                                 <th>차량 모델</th>
                                                 <td>
-                                                    <select value={selectedModel} onChange={this.handleModelChange} id="email2_val" name="modelName" className="sub-car" >
+                                                    <select value={selectedModel} onChange={this.handleModelChange} id="email2_val" name="carModel" className="sub-car" >
                                                         <option value="">모델을 선택하세요</option>
                                                         {subCarOptionsList.map((option) => (
                                                             <option key={option} value={option}>
@@ -246,15 +250,20 @@ class CarRegister extends Component {
                                             <tr>
                                                 <th>차량번호</th>
                                                 <td>
-                                                    <input id="carNum_val" type="text" name="is_carNum"
+                                                    <input id="carNum_val" type="text" name="carNum"
                                                         placeholder="예) 123가 4567 " />
                                                 </td>
                                             </tr>
-
+                                            <tr style={{display: 'none' }}>
+                                                <th>닉네임</th>
+                                                <td>
+                                                    <input id="carNum_val" type="text" name="memNickName" value={this.state.memNickName}/>
+                                                </td>
+                                            </tr>
                                             <tr className="tr_tel">
                                                 <th>충전방식</th>
                                                 <td>
-                                                    <select id="phone1_val" name="is_Userphone1" className="select_ty1">
+                                                    <select id="phone1_val" name="charType" className="select_ty1">
                                                         <option value="">선택</option>
                                                         <option value="010">DC차데모</option>
                                                         <option value="011">DC콤보</option>
