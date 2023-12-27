@@ -149,13 +149,7 @@ class Modify extends Component {
                             if (type == 'modify') {
                                 this.sweetalertModify('수정되었습니다. \n 다시 로그인해주세요.','','success','확인')
                             }
-                            // setTimeout(function () {
-                            //     cookie.remove('memId', { path: '/' });
-                            //     cookie.remove('memNickName', { path: '/' });
-                            //     cookie.remove('memPw', { path: '/' });
-                            //     window.location.href = '/login';
-                            // }.bind(this), 3000
-                            // );
+                           
                         }
                     }
                     catch (error) {
@@ -259,7 +253,7 @@ class Modify extends Component {
                 <section className="sub_wrap" >
                     <article className="s_cnt re_1 ct1">
                         <div className="li_top">
-                            <h2 className="s_tit1">내정보수정</h2>
+                            <h2 className="s_tit1">회원정보수정</h2>
                             <form method="post" name="frm">
                                 <div className="re1_wrap">
                                     <div className="re_cnt ct2">
@@ -279,7 +273,7 @@ class Modify extends Component {
                                             <tr>
                                                 <th>닉네임</th>
                                                 <td>
-                                                    <input id="memNickName_val" type="text" name="memNickName" placeholder={this.state.memNickName}
+                                                    <input id="memNickName_val" type="text" name="memNickName" placeholder="닉네임을 입력해주세요."
                                                         onKeyPress={this.memNickNameKeyPress} />
                                                 </td>
                                             </tr>

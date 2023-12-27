@@ -24,7 +24,7 @@ import LoginForm from './LoginForm';
 import CarRegister from './Member/CarRegister';
 import Register from './Member/Register';
 import Modify from './Member/Modify';
-
+import MyPage from './Member/MyPage';
 
 class App extends Component {
   constructor(props) {
@@ -36,11 +36,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    if (window.location.pathname.indexOf('/login') != -1) {
-      $('.menulist').hide()
-      $('.hd_top').hide()
-    }
-    // ???
+   
     if (window.location.pathname.indexOf('/MainForm') != -1) {
       
       axios.post('/api/member/loginCookie', {
@@ -83,6 +79,7 @@ class App extends Component {
         <Route path='/MainForm' component={MainForm} />
     
         <Route path='/Register' component={Register} />
+        <Route path='/MyPage' component={MyPage} />
         <Route path='/Modify/' component={Modify} />
         <Route path='/CarRegister' component={CarRegister} />
 
