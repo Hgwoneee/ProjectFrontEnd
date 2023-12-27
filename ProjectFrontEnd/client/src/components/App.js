@@ -12,7 +12,7 @@ import Header from './Header/Header';
 
 // main
 import MainForm from './Main/MainForm';
-
+import MapForm from './MapForm';
 
 // footer
 import Footer from './Footer/Footer';
@@ -79,8 +79,8 @@ class App extends Component {
         <Header />
         <Route exact path='/' component={LoginForm} />
         <Route path='/login' component={LoginForm} />
-
         <Route path='/MainForm' component={MainForm} />
+        <Route path='/MapForm' component={MapForm} />
     
         <Route path='/Register' component={Register} />
         <Route path='/Modify/' component={Modify} />
@@ -95,3 +95,5 @@ class App extends Component {
 }
 
 export default App;
+
+
