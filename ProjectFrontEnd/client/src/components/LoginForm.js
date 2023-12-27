@@ -61,6 +61,13 @@ class LoginForm extends Component {
             <section className="main">
 
                 <div className="m_login signin">
+                <span className="logo-image">
+                        <img
+                            src={require("../img/layout/어디야로고.png")}
+                            style={{ width: '350px', height: 'auto', marginBottom: '0px' }}
+                        />
+                        
+                    </span>
                     {/* <span><img src={require("../img/layout/carlogo001.png")}></img></span> */}
                     <h3>LOGIN</h3>
                     <div className="log_box">

@@ -1,4 +1,37 @@
 @import url(/css/dpl/sce/NotoSansKR-Hestia.css);
+@import '../css/LoginForm.css';
+
+.name-container {
+    display: flex;
+    align-items: center;
+}
+
+.name-container input {
+    margin-right: 10px;
+}
+
+.name-container {
+    display: flex;
+    align-items: center;
+}
+
+.name-container button {
+    white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정 */
+    writing-mode: horizontal-tb; /* 텍스트를 가로로 표시 */
+    transform: rotate(0deg); /* 텍스트를 가로로 표시 */
+    
+    padding: 4px;
+    background-color: #77a581; 
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .name-container button:hover {
+    background-color: #204410; 
+  }
 
 /**** Common ************************************************/
 * {max-height:1000000px;margin:0;padding:0;}
@@ -45,11 +78,15 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 .bt_ty1 a{font-size: 14px; color: #fff; height: 27px; line-height: 27px; background: #4682B4; text-align: center; border-radius: 5px; padding: 0 7px; transition:.3s;}
 .bt_ty1 a:hover{background: #000;}
 .bt_ty1{background: #67afc7; border-radius: 5px}
-.bt_ty2{background: #67afc7; border-radius: 5px}
+.bt_ty2{background: #77a581; border-radius: 5px}
+.bt_ty2:hover {
+    background-color: rgb(17, 88, 15);
+  }
 .bt_ty{display: inline-block; overflow: hidden;position: relative; width: 157px; height: 62px; line-height: 62px; color: #fff; font-size: 16px; font-weight: 400; text-align: center; margin-right: 8px; transition:.3s;}
 /* .bt_ty:before{position: absolute;top: 0%;left: 39%;width: 100%;height: 100%;background: rgba(255,255,255,0.5);content: '';-webkit-transition: -webkit-transform 0.4s;transition: transform 0.5s;-webkit-transform: scale3d(1.9,1.4,1) rotate3d(0,0,1,45deg) translate3d(0,-100%,0);transform: scale3d(1.9,1.4,1) rotate3d(0,0,1,45deg) translate3d(0,-100%,0);} */
 /* .bt_ty:hover:before{-webkit-transform: scale3d(1.9,1.4,1) rotate3d(0,0,1,45deg) translate3d(0,100%,0); transform: scale3d(1.9,1.4,1) rotate3d(0,0,1,45deg) translate3d(0,120%,0); left: 0;} */
 .bt_ty2_1{background: 0; border: 1px solid #dedede; color: #606060;}
+
 .bt_ty2_1:hover{background: #2b62c6; color: #fff;}
 
 .bt_c1{display: inline-block; font-size: 16px; color: #fff; font-weight: 400; line-height: 35px; height: 35px; background: #c36726; text-align: center; width: 96px; border-radius: 5px; vertical-align: middle; margin-left: 19px; transition:.3s;}
@@ -79,10 +116,10 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 
 /*header*/
 .gnb_box{}
-.gnb_box .hd_top{background: #67afc7; color: #fff;}
+.gnb_box .hd_top{background: rgb(164, 209, 174); color: #fff;}
 .hd_top .top_wrap{}
 .hd_left{float: left; position: relative;}
-.hd_left > li{float: left;  font-size: 15px; line-height: 45px; background: #4682B4; text-align: center; font-weight: 400;; padding: 0 7px 0 30px; cursor: pointer;}
+.hd_left > li{float: left;  font-size: 15px; line-height: 45px; background: rgb(119, 165, 129); text-align: center; font-weight: 400;; padding: 0 7px 0 30px; cursor: pointer;}
 .hd_left > li b{font-weight: 400; transition:.3s;}
 .hd_left > li:before{display: inline-block; content:''; width: 14px; height: 45px; background: url(../img/layout/htop_icon1.png) center no-repeat; vertical-align: top; margin-right: 11px; transition:.3s;}
 .hd_left > li.my2{width: 87px; text-align: left;}
@@ -124,16 +161,9 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 .gnb > ul > li:hover > a,
 .gnb > ul > li.on > a{color: #4682B4;}
 
-/*main*/
-.main{height: 800px; width: 100%;background-size: 150px; background: url(../img/main/mv1.jpg) center no-repeat; display: table; table-layout: fixed;}
-
-/* .main{height: 800px; width: 100%; background-size: 500px; background: #eee  center no-repeat; display: table; table-layout: fixed;} */
-.m_login{display: table-cell; text-align: center; vertical-align: middle; }
-.m_login h3{font-size: 55px; line-height: 67px; color: #fff; font-weight: 400; letter-spacing: 0; vertical-align: middle; margin-bottom: 39px;}
-.m_login h3 span{margin-right: 17px;}
 
 .lf_box {height: 800px; width: 800px; align-items: center; color: #00ffff}
-.log_box{width: 418px; margin: 0 auto;}
+
 .in_ty1{position: relative; background: #fff; width: 418px; height: 55px; display: block; margin: 0 auto; margin-bottom: 14px; text-align: left; transition:.3s; }
 .in_ty1 span{position: relative; width: 50px; height: 55px; transition:.3s; display: block; float: left;}
 .in_ty1 span img{padding: 20px; transition:.3s;}
@@ -141,21 +171,13 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 .in_ty1 input{height: 55px; line-height: 55px; border: 0 !important; font-size: 16px; color: #9a9a9a; width: 355px; outline:none; padding-left: 18px;}
 .in_ty1 input::placeholder {color: #9a9a9a; font-size: 16px; line-height: 55px; }
 
-.m_login ul{overflow: hidden; clear: both; margin-top: 20px; margin-bottom: 32px;}
-.m_login ul li{float: left;}
-.m_login ul li a{position: relative; text-align: left; font-size: 14px; line-height: 14px; color: rgba(255,255,255,0.8); padding: 0 14px; font-weight: 400;; transition:.3s;}
-.m_login ul li:first-child a:after{position: absolute; content:''; width: 1px; height: 9px; background: #fff; opacity: 0.15; right: 0; top: 50%; margin-top: -3px;}
-.m_login ul li:first-child a{padding-left: 0;}
-.m_login .s_bt{background: #4077a4; color: #f2f2f2; font-size: 20px; line-height: 65px; height: 65px; border: 0; width: 418px; transition:.3s;}
 
 .btn_confirm_m{text-align: center; overflow: hidden; width: 418px; margin-top: 30px;}
 .bt_ty_m{width: 204px; display: block; float: left; margin-right: 10px; height: 65px; line-height: 65px; font-size: 20px; text-align: center; }
 .bt_ty_m:hover:before{left: -13%;}
 
 /*오버*/
-.m_login .s_bt:hover{background: #4a8fa5;}
-.m_login ul li:hover a{color: #fff;}
-.in_ty1:hover{box-shadow:0px 0px 20px rgba(255,255,255,0.3); }
+
 
 /*메인 비밀번호 재설정*/
 .m_pw{position: relative; display: none; padding-bottom: 10px; }
@@ -170,9 +192,6 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 
 /*메인 비밀번호 재설정3*/
 .pw_tree{display: none;}
-.m_login h3 span.compl1{display: none;}
-.m_login h3.on{margin-left: 10px; margin-top: 2px; margin-bottom: 37px;}
-.m_login h3.on span{display: inline;}
 .pw_tree p{position: relative; font-size: 17px; line-height: 32px; color: #fff; font-weight: 400; box-sizing: border-box; padding-left: 86px; text-align: left; padding-bottom: 15px; margin-bottom: 30px;}
 .pw_tree p:before{position: absolute; content:''; width: 32px; height: 32px; background: url(../img/main/pw_last_icon.png) center no-repeat; left: 34px; top: 0;}
 .pw_tree p:after{position: absolute; content:''; width: 100%; height: 1px; background: #ddd; left: 0; bottom: 0;}
@@ -232,7 +251,7 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 
 /*sub 공통*/
 .sub_wrap{background: #f8f8f8; padding: 56px 0;}
-.s_tit1{font-size: 30px; line-height: 38px; color: #333; font-weight: 500; letter-spacing: -0.03em; margin-bottom: 27px; margin-left: -3px;}
+.s_tit1{font-size: 30px; line-height: 38px; color: rgb(17, 88, 15); font-weight: 500; letter-spacing: -0.03em; margin-bottom: 27px; margin-left: -3px;}
 .input_ty1{font-size: 15px; color: #333; height: 45px; line-height: 43px; background: #fff; border: 1px solid #dedede; outline:none; text-indent: 20px; box-sizing: border-box; padding-right: 15px;}
 .input_ty1::placeholder{color: #cdcdcd;}
 
@@ -269,7 +288,7 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 .table_ty1 tr th a:after{content:''; display: inline-block; width: 10px; height: 6px;  background: url(../img/sub/ta_b.png) center no-repeat;vertical-align: top; margin-top: 27px; margin-left: 8px;}
 .table_ty1 tr th.on a:after{content:''; display: inline-block; width: 10px; height: 6px;  background: url(../img/sub/ta_t.png) center no-repeat;vertical-align: top; margin-top: 27px; margin-left: 8px;}
 
-.table_ty1 tr th:after{position: absolute; content:''; width: 100%; height: 2px; background: #4682B4; left: 0; top: 0;}
+.table_ty1 tr th:after{position: absolute; content:''; width: 100%; height: 2px; background: #77a581; left: 0; top: 0;}
 
 .table_ty2 {border: 1px solid #ddd; margin-top: 9px;}
 .table_ty2 tr{background: #fff; }
@@ -358,13 +377,16 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 .re1_wrap .table_ty1 tr td div{height: 45px; padding: 14px 0; text-align: left; font-size: 16px; width: 100%;}
 .re1_wrap .table_ty1 tr td input,
 .re1_wrap .table_ty1 tr td select{width: 552px; height: 45px; line-height: 43px; box-sizing: border-box; border: 1px solid #ddd; padding: 0 20px; font-size: 15px; }
-.re1_wrap .table_ty1 tr.re_email td input,
-.re1_wrap .table_ty1 tr.re_email td select{width: 257px !important;}
-.re1_wrap .table_ty1 tr td select{color: #cdcdcd; transition:.3s;}
+
+.re1_wrap .table_ty1 tr.name td input,
+.re1_wrap .table_ty1 tr td select{width: 512px; height: 45px; line-height: 43px; box-sizing: border-box; border: 1px solid #ddd; padding: 0 20px; font-size: 15px; }
+
+.re1_wrap .table_ty1 tr.re_email td select{width: 552px !important;}
+.re1_wrap .table_ty1 tr td select{color: #606060; transition:.3s;}
 .re1_wrap .table_ty1 tr td select.on{color: #606060;}
 .e_goll{width: 37px;font-size: 16px; color: #606060; padding: 0 9px;}
 .re1_wrap .table_ty1 tr.tr_tel td input,
-.re1_wrap .table_ty1 tr.tr_tel td select{ width: 170px !important; }
+.re1_wrap .table_ty1 tr.tr_tel td select{ width: px !important; }
 .tel_dot{font-size: 20px; color: #606060; width: 15px; display: inline-block; text-align: center;}
 
 input::placeholder,
