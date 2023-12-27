@@ -15,16 +15,19 @@ class Header extends Component {
     }
     componentDidMount() {
 
+        if (window.location.pathname.endsWith('/')) {
+            $('header').hide()
+           
+        }
+        
         if (window.location.pathname.indexOf('/login') != -1) {
-            $('.menulist').hide()
-            $('.hd_top').hide()
-            $('.logo').hide()
+            $('header').hide()
+           
         }
 
         if (window.location.pathname.indexOf('/Register') != -1) {
-            $('.menulist').hide()
-            $('.hd_top').hide()
-            $('.logo').hide()
+            $('header').hide()
+          
         }
 
         var cookie_memId = cookie.load('memId')
@@ -95,16 +98,12 @@ class Header extends Component {
                     <div className="top_wrap ct1 af">
                         <ul className="hd_left af">
                             <li className="my1" onMouseEnter={this.myInfoHover}
-                                onMouseLeave={this.myInfoLeave}><b>내정보</b>
+                                onMouseLeave={this.myInfoLeave}><b>MENU</b>
                                 <div className="box0 box1">
                                     <ul>
-                                        <li><Link to ={'/CarRegister'}>차량정보등록</Link></li>
-                                        <li><Link to ={'/Modify'}>내 정보 수정</Link></li>
                                         <li><a href="javascript:" onClick={this.logout}>로그아웃</a></li>
                                     </ul>
                                 </div>
-                            </li>
-                            <li className="my2"><b><span>0</span>알림</b>
                             </li>
                         </ul>
                         <div className="hd_right">
@@ -114,12 +113,12 @@ class Header extends Component {
                 </div>
                 <div className="h_nav ct1 af">
                     <div className="logo">
-                        <Link to={'/Mainform'}><img src={require("../../img/layout/carlogo001.png")} height="65px" width="200px" alt="" /></Link>
+                        <img src={require("../../img/layout/carlogo001.png")} height="65px" width="200px" alt="" />
                     </div>
                     <nav className="gnb gnb_admin">
                         <ul className="af">
                             <li className="menulist">
-                                <Link to={'/MainForm'}>메인</Link>
+                                <Link to={'/MainForm'}>홈</Link>
                             </li>
                             <li className="menulist">
                                 <Link to={''}>충전소 검색</Link>
@@ -135,6 +134,9 @@ class Header extends Component {
                             </li>
                             <li className="menulist">
                                 <Link to={''}>문의</Link>
+                            </li>
+                            <li className="menulist">
+                                <Link to={'/MyPage'}>마이페이지</Link>
                             </li>
 
                         </ul>

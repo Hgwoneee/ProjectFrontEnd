@@ -19,13 +19,54 @@ class CarRegister extends Component {
 
 
     submitClick = async (type, e) => {
+
+            this.carNum_val_checker = $('#carNum_val').val()
+
+            this.fnValidate = (e) => {
+            if (this.carNum_val_checker === '') {
+                $('#carNum_val').addClass('border_validate_err');
+                this.sweetalert('차량번호를 입력해주세요.', '', 'error', '닫기')
+                return false;
+            } 
+
+            if (this.carNum_val_checker.search(/\s/) !== -1) {
+                $('#carNum_val').addClass('border_validate_err');
+                this.sweetalert('차량번호 공백없이 입력해주세요.', '', 'error', '닫기')
+                return false;
+            }
+            $('#carNum_val').removeClass('border_validate_err');
+            return true;
+            }
+
+            if (this.fnValidate()) {
+            axios.post('/api/car/carNumCK', {
+                carNum: this.carNum_val_checker
+            })
+                .then(response => {
+                    try {
+                        const carNumck = response.data.carNum;
+                        
+                        if (carNumck != null) {
+                            $('#carNum_val').addClass('border_validate_err');
+                            this.sweetalert('이미 존재하는 차량번호입니다.', '', 'error', '닫기')
+                            return false;
+                        } else {
+                            $('#carNum_val').removeClass('border_validate_err');
+                        }
+                    } catch (error) {
+                        this.sweetalert('작업중 오류가 발생하였습니다.', error, 'error', '닫기')
+                    }
+                })
+                
             
+                
+                
+
             var jsonstr = $("form[name='frm']").serialize();
             jsonstr = decodeURIComponent(jsonstr);
             var Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
 
-            alert(Json_form);
             var Json_data = JSON.parse(Json_form);
 
             axios.post('/api/car/regi', Json_data)
@@ -33,21 +74,17 @@ class CarRegister extends Component {
                 try {
                     if (response.data == "succ") {
                         if (type == 'signup') {
-                            this.sweetalertSucc('차량정보가 등록 되었습니다.', false)
+                            this.sweetalertSucc('차량정보가 등록 되었습니다.', true)
                         }
-                        setTimeout(function () {
-                            this.props.history.push('/MainForm');
-                        }.bind(this), 1500
-                        );
                     }
                 }
                 catch (error) {
                     alert('1. 작업중 오류가 발생하였습니다.')
                 }
             })
-            .catch(error => { alert('2. 작업중 오류가 발생하였습니다.'); return false; });
-        
-    };
+            .catch(error => { this.sweetalert('입력사항을 확인해주세요.', '', 'error', '닫기'); return false; });
+         };
+        }
 
 
     sweetalert = (title, contents, icon, confirmButtonText) => {
@@ -61,12 +98,12 @@ class CarRegister extends Component {
 
     sweetalertSucc = (title, showConfirmButton) => {
         Swal.fire({
-            position: 'bottom-end',
             icon: 'success',
             title: title,
             showConfirmButton: showConfirmButton,
-            timer: 1000
-        })
+        }).then(function(){
+            window.location.href = '/Mypage';
+            })
     }
 
     handleBrandChange = (event) => {
@@ -251,13 +288,13 @@ class CarRegister extends Component {
                                                 <th>차량번호</th>
                                                 <td>
                                                     <input id="carNum_val" type="text" name="carNum"
-                                                        placeholder="예) 123가 4567 " />
+                                                        placeholder="예) 123가4567 (공백없이)" />
                                                 </td>
                                             </tr>
                                             <tr style={{display: 'none' }}>
                                                 <th>닉네임</th>
                                                 <td>
-                                                    <input id="carNum_val" type="text" name="memNickName" value={this.state.memNickName}/>
+                                                    <input id="memNickName_val" type="text" name="memNickName" value={this.state.memNickName}/>
                                                 </td>
                                             </tr>
                                             <tr className="tr_tel">

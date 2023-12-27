@@ -5,12 +5,16 @@ class Footer extends Component {
 
   componentDidMount() {
 
+    if (window.location.pathname.endsWith('/')) {
+      $('footer').hide()
+     
+  }
     if (window.location.pathname.indexOf('/login') != -1) {
-        $('.footer').hide()
+        $('footer').hide()
     }
 
     if (window.location.pathname.indexOf('/Register') != -1) {
-      $('.footer').hide()
+      $('footer').hide()
   }
 
   }
