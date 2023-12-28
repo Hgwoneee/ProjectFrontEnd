@@ -3,6 +3,18 @@
 @import '../css/Modify.css';
 
 
+@font-face {
+  font-family: "고령딸기";
+  src: url("../fonts/고령딸기체+TTF.ttf");
+  font-style: normal;
+}
+
+body {
+  font-family: '고령딸기', sans-serif;
+  font-size:28px;
+}
+
+
 .name-container {
     display: flex;
     align-items: center;
@@ -42,7 +54,7 @@
 * {max-height:1000000px;margin:0;padding:0;}
 img, fieldset, button {border:none;}
 hr, button img {display:none;}
-input, select, button, textarea {font-family:'omyu';font-size:15px;font-weight:400;color:#505050;line-height:30px;letter-spacing:-0.03em;box-sizing:border-box;vertical-align:middle;}
+input, select, button, textarea {font-family:'고령딸기';font-size:15px;font-weight:400;color:#505050;line-height:30px;letter-spacing:-0.03em;box-sizing:border-box;vertical-align:middle;}
 input[type=submit] {cursor:pointer;appearance:none;-moz-appearance:none;-webkit-appearance:none;border-radius:0;-moz-border-radius:0;-webkit-border-radius:0;}
 select::-ms-expand {display: none;}
 ul, li {list-style:none;}
@@ -64,8 +76,8 @@ p {display:block;}
 .fr {float:right;}
 .mc {margin:0 auto;}
 .clear:after {content:"";display:block;clear:both;}
-.fawb:before, .fawa:after {font-family:FontAwesome;text-rendering:auto;-webkit-font-smoothing:antialiased;}
-body {font-family:'Noto Sans Korean','Noto Sans KR', 'Malgun Gothic','맑은 고딕','돋움',Dotum,'굴림',Gulim,Tahoma,Verdana,Geneva,sans-serif,Apple Gothic,AppleGothic;font-size:13px;font-weight:400;color:#505050;line-height:30px; letter-spacing:-0.03em; -webkit-text-size-adjust:none;font-smoothing:antialiased;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+/* .fawb:before, .fawa:after {font-family:FontAwesome;text-rendering:auto;-webkit-font-smoothing:antialiased;} */
+/* body {font-family:'Noto Sans Korean','Noto Sans KR', 'Malgun Gothic','맑은 고딕','돋움',Dotum,'굴림',Gulim,Tahoma,Verdana,Geneva,sans-serif,Apple Gothic,AppleGothic;font-size:13px;font-weight:400;color:#505050;line-height:30px; letter-spacing:-0.03em; -webkit-text-size-adjust:none;font-smoothing:antialiased;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;} */
 body{min-width:1280px; }
 ReactstrapDropdown{overflow:hidden}
 
@@ -121,7 +133,7 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 
 /*header*/
 .gnb_box{}
-.gnb_box .hd_top{background: rgb(164, 209, 174); color: #fff;}
+.gnb_box .hd_top{background: rgb(164, 209, 174); color: #fff; padding-top: 10px;}
 .hd_top .top_wrap{}
 .hd_left{float: left; position: relative;}
 
