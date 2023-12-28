@@ -1,0 +1,36 @@
+/* Header.css */
+
+/* 로그아웃 버튼 */
+.hd_right {
+  display: flex;
+  align-items: center;
+  float: right; /* 오른쪽 정렬을 위한 속성 추가 */
+  
+}
+
+.hd_right p {
+  margin-right: 10px;
+}
+
+.hd_right button {
+  background: rgb(16, 63, 5);
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  /* text-decoration: underline; /* 밑줄 추가 */
+  margin-right: 10px;
+  padding-left: 3px;
+  padding-right: 3px; 
+}
+
+/* 반갑습니다. */
+.hd_right{line-height: 45px; height: 45px; font-size: 16px; color: #000; opacity: 0.8; font-weight: 400;; box-sizing: border-box; padding-left: 25px; opacity: 0.8;}
+
+/* 자동차로고, 메뉴바 정렬 */
+.h_nav .logo{float: left; width: 135px; padding-top: 10px; }
+
+/* 헤더 메뉴바 */
+.gnb > ul > li > a{font-size: 17px; line-height: 97px; color: #333; padding: 0 17px; letter-spacing: -0.03em; transition:.3s;}
+.gnb > ul > li:hover > a,
+.gnb > ul > li.on > a{color: #77a581;}
