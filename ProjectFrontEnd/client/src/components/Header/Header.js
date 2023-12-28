@@ -96,9 +96,18 @@ class Header extends Component {
             <header className="gnb_box">
                 <div className="hd_top">
                     <div className="top_wrap ct1 af">
+                        <ul className="hd_left af">
+                            <li className="my1" onMouseEnter={this.myInfoHover}
+                                onMouseLeave={this.myInfoLeave}><b>MENU</b>
+                                <div className="box0 box1">
+                                    <ul>
+                                        <li><a href="javascript:" onClick={this.logout}>로그아웃</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
                         <div className="hd_right">
                             <p><span>'{this.state.memNickName}'</span>님 반갑습니다.</p>
-                            <button type="button" href="javascript:" onClick={this.logout}>로그아웃</button>
                         </div>
                     </div>
                 </div>
