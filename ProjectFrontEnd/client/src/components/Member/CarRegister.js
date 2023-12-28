@@ -11,7 +11,7 @@ class CarRegister extends Component {
             selectedBrand: '',
             selectedModel: '',
             subCarOptionsList: [], // Initialize as an empty array
-            memNickName: cookie.load('memNickName')
+            memId: cookie.load('memId')
         };
     }
 
@@ -292,15 +292,15 @@ class CarRegister extends Component {
                                                 </td>
                                             </tr>
                                             <tr style={{display: 'none' }}>
-                                                <th>닉네임</th>
+                                                <th>아이디</th>
                                                 <td>
-                                                    <input id="memNickName_val" type="text" name="memNickName" value={this.state.memNickName}/>
+                                                    <input id="memId_val" type="text" name="memId" value={this.state.memId}/>
                                                 </td>
                                             </tr>
                                             <tr className="tr_tel">
                                                 <th>충전방식</th>
                                                 <td>
-                                                    <select id="phone1_val" name="charType" className="select_ty1">
+                                                    <select id="phone1_val" name="charType">
                                                         <option value="">선택</option>
                                                         <option value="010">DC차데모</option>
                                                         <option value="011">DC콤보</option>

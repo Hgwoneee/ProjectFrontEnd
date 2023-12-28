@@ -55,7 +55,7 @@ class MyPage extends Component {
             .catch(error => { alert('회원데이터 받기 오류2'); return false; });
 
             axios.post('/api/car/read', {
-                memNickName: this.state.memNickName,
+                memId: this.state.memId,
             })
                 .then(response => {
                     try {
@@ -66,7 +66,7 @@ class MyPage extends Component {
                         alert('차량데이터 받기 오류')
                     }
                 })
-                .catch(error => { alert('차량데이터 받기 오류2'); return false; });    
+                .catch(error => { return false; });    
     
     
             }
@@ -82,9 +82,10 @@ class MyPage extends Component {
             result.push(
                 <tr class="hidden_type">
                     <th>차량{'['}{i+1}{']'}</th>
-                    <td>
+                    <td className='name-container'>
                        <input name="carInfo" id="carInfo_val" readOnly="readonly" 
                        value={data2.carBrand + ' ' + '/' + ' ' + data2.carModel + ' ' + '/' + ' ' + data2.carNum + ' ' + '/' + ' ' + '충전타입 : ' + data2.charType} />
+                       <button type="button" onClick={() => this.deleteCar(data2.carNum)}>X</button>
                     </td>
                 </tr>
             )
@@ -92,7 +93,21 @@ class MyPage extends Component {
         return result
     }
 
-
+    deleteCar = (carNum) => {
+        axios.post('/api/car/remove', {
+            memId: this.state.memId,
+            carNum: carNum
+        })
+            .then(response => {
+                if(response.data == 'succ'){
+                    
+                    window.location.replace("/MyPage")
+                }else {
+                    alert('오류가 발생했습니다.')
+                    return false;
+                }
+            })
+    }
 
     render() {
         return (

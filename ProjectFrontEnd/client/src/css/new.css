@@ -1,5 +1,6 @@
 @import url(/css/dpl/sce/NotoSansKR-Hestia.css);
 @import '../css/LoginForm.css';
+@import '../css/Modify.css';
 
 .name-container {
     display: flex;
@@ -379,7 +380,7 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 .re1_wrap .table_ty1 tr td select{width: 552px; height: 45px; line-height: 43px; box-sizing: border-box; border: 1px solid #ddd; padding: 0 20px; font-size: 15px; }
 
 .re1_wrap .table_ty1 tr.name td input,
-.re1_wrap .table_ty1 tr td select{width: 512px; height: 45px; line-height: 43px; box-sizing: border-box; border: 1px solid #ddd; padding: 0 20px; font-size: 15px; }
+.re1_wrap .table_ty1 tr td select{width: 552px; height: 45px; line-height: 43px; box-sizing: border-box; border: 1px solid #ddd; padding: 0 20px; font-size: 15px; }
 
 .re1_wrap .table_ty1 tr.re_email td select{width: 552px !important;}
 .re1_wrap .table_ty1 tr td select{color: #606060; transition:.3s;}
