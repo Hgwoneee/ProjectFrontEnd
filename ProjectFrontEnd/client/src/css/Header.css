@@ -25,7 +25,7 @@
 }
 
 /* 반갑습니다. */
-.hd_right{line-height: 45px; height: 45px; font-size: 16px; color: #000; opacity: 0.8; font-weight: 400;; box-sizing: border-box; padding-left: 25px; opacity: 0.8;}
+.hd_right{line-height: 45px; height: 35px; font-size: 16px; color: #000; opacity: 0.8; font-weight: 400;; box-sizing: border-box; padding-left: 25px; opacity: 0.8;}
 
 /* 자동차로고, 메뉴바 정렬 */
 .h_nav .logo{float: left; width: 135px; padding-top: 10px; }

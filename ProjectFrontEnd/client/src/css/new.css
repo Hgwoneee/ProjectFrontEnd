@@ -133,7 +133,7 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 
 /*header*/
 .gnb_box{}
-.gnb_box .hd_top{background: rgb(164, 209, 174); color: #fff; padding-top: 10px;}
+.gnb_box .hd_top{background: rgb(164, 209, 174); color: #fff; padding-top: 10px; padding-bottom: 10px;}
 .hd_top .top_wrap{}
 .hd_left{float: left; position: relative;}
 

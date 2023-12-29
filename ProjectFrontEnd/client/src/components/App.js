@@ -26,8 +26,14 @@ import Register from './Member/Register';
 import Modify from './Member/Modify';
 import MyPage from './Member/MyPage';
 
+
 // find station
 import FindStation from './FindStation/App';
+
+// board
+import NboardList from './Nboard/NboardList';
+
+
 
 class App extends Component {
   constructor(props) {
@@ -86,7 +92,12 @@ class App extends Component {
         <Route path='/Modify/' component={Modify} />
         <Route path='/CarRegister' component={CarRegister} />
 
+
         <Route path='/findStation' component={FindStation} />
+
+        <Route path='/NboardList' component={NboardList} />
+
+
 
         <Footer />
       </div>

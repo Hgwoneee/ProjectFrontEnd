@@ -113,10 +113,10 @@ class Header extends Component {
                                 <Link to={'/MainForm'}>홈</Link>
                             </li>
                             <li className="menulist">
-                                <Link to={''}>충전소 검색</Link>
+                                <Link to={'/findStation'}>충전소 검색</Link>
                             </li>
                             <li className="menulist">
-                                <Link to={''}>공지사항</Link>
+                                <Link to={'/NboardList'}>공지사항</Link>
                             </li>
                             <li className="menulist" >
                                 <Link to={''}>커뮤니티</Link>
