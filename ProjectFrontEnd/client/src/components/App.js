@@ -26,6 +26,9 @@ import Register from './Member/Register';
 import Modify from './Member/Modify';
 import MyPage from './Member/MyPage';
 
+// find station
+import FindStation from './FindStation/App';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -82,6 +85,8 @@ class App extends Component {
         <Route path='/MyPage' component={MyPage} />
         <Route path='/Modify/' component={Modify} />
         <Route path='/CarRegister' component={CarRegister} />
+
+        <Route path='/findStation' component={FindStation} />
 
         <Footer />
       </div>
