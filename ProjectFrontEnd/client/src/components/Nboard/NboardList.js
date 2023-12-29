@@ -25,10 +25,10 @@ class NboardList extends Component {
                 this.setState({ responseNboardList: response });
                 this.setState({ append_NboardList: this.nBoardListAppend() });
             } catch (error) {
-                alert('작업중 오류가 발생하였습니다.');
+                alert('작업중 오류가 발생하였습니다1.');
             }
         })
-        .catch( error => {alert('작업중 오류가 발생하였습니다.');return false;} );
+        .catch( error => {alert('작업중 오류가 발생하였습니다2.');return false;} );
     }
 
     nBoardListAppend = () => {
@@ -39,6 +39,15 @@ class NboardList extends Component {
         
         for(let i=0; i<nBoardList.length; i++){
                 var data = nBoardList[i]
+                const formattedDate = new Date(data.regidate).toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    // hour: '2-digit',
+                    // minute: '2-digit',
+                    // second: '2-digit',
+                    // timeZoneName: 'short'
+                });
 
             result.push(
                 <tr class="hidden_type">
@@ -46,7 +55,7 @@ class NboardList extends Component {
                     <td>{data.title}{'['}{data.replyCnt}{']'}</td>
                     <td>{data.writer}</td>                   
                     <td>{data.viewCnt}</td>
-                    <th>{data.regidate}</th>
+                    <th>{formattedDate}</th>
                 </tr>
             )   
         }
