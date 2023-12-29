@@ -11,11 +11,7 @@ class NboardList extends Component {
             responseNboardList: '',
             append_NboardList: '',
             currentPage:1,
-            totalPages: '',
-            startPage: '',
-            endPage: '',
-            prev: '',
-            next: '',
+            totalPages:10,
         }
     }
 
@@ -24,14 +20,12 @@ class NboardList extends Component {
     }
 
     callNboardListApi = async (page) => {
-        axios.get(`/api/nBoard/${page}`)
+        axios.get(`/api/nBoard/list?page=${page}`)
         .then( response => {
             try {
                 this.setState({ responseNboardList: response });
                 this.setState({ append_NboardList: this.nBoardListAppend() });
-                this.setState({ totalPages: response.data.pageMaker.totalPage });
-                this.setState({ startPage: response.data.pageMaker.startPage });
-                this.setState({ endPage: response.data.pageMaker.endPage });
+                // this.setState({ totalPages: response.data.pageMaker.totalPage });
             } catch (error) {
                 alert('작업중 오류가 발생하였습니다1.');
             }
@@ -50,8 +44,8 @@ class NboardList extends Component {
         const pagesPerGroup = 5; // 페이지 그룹 당 페이지 수
         const pageNumbers = [];
         const currentPageGroup = Math.ceil(currentPage / pagesPerGroup);
-        const startPage = this.state.startPage;
-        const endPage = this.state.endPage;
+        const startPage = (currentPageGroup - 1) * pagesPerGroup + 1;
+        const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
     
         for (let i = startPage; i <= endPage; i++) {
             pageNumbers.push(
