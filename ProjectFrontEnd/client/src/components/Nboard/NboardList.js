@@ -10,26 +10,71 @@ class NboardList extends Component {
         this.state = {
             responseNboardList: '',
             append_NboardList: '',
+            currentPage:1,
+            totalPages:10,
         }
     }
 
     componentDidMount() {
-        this.callNboardListApi()
+        this.callNboardListApi(this.state.currentPage)
     }
 
-    callNboardListApi = async () => {
-        axios.get('/api/nBoard/list', {
-        })
+    callNboardListApi = async (page) => {
+        axios.get(`/api/nBoard/list?page=${page}`)
         .then( response => {
             try {
                 this.setState({ responseNboardList: response });
                 this.setState({ append_NboardList: this.nBoardListAppend() });
+                // this.setState({ totalPages: response.data.pageMaker.totalPage });
             } catch (error) {
                 alert('작업중 오류가 발생하였습니다1.');
             }
         })
         .catch( error => {alert('작업중 오류가 발생하였습니다2.');return false;} );
     }
+
+    handlePageClick = (page) => {
+        this.setState({ currentPage: page }, () => {
+            this.callNboardListApi(page);
+        });
+    }
+
+    renderPagination = () => {
+        const { currentPage, totalPages } = this.state;
+        const pagesPerGroup = 5; // 페이지 그룹 당 페이지 수
+        const pageNumbers = [];
+        const currentPageGroup = Math.ceil(currentPage / pagesPerGroup);
+        const startPage = (currentPageGroup - 1) * pagesPerGroup + 1;
+        const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
+    
+        for (let i = startPage; i <= endPage; i++) {
+            pageNumbers.push(
+                <button style={{margin : 5}} className="sch_bt99 wi_au" key={i} onClick={() => this.handlePageClick(i)}>
+                    {i}
+                </button>
+            );
+        }
+    
+        const prevGroupStart = startPage - pagesPerGroup;
+        const nextGroupStart = startPage + pagesPerGroup;
+    
+        return (
+            <div className="Paging">
+                {currentPageGroup > 1 && (
+                    <button style={{margin : 5}} className="sch_bt99 wi_au" onClick={() => this.handlePageClick(prevGroupStart)}>
+                        {'<'}
+                    </button>
+                )}
+                {pageNumbers}
+                {endPage < totalPages && (
+                    <button style={{margin : 5}} className="sch_bt99 wi_au" onClick={() => this.handlePageClick(nextGroupStart)}>
+                        {'>'}
+                    </button>
+                )}
+            </div>
+        );
+    }
+
 
     nBoardListAppend = () => {
         let result = []
@@ -55,47 +100,12 @@ class NboardList extends Component {
                     <td>{data.title}{'['}{data.replyCnt}{']'}</td>
                     <td>{data.writer}</td>                   
                     <td>{data.viewCnt}</td>
-                    <th>{formattedDate}</th>
+                    <td>{formattedDate}</td>
                 </tr>
             )   
         }
         return result
     }
-
-    // deleteSwtool = (e) => {
-    //     var event_target = e.target
-    //     this.sweetalertDelete('정말 삭제하시겠습니까?', function() {
-    //         axios.post('/api/Swtool?type=delete', {
-    //             is_SwtCd : event_target.getAttribute('id')
-    //         })
-    //         .then( response => {
-    //             this.callSwToolListApi()
-    //         }).catch( error => {alert('작업중 오류가 발생하였습니다.');return false;} );
-    //     }.bind(this))
-    // }
-
-    // sweetalertDelete = (title, callbackFunc) => {
-    //     Swal.fire({
-    //         title: title,
-    //         text: "",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes'
-    //       }).then((result) => {
-    //         if (result.value) {
-    //           Swal.fire(
-    //             'Deleted!',
-    //             '삭제되었습니다.',
-    //             'success'
-    //           )
-    //         }else{
-    //             return false;
-    //         }
-    //         callbackFunc()
-    //       })
-    // }
 
     render () {
         return (
@@ -122,6 +132,8 @@ class NboardList extends Component {
                             {this.state.append_NboardList}
                         </table>
                     </div>
+                    <br></br>
+                    {this.renderPagination()}
                 </article>
             </section>
         );

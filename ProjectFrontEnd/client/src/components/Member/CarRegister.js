@@ -302,11 +302,11 @@ class CarRegister extends Component {
                                                 <td>
                                                     <select id="phone1_val" name="charType">
                                                         <option value="">선택</option>
-                                                        <option value="010">DC차데모</option>
-                                                        <option value="011">DC콤보</option>
-                                                        <option value="016">AC3상</option>
-                                                        <option value="017">AC완속</option>
-                                                        <option value="018">슈퍼차저</option>
+                                                        <option value="DC차데모">DC차데모</option>
+                                                        <option value="DC콤보">DC콤보</option>
+                                                        <option value="AC3상">AC3상</option>
+                                                        <option value="AC완속">AC완속</option>
+                                                        <option value="슈퍼차저">슈퍼차저</option>
                                                     </select>
 
                                                 </td>

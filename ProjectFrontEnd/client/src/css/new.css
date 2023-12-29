@@ -14,6 +14,10 @@ body {
   font-size:28px;
 }
 
+.Paging {
+  text-align: center;
+}
+
 
 .name-container {
     display: flex;
@@ -287,11 +291,11 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 .schb_ty1 li label.on:after{opacity: 1;}
 .sch_bt{position: relative; display: block; width: 51px; height: 45px; background: #4682b4; transition:.3s;}
 .sch_bt:before{position: absolute; content:''; width: 51px; height: 45px; background: url(../img/sub/sch_ddot.png) center no-repeat;}
-.sch_bt2{font-size: 16px; color: #fff; background: #4682B4; border-radius: 5px; height: 45px; line-height: 45px; text-align: center; position: relative; width: 172px; font-weight: 400; transition:.3s;}
-.sch_bt2:after{display: inline-block; content:''; width: 16px; height: 11px; background: url(../img/sub/schb2_icon.png) center no-repeat; margin-left: 10px; }
+.sch_bt2{font-size: 16px; color: #fff; background: #103f05; border-radius: 5px; height: 45px; line-height: 45px; text-align: center; position: relative; width: 172px; font-weight: 400; transition:.3s;}
 .sch_bt:hover,
-.sch_bt2:hover{background: #79b6ca;}
-
+.sch_bt2:hover{background: #517749;}
+.sch_bt99{font-size: 16px; color: #fff; background: #103f05; border-radius: 5px; height: 45px; line-height: 45px; text-align: center; position: relative; width: 172px; font-weight: 400; transition:.3s;}
+.sch_bt99:hover{background: #517749;}
 .sch_bt02:after{display: inline-block; content:''; width: 17px; height: 24px; background: url(../img/sub/schb2_iconno1.png) center no-repeat; margin-left: 10px; vertical-align: top; padding-top: 17px;}
 
 
