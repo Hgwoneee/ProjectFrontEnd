@@ -15,6 +15,10 @@ body {
   font-size:28px;
 }
 
+.searchingForm {
+  text-align: center;
+}
+
 .Paging {
   text-align: center;
 }
@@ -634,7 +638,7 @@ td.check_ty1 label:after{margin-top: 7px;}
 /*게시판 기본폼 [리스트]*/
 
 /* 글목록 */
-.tb_outline {overflow:hidden; border-top: 2px solid #4682b4; margin-top: 10PX;}
+.tb_outline {overflow:hidden; border-top: 2px solid #a4d1ae; margin-top: 10PX;}
 .bo_list {width:1300px; margin:10px auto 00px; display:block; font-size:14px; overflow:hidden; }
 .bo_list .div_tb { display:table; table-layout:fixed; width:100%; border-collapse:collapse; border-spacing:0; overflow:hidden; }
 .bo_list .div_tb_tr { display:table-row; }

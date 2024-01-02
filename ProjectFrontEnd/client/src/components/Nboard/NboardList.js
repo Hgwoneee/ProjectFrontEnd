@@ -25,7 +25,7 @@ class NboardList extends Component {
     }
 
     callNboardListApi = async (page) => {
-        axios.get(`/api/nBoard/list?page=${page}`)
+        axios.get(`/api/nBoard/list?page=${page}&searchType=${this.state.searchtype}&keyword=${this.state.keyword}`)
             .then(response => {
                 try {
                     this.setState({ responseNboardList: response });
@@ -123,22 +123,7 @@ class NboardList extends Component {
         this.setState({ searchtype: e.target.value });
     };
 
-    handleSearchSubmit = (e) => {
-        e.preventDefault();
-        // this.state.searchQuery와 this.state.filter를 사용하여 검색 및 필터링 수행
-        // axios 또는 선호하는 방식으로 검색 및 필터링 API 호출
-        // 검색 결과로 상태 업데이트
-        // 예를 들어:
-        // axios.get(`/api/nBoard/search?query=${this.state.searchQuery}&filter=${this.state.filter}`)
-        //   .then(response => {
-        //     // 검색 결과로 상태 업데이트
-        //   })
-        //   .catch(error => {
-        //     // 오류 처리
-        //   });
-    };
-
-
+    
     render() {
         return (
             <section class="sub_wrap" >
@@ -146,7 +131,7 @@ class NboardList extends Component {
                     <div class="li_top">
                         <h2 class="s_tit1">공 지 사 항</h2>
                         <div class="li_top_sch af">
-                            <Link to={'/SoftwareView/register'} className="sch_bt2 wi_au">글쓰기</Link>
+                            <Link to={'/NboardRegister'} className="sch_bt2 wi_au">글쓰기</Link>
                         </div>
                     </div>
 
@@ -167,8 +152,9 @@ class NboardList extends Component {
                     <br></br>
                     {this.renderPagination()}
                     <br></br>
-                    <form onSubmit={this.handleSearchSubmit}>
-                        <select value={this.state.filter} onChange={this.handleSearchTypeChange}>
+                    <div className="searchingForm" >
+                    <form onSubmit={this.callNboardListApi(this.state.currentPage)}>
+                        <select value={this.state.searchtype} onChange={this.handleSearchTypeChange}>
                             <option value="">선택</option>
                             <option value="t">제목</option>
                             <option value="c">내용</option>
@@ -177,11 +163,12 @@ class NboardList extends Component {
                         <input
                             type="text"
                             placeholder="검색어를 입력해주세요."
-                            value={this.state.searchQuery}
-                            onChange={this.handleSearchInputChange}
+                            value={this.state.keyword}
+                            onChange={this.handleSearchValChange}
                         />
                         <button type="submit" className="sch_bt99 wi_au">검색</button>
                     </form>
+                    </div>
                 </article>
             </section>
         );
