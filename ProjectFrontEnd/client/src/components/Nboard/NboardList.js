@@ -10,7 +10,9 @@ class NboardList extends Component {
 
         this.state = {
             responseNboardList: '',
+            responseSboardList: '',
             append_NboardList: '',
+            append_SboardList: '',
             currentPage: 1,
             totalPages: '',
             startPage: '',
@@ -21,18 +23,20 @@ class NboardList extends Component {
     }
 
     componentDidMount() {
+        alert("새로고침")
         this.callNboardListApi(this.state.currentPage)
+        $("#spaging").hide();
     }
 
     callNboardListApi = async (page) => {
-        axios.get(`/api/nBoard/list?page=${page}&searchType=${this.state.searchtype}&keyword=${this.state.keyword}`)
+        axios.get(`/api/nBoard/list/${page}`)
             .then(response => {
                 try {
                     this.setState({ responseNboardList: response });
                     this.setState({ append_NboardList: this.nBoardListAppend() });
                     this.setState({ totalPages: response.data.pageMaker.totalPage });
-                    this.setState({ startPages: response.data.pageMaker.startPage });
-                    this.setState({ endPages: response.data.pageMaker.endPage });
+                    this.setState({ startPage: response.data.pageMaker.startPage });
+                    this.setState({ endPage: response.data.pageMaker.endPage });
                 } catch (error) {
                     alert('작업중 오류가 발생하였습니다1.');
                 }
@@ -40,10 +44,38 @@ class NboardList extends Component {
             .catch(error => { alert('작업중 오류가 발생하였습니다2.'); return false; });
     }
 
+
+    callSboardListApi = async (page) => {
+        alert(this.state.searchtype)
+        alert(this.state.keyword)
+        axios.get(`/api/nBoard/list/${page}?searchType=${this.state.searchtype}&keyword=${this.state.keyword}`)
+            .then(response => {
+                try {
+                    this.setState({ responseSboardList: response });
+                    this.setState({ append_SboardList: this.sBoardListAppend() });
+                    const totalPages = response.data.pageMaker.totalPage;
+                    const startPage = response.data.pageMaker.startPage;
+                    const endPage = response.data.pageMaker.endPage;
+                    this.setState({ totalPages, startPage, endPage });
+                    $("#cpaging").hide();
+
+                } catch (error) {
+                    alert('작업중 오류가 발생하였습니다1.');
+                }
+            })
+            .catch(error => { alert('작업중 오류가 발생하였습니다2.'); return false; });
+    }
+   
     handlePageClick = (page) => {
-        this.setState({ currentPage: page }, () => {
-            this.callNboardListApi(page);
-        });
+        if(this.state.keyword == '' || this.state.searchtype == '') {
+            this.setState({ currentPage: page }, () => {
+                this.callNboardListApi(page);
+            });
+        } else {
+            this.setState({ currentPage: page }, () => {
+                this.callSboardListApi(page);
+            });
+        }
     }
 
     renderPagination = () => {
@@ -84,6 +116,40 @@ class NboardList extends Component {
     }
 
 
+    renderSearchPagination = () => {
+        const { currentPage, totalPages, startPage, endPage } = this.state;
+        const pagesPerGroup = 5; // 페이지 그룹 당 페이지 수
+        const pageNumbers = [];
+        const currentPageGroup = Math.ceil(currentPage / pagesPerGroup);
+
+        for (let i = startPage; i <= endPage; i++) {
+            pageNumbers.push(
+                <button style={{ margin: 5 }} className="sch_bt99 wi_au" key={i} onClick={() => this.handlePageClick(i)}>
+                    {i}
+                </button>
+            );
+        }
+
+        const prevGroupStart = startPage - pagesPerGroup;
+        const nextGroupStart = startPage + pagesPerGroup;
+
+        return (
+            <div className="Paging">
+                {currentPageGroup > 1 && (
+                    <button style={{ margin: 5 }} className="sch_bt99 wi_au" onClick={() => this.handlePageClick(prevGroupStart)}>
+                        {'<'}
+                    </button>
+                )}
+                {pageNumbers}
+                {endPage < totalPages && (
+                    <button style={{ margin: 5 }} className="sch_bt99 wi_au" onClick={() => this.handlePageClick(nextGroupStart)}>
+                        {'>'}
+                    </button>
+                )}
+            </div>
+        );
+    }
+
     nBoardListAppend = () => {
         let result = []
         var nBoardList = this.state.responseNboardList.data.list
@@ -115,6 +181,37 @@ class NboardList extends Component {
         return result
     }
 
+    sBoardListAppend = () => {
+        let result = []
+        var sBoardList = this.state.responseSboardList.data.list
+        // var jsonString = JSON.stringify(nBoardList)
+        // alert(jsonString);
+
+        for (let i = 0; i < sBoardList.length; i++) {
+            var data = sBoardList[i]
+            const formattedDate = new Date(data.regidate).toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                // hour: '2-digit',
+                // minute: '2-digit',
+                // second: '2-digit',
+                // timeZoneName: 'short'
+            });
+
+            result.push(
+                <tr class="hidden_type">
+                    <td>{data.bno}</td>
+                    <td>{data.title}{'['}{data.replyCnt}{']'}</td>
+                    <td>{data.writer}</td>
+                    <td>{data.viewCnt}</td>
+                    <td>{formattedDate}</td>
+                </tr>
+            )
+        }
+        return result
+    }
+
     handleSearchValChange = (e) => {
         this.setState({ keyword: e.target.value });
     };
@@ -123,6 +220,12 @@ class NboardList extends Component {
         this.setState({ searchtype: e.target.value });
     };
 
+
+    handleSearchButtonClick = (e) => {
+        e.preventDefault();
+        $("#appendNboardList").hide();
+        this.callSboardListApi(this.state.currentPage); // 검색 버튼 클릭 시 검색 기능 호출
+    };
     
     render() {
         return (
@@ -145,15 +248,23 @@ class NboardList extends Component {
                                 <th>작성일</th>
                             </tr>
                         </table>
-                        <table class="table_ty2 ad_tlist">
+                        <table id= "appendNboardList" class="table_ty2 ad_tlist">
                             {this.state.append_NboardList}
+                        </table>
+                        <table id= "appendSboardList" class="table_ty2 ad_tlist">
+                            {this.state.append_SboardList}
                         </table>
                     </div>
                     <br></br>
-                    {this.renderPagination()}
+                    <div id="cpaging">
+                        {this.renderPagination()}
+                    </div>
+                    <div id="spaging">
+                    {this.renderSearchPagination()}
+                    </div>
                     <br></br>
                     <div className="searchingForm" >
-                    <form onSubmit={this.callNboardListApi(this.state.currentPage)}>
+                    <form onSubmit={(e) => this.handleSearchButtonClick(e)}>
                         <select value={this.state.searchtype} onChange={this.handleSearchTypeChange}>
                             <option value="">선택</option>
                             <option value="t">제목</option>
