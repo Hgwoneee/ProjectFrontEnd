@@ -19,6 +19,16 @@ body {
   text-align: center;
 }
 
+.searchzone {
+  padding: 10px 5px;
+}
+
+.search {
+  line-height: 40px;
+  margin: 5px;
+}
+
+
 .Paging {
   text-align: center;
 }

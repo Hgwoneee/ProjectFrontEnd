@@ -58,6 +58,7 @@ class NboardList extends Component {
                     const endPage = response.data.pageMaker.endPage;
                     this.setState({ totalPages, startPage, endPage });
                     $("#cpaging").hide();
+                    $("#spaging").show();
 
                 } catch (error) {
                     alert('작업중 오류가 발생하였습니다1.');
@@ -265,13 +266,13 @@ class NboardList extends Component {
                     <br></br>
                     <div className="searchingForm" >
                     <form onSubmit={(e) => this.handleSearchButtonClick(e)}>
-                        <select value={this.state.searchtype} onChange={this.handleSearchTypeChange}>
+                        <select value={this.state.searchtype} onChange={this.handleSearchTypeChange} className="searchzone">
                             <option value="">선택</option>
                             <option value="t">제목</option>
                             <option value="c">내용</option>
                             <option value="w">작성자</option>
                         </select>
-                        <input
+                        <input className='search'
                             type="text"
                             placeholder="검색어를 입력해주세요."
                             value={this.state.keyword}
