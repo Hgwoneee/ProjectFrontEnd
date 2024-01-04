@@ -10,7 +10,8 @@ class NboardRegister extends Component {
         super(props);
         this.state = {
             selectedFile: null,
-            memNickName: cookie.load('memNickName')
+            memNickName: cookie.load('memNickName'),
+            imageDTOList:[],
         }
     }
 
@@ -46,8 +47,12 @@ class NboardRegister extends Component {
             jsonstr = decodeURIComponent(jsonstr);
             var Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
-            alert(Json_form)
-            var Json_data = JSON.parse(Json_form);
+            var Json_data = {
+                ...JSON.parse(Json_form),
+                imageDTOList: this.state.imageDTOList,
+            };
+            alert(JSON.stringify(Json_data))
+            
 
             axios.post('/api/nBoard/write', Json_data)
             .then(response => {
@@ -141,6 +146,16 @@ class NboardRegister extends Component {
 
                 $('#upload_img').append(str)
 
+                const imageInfo = {
+                    imgName: this.state.fileName,
+                    path: this.state.path, 
+                    uuid: this.state.uuid,
+                    // 다른 필요한 이미지 데이터 추가
+                };
+                this.setState(prevState => ({
+                    imageDTOList: [...prevState.imageDTOList, imageInfo], // 이미지 정보를 배열에 추가
+                }));
+
             }
         }).catch(error => {
             alert('작업중 오류가 발생하였습니다.')
@@ -215,7 +230,10 @@ class NboardRegister extends Component {
                                     </table>
                                     <div class="btn_confirm mt20" style={{ "margin-bottom": "44px" }}>
                                         <a href="javascript:" className="bt_ty bt_ty2 submit_ty1 saveclass"
-                                            onClick={(e) => this.submitClick(e)}>저장</a>
+                                            onClick={(e) => this.submitClick('file', 
+                                            {fileName: this.state.fileName,
+                                            folderPath: this.state.folderPath,
+                                            uuid: this.state.uuid} , e)}>저장</a>
                                         <Link to={'/NboardList'} className="bt_ty bt_ty2 submit_ty1 saveclass">취소</Link>
                                     </div>
                                 </div>
