@@ -122,7 +122,7 @@ class Header extends Component {
                                 <Link to={'/MainForm'}>메인</Link>
                             </li>
                             <li className="menulist">
-                                <Link to={'/MapForm'}>충전소 검색</Link>
+                                <Link to={'/FindStation'}>충전소 검색</Link>
                             </li>
                             <li className="menulist">
                                 <Link to={''}>공지사항</Link>

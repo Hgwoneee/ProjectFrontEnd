@@ -12,7 +12,6 @@ import Header from './Header/Header';
 
 // main
 import MainForm from './Main/MainForm';
-import MapForm from './MapForm';
 
 // footer
 import Footer from './Footer/Footer';
@@ -25,7 +24,6 @@ import CarRegister from './Member/CarRegister';
 import Register from './Member/Register';
 import Modify from './Member/Modify';
 import MyPage from './Member/MyPage';
-
 
 // find station
 import FindStation from './FindStation/App';
@@ -86,16 +84,11 @@ class App extends Component {
         <Route exact path='/' component={LoginForm} />
         <Route path='/login' component={LoginForm} />
         <Route path='/MainForm' component={MainForm} />
-        <Route path='/MapForm' component={MapForm} />
-    
         <Route path='/Register' component={Register} />
         <Route path='/MyPage' component={MyPage} />
         <Route path='/Modify/' component={Modify} />
         <Route path='/CarRegister' component={CarRegister} />
-
-
-        <Route path='/findStation' component={FindStation} />
-
+        <Route path='/FindStation' component={FindStation} />
         <Route path='/NboardList' component={NboardList} />
         <Route path='/NboardRegister' component={NboardRegister} />
 
