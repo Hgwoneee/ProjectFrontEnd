@@ -23,7 +23,6 @@ class NboardList extends Component {
     }
 
     componentDidMount() {
-        alert("새로고침")
         this.callNboardListApi(this.state.currentPage)
         $("#spaging").hide();
     }
@@ -46,8 +45,6 @@ class NboardList extends Component {
 
 
     callSboardListApi = async (page) => {
-        alert(this.state.searchtype)
-        alert(this.state.keyword)
         axios.get(`/api/nBoard/list/${page}?searchType=${this.state.searchtype}&keyword=${this.state.keyword}`)
             .then(response => {
                 try {
