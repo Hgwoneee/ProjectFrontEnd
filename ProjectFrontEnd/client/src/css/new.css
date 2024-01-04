@@ -1,6 +1,7 @@
 @import url(/css/dpl/sce/NotoSansKR-Hestia.css);
 @import '../css/LoginForm.css';
 @import '../css/Modify.css';
+@import '../css/MainForm.css';
 
 
 @font-face {
@@ -12,6 +13,24 @@
 body {
   font-family: '고령딸기', sans-serif;
   font-size:28px;
+}
+
+.searchingForm {
+  text-align: center;
+}
+
+.searchzone {
+  padding: 10px 5px;
+}
+
+.search {
+  line-height: 40px;
+  margin: 5px;
+}
+
+
+.Paging {
+  text-align: center;
 }
 
 
@@ -287,11 +306,11 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 .schb_ty1 li label.on:after{opacity: 1;}
 .sch_bt{position: relative; display: block; width: 51px; height: 45px; background: #4682b4; transition:.3s;}
 .sch_bt:before{position: absolute; content:''; width: 51px; height: 45px; background: url(../img/sub/sch_ddot.png) center no-repeat;}
-.sch_bt2{font-size: 16px; color: #fff; background: #4682B4; border-radius: 5px; height: 45px; line-height: 45px; text-align: center; position: relative; width: 172px; font-weight: 400; transition:.3s;}
-.sch_bt2:after{display: inline-block; content:''; width: 16px; height: 11px; background: url(../img/sub/schb2_icon.png) center no-repeat; margin-left: 10px; }
+.sch_bt2{font-size: 16px; color: #fff; background: #103f05; border-radius: 5px; height: 45px; line-height: 45px; text-align: center; position: relative; width: 172px; font-weight: 400; transition:.3s;}
 .sch_bt:hover,
-.sch_bt2:hover{background: #79b6ca;}
-
+.sch_bt2:hover{background: #517749;}
+.sch_bt99{font-size: 16px; color: #fff; background: #103f05; border-radius: 5px; height: 45px; line-height: 45px; text-align: center; position: relative; width: 172px; font-weight: 400; transition:.3s;}
+.sch_bt99:hover{background: #517749;}
 .sch_bt02:after{display: inline-block; content:''; width: 17px; height: 24px; background: url(../img/sub/schb2_iconno1.png) center no-repeat; margin-left: 10px; vertical-align: top; padding-top: 17px;}
 
 
@@ -306,7 +325,8 @@ border {overflow:auto;border-radius:5px;border-color:#bdbdbd; }
 
 .table_ty1 tr th:after{position: absolute; content:''; width: 100%; height: 2px; background: #77a581; left: 0; top: 0;}
 
-.table_ty2 {border: 1px solid #ddd; margin-top: 9px;}
+
+.table_ty2 {font-size: 16px; border: 1px solid #ddd; margin-top: 9px;}
 .table_ty2 tr{background: #fff; }
 .table_ty2 tr:nth-child(2n+2){background: #f4f7f9;}
 .table_ty2 tr td{border-right: 1px solid #ddd; padding: 16px 0px 14px; position: relative; font-size: 16px; color: #606060;}
@@ -628,7 +648,7 @@ td.check_ty1 label:after{margin-top: 7px;}
 /*게시판 기본폼 [리스트]*/
 
 /* 글목록 */
-.tb_outline {overflow:hidden; border-top: 2px solid #4682b4; margin-top: 10PX;}
+.tb_outline {overflow:hidden; border-top: 2px solid #a4d1ae; margin-top: 10PX;}
 .bo_list {width:1300px; margin:10px auto 00px; display:block; font-size:14px; overflow:hidden; }
 .bo_list .div_tb { display:table; table-layout:fixed; width:100%; border-collapse:collapse; border-spacing:0; overflow:hidden; }
 .bo_list .div_tb_tr { display:table-row; }

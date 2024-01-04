@@ -1,27 +1,41 @@
 import React, { Component } from 'react';
 
-class MainForm extends Component {
-    
+// 이미지와 텍스트를 표시하는 컴포넌트
+class ImageTextContainer extends Component {
     render() {
-        const backgroundStyle = {
-            backgroundImage: `url(${require("../../img/메인배경.png")})`,
-            backgroundSize: 'cover', // 이미지가 요소를 완전히 덮도록 설정
-            backgroundPosition: 'center', // 이미지를 가운데 정렬
-            backgroundRepeat: 'no-repeat', // 이미지 반복 없음
-            width: '100%',
-            height: '100vh', // 뷰포트의 높이에 맞게 조절
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            color: 'white', // 텍스트 색상 설정
-        };
-
+        const { imagePath, altText, labelText } = this.props;
         return (
-            <section className="sub_wrap" style={backgroundStyle}>
-                <article className="s_cnt mp_pro_li ct1 mp_pro_li_admin">
-                    {/* 내용은 여기에 추가 */}
-                </article>
-            </section>
+            <div className="image-container">
+                <img src={imagePath} alt={altText} className="mainimage" />
+                <div className="maintext">
+                    <p>{labelText}</p>
+                </div>
+            </div>
+        );
+    }
+}
+
+class MainForm extends Component {
+    render() {
+        return (
+            <div className="maincontainer">
+                {/* 첫 번째 이미지와 텍스트 */}
+                <ImageTextContainer imagePath={require("../../img/gif/01.gif")} altText="Background" labelText="I'm going in a car." />
+
+                {/* 두 번째 이미지와 텍스트 */}
+                <ImageTextContainer imagePath={require("../../img/gif/02.gif")} altText="Background" labelText="I arrived at the charging station." />
+
+                {/* 세 번째 이미지와 텍스트 */}
+                <ImageTextContainer imagePath={require("../../img/gif/05.gif")} altText="Background" labelText="I charge my electric car." />
+
+                {/* 하단 이미지 */}
+                <div className="bottom-image-container">
+                    <img src={require(`../../img/메인배경.png`)} alt="Bottom Image" className="bottom-image" />
+                    <div className="maintext2">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
         );
     }
 }
