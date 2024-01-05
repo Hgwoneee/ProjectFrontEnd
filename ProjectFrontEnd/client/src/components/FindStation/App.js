@@ -21,7 +21,7 @@ class App extends Component {
   }
 
   callFloatPopulListApi = async () => {
-    axios.get('http://192.168.0.52:8000/api/charging-stations/', {
+    axios.get('http://localhost:8000/api/charging-stations/', {
     })
       .then(response => {
         //alert( JSON.stringify(response) );
