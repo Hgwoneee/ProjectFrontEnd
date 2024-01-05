@@ -18,11 +18,13 @@ class NboardRead extends Component {
             writer:'',
             viewCnt:'',
             regidate: '',
+            imageDTOList:[],
         }
     }
 
     componentDidMount() {
-        this.callNboardInfoApi()
+        this.callNboardInfoApi();
+        $("#modifyButton").hide();
     }
 
     callNboardInfoApi = async () => {
@@ -39,6 +41,10 @@ class NboardRead extends Component {
                     this.setState({ writer: data.writer })
                     this.setState({ viewCnt: data.viewCnt })
                     this.setState({ regidate: data.regidate })
+                    this.setState({ imageDTOList: data.imageDTOList })
+                    if(this.state.memNickName == this.state.writer) {
+                        $("#modifyButton").show();
+                    }
                 }
                 catch (error) {
                     alert('게시글데이터 받기 오류')
@@ -47,6 +53,63 @@ class NboardRead extends Component {
             .catch(error => { alert('게시글데이터 받기 오류2'); return false; });
 
             }
+
+    nBoardFileAppend = () => {
+        let result = []
+        var nBoardFiles = this.state.imageDTOList
+        // var jsonString = JSON.stringify(nBoardList)
+        // alert(jsonString);
+
+        for (let i = 0; i < nBoardFiles.length; i++) {
+            var data = nBoardFiles[i]
+            
+            result.push(
+                <li class="hidden_type">
+                    <img src={`/display?fileName=${data.thumbnailURL}`} alt="Thumbnail" />
+                </li>
+            )
+        }
+        return result
+    }
+
+    deleteArticle = (e) => {
+
+        this.sweetalertDelete('삭제하시겠습니까?', function () {
+            axios.post('/api/nBoard/delete', {
+                bNo: this.state.bno
+            })
+                .then(response => {
+                }).catch(error => { alert('작업중 오류가 발생하였습니다.'); return false; });
+        }.bind(this))
+    }
+        
+    sweetalertDelete = (title, callbackFunc) => {
+        Swal.fire({
+            title: title,
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+                }).then((result) => {
+                    if (result.value) {
+                        Swal.fire(
+                            '삭제되었습니다.',
+                            '',
+                            'success'
+                        ).then(() => {
+                            window.location.href = '/NboardList';
+                        });
+                    } else {
+                        return false;
+                    }
+                    callbackFunc()
+                })
+            }
+    
+
+            
 
     render() {
         return (
@@ -106,18 +169,20 @@ class NboardRead extends Component {
                                             </th>
                                             <td className="fileBox fileBox1">
                                                 <ul id="upload_img">
+                                                {this.nBoardFileAppend()}
                                                 </ul>
                                             </td>
                                         </tr>
 
                                     </table>
-                                    <div class="btn_confirm mt20" style={{ "margin-bottom": "44px" }}>
+                                    <div id="modifyButton" class="btn_confirm mt20" style={{ "margin-bottom": "44px" }}>
                                         <a href="javascript:" className="bt_ty bt_ty2 submit_ty1 saveclass"
                                             onClick={(e) => this.submitClick('file', 
                                             {fileName: this.state.fileName,
                                             folderPath: this.state.folderPath,
                                             uuid: this.state.uuid} , e)}>수정</a>
-                                        <Link to={''} className="bt_ty bt_ty2 submit_ty1 saveclass">삭제</Link>
+                                        <a href='javascript:' className="bt_ty bt_ty2 submit_ty1 saveclass"
+                                            onClick={(e) => this.deleteArticle(e)}>삭제</a>
                                     </div>
                                 </div>
                             </article>
