@@ -169,7 +169,7 @@ class NboardList extends Component {
             result.push(
                 <tr class="hidden_type">
                     <td>{data.bno}</td>
-                    <td>{data.title}{'['}{data.replyCnt}{']'}</td>
+                    <td><Link to={`NboardRead/${data.bno}`}>{data.title}</Link>{'['}{data.replyCnt}{']'}</td>
                     <td>{data.writer}</td>
                     <td>{data.viewCnt}</td>
                     <td>{formattedDate}</td>
