@@ -51,12 +51,11 @@ class NboardRegister extends Component {
                 ...JSON.parse(Json_form),
                 imageDTOList: this.state.imageDTOList,
             };
-            alert(JSON.stringify(Json_data))
+            
             
 
             axios.post('/api/nBoard/write', Json_data)
             .then(response => {
-                alert(response)
                 try {
                     if (response.data == "succ") {
                             this.sweetalert('등록되었습니다.','','success','확인' )
@@ -131,16 +130,13 @@ class NboardRegister extends Component {
             if (type == 'file') {
                 this.setState({ fileName: res.data[0].fileName })
                 this.setState({ uuid: res.data[0].uuid })                
-                this.setState({ path: res.data[0].folderPath })
-                alert(this.state.path)                
+                this.setState({ path: res.data[0].folderPath })                
                 this.setState({ thumbnailURL: res.data[0].thumbnailURL })                
                 this.setState({ imageURL: res.data[0].imageURL })
                 
                 var str ="";
 
                 str += "<li data-name='" + this.state.fileName + "' data-path='"+this.state.folderPath+"' data-uuid='"+this.state.uuid+"'>";
-                str += "<button type='button' data-file=\'" + this.state.imageURL + "\' "
-                str += "class='btn-warning btn-sm'>X</button><br>";
                 str += "<img src='/display?fileName=" + this.state.thumbnailURL + "'>";
                 str += "</li>";
 
@@ -148,7 +144,7 @@ class NboardRegister extends Component {
 
                 const imageInfo = {
                     imgName: this.state.fileName,
-                    path: this.state.path, 
+                    path: this.state.path,
                     uuid: this.state.uuid,
                     // 다른 필요한 이미지 데이터 추가
                 };
@@ -161,6 +157,13 @@ class NboardRegister extends Component {
             alert('작업중 오류가 발생하였습니다.')
         })
     }
+
+    handleRemoveAllThumbnails = () => {
+        // 모든 썸네일을 제거하고 imageDTOList를 비웁니다.
+        $('.fileBox1 ul').empty();
+        $('#imagefile').val('');
+        this.setState({ imageDTOList: [] });
+    };
 
     render() {
         return (
@@ -198,23 +201,9 @@ class NboardRegister extends Component {
                                                 <textarea name="content" id="contentVal" rows="" cols=""></textarea>
                                             </td>
                                         </tr>
-                                        <tr class="div_tb_tr fileb">
-                                            <th>
-                                                파일첨부
-                                            </th>
-                                            <td class="fileBox fileBox_w1">
-                                                <label for="uploadBtn1" class="btn_file">파일선택</label>
-                                                <input type="text" id="manualfile" class="fileName fileName1"
-                                                    readonly="readonly" placeholder="선택된 파일 없음" />
-                                                <input type="file" id="uploadBtn1" class="uploadBtn uploadBtn1"
-                                                    onChange={e => this.handleFileInput('manual', e)} />
-                                                <div id="upload_menual">
-                                                </div>
-                                            </td>
-                                        </tr>
                                         <tr>
                                             <th>
-                                                이미지첨부
+                                                파일첨부
                                             </th>
                                             <td className="fileBox fileBox1">
                                                 <label htmlFor='imageSelect' className="btn_file">파일선택</label>
@@ -222,6 +211,8 @@ class NboardRegister extends Component {
                                                     readOnly="readonly" placeholder="선택된 파일 없음" />
                                                 <input type="file" id="imageSelect" className="uploadBtn uploadBtn1"
                                                     onChange={e => this.handleFileInput('file', e)} multiple/>
+                                                <button type="button" className='bt_ty2' style={{paddingTop:5,paddingLeft:10,paddingRight:10}}
+                                                    onClick={this.handleRemoveAllThumbnails}>X</button>
                                                 <ul id="upload_img">
                                                 </ul>
                                             </td>
