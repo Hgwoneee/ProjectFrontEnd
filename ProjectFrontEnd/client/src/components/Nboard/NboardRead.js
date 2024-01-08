@@ -4,6 +4,7 @@ import axios from "axios";
 import $ from 'jquery';
 import Swal from 'sweetalert2'
 import cookie from 'react-cookies';
+import Modal from 'react-modal';
 
 class NboardRead extends Component {
     constructor(props) {
@@ -12,13 +13,16 @@ class NboardRead extends Component {
             bno: props.match.params.bno,
             selectedFile: null,
             memNickName: cookie.load('memNickName'),
-            thumbnailURL:'',
-            title:'',
-            content:'',
-            writer:'',
-            viewCnt:'',
+            thumbnailURL: '',
+            title: '',
+            content: '',
+            writer: '',
+            viewCnt: '',
             regidate: '',
-            imageDTOList:[],
+            imageDTOList: [],
+            modalIsOpen: false,
+            selectedImage: '',
+            imageList: [],
         }
     }
 
@@ -29,20 +33,21 @@ class NboardRead extends Component {
 
     callNboardInfoApi = async () => {
 
-        
+
         axios.post('/api/nBoard/read', {
             bNo: this.state.bno,
         })
             .then(response => {
                 try {
                     var data = response.data
+                    this.setState({ imageList: data.imageDTOList });
                     this.setState({ title: data.title })
                     this.setState({ content: data.content })
                     this.setState({ writer: data.writer })
                     this.setState({ viewCnt: data.viewCnt })
                     this.setState({ regidate: data.regidate })
                     this.setState({ imageDTOList: data.imageDTOList })
-                    if(this.state.memNickName == this.state.writer) {
+                    if (this.state.memNickName == this.state.writer) {
                         $("#modifyButton").show();
                     }
                 }
@@ -52,26 +57,32 @@ class NboardRead extends Component {
             })
             .catch(error => { alert('게시글데이터 받기 오류2'); return false; });
 
-            }
-
-    nBoardFileAppend = () => {
-        let result = []
-        var nBoardFiles = this.state.imageDTOList
-        // var jsonString = JSON.stringify(nBoardList)
-        // alert(jsonString);
-
-        for (let i = 0; i < nBoardFiles.length; i++) {
-            var data = nBoardFiles[i]
-            
-            result.push(
-                <li class="hidden_type">
-                    <img src={`/display?fileName=${data.thumbnailURL}`} alt="Thumbnail" />
-                </li>
-            )
-        }
-        return result
     }
 
+    handleThumbnailClick = (thumbnailURL) => {
+        this.setState({ modalIsOpen: true, selectedImage: thumbnailURL });
+    };
+
+    closeImageModal = () => {
+        this.setState({ modalIsOpen: false, selectedImage: '' });
+    };
+
+
+    renderImages = () => {
+        const { imageList } = this.state;
+
+        return imageList.map((image, index) => (
+            <li className="hidden_type" key={index}>
+                <img
+                    src={`/display?fileName=${image.thumbnailURL}`}
+                    alt={`썸네일 ${index}`}
+                    onClick={() => this.handleThumbnailClick(image.imageURL)}
+                />
+            </li>
+        ));
+    };
+
+    
     deleteArticle = (e) => {
 
         this.sweetalertDelete('삭제하시겠습니까?', function () {
@@ -82,7 +93,7 @@ class NboardRead extends Component {
                 }).catch(error => { alert('작업중 오류가 발생하였습니다.'); return false; });
         }.bind(this))
     }
-        
+
     sweetalertDelete = (title, callbackFunc) => {
         Swal.fire({
             title: title,
@@ -92,24 +103,24 @@ class NboardRead extends Component {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes'
-                }).then((result) => {
-                    if (result.value) {
-                        Swal.fire(
-                            '삭제되었습니다.',
-                            '',
-                            'success'
-                        ).then(() => {
-                            window.location.href = '/NboardList';
-                        });
-                    } else {
-                        return false;
-                    }
-                    callbackFunc()
-                })
+        }).then((result) => {
+            if (result.value) {
+                Swal.fire(
+                    '삭제되었습니다.',
+                    '',
+                    'success'
+                ).then(() => {
+                    window.location.href = '/NboardList';
+                });
+            } else {
+                return false;
             }
-    
+            callbackFunc()
+        })
+    }
 
-            
+
+
 
     render() {
         return (
@@ -152,7 +163,7 @@ class NboardRead extends Component {
                                                 <label for="title">제목</label>
                                             </th>
                                             <td>
-                                                <input type="text" name="title" id="titleVal" readOnly="readonly" value={this.state.title}/>
+                                                <input type="text" name="title" id="titleVal" readOnly="readonly" value={this.state.title} />
                                             </td>
                                         </tr>
                                         <tr>
@@ -169,18 +180,42 @@ class NboardRead extends Component {
                                             </th>
                                             <td className="fileBox fileBox1">
                                                 <ul id="upload_img">
-                                                {this.nBoardFileAppend()}
+                                                    {this.renderImages()}
                                                 </ul>
                                             </td>
                                         </tr>
+                                        <Modal
+                                            isOpen={this.state.modalIsOpen}
+                                            onRequestClose={this.closeImageModal}
+                                            contentLabel="썸네일 이미지"
+                                            style={{
+                                                overlay: {
+                                                    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+                                                },
+                                                content: {
+                                                    width: '75%', // 원하는 너비로 설정하세요
+                                                    height: '75%', // 원하는 높이로 설정하세요
+                                                    top: '50%',
+                                                    left: '50%',
+                                                    transform: 'translate(-50%, -50%)',
+                                                    border: '1px solid #ccc',
+                                                    borderRadius: '4px',
+                                                    overflow: 'auto',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+                                                }
+                                            }}>
+                                            {this.state.selectedImage && (
+                                                <img src={`/display?fileName=${this.state.selectedImage}`} alt="선택한 썸네일" />
+                                            )}
+                                        </Modal>
 
                                     </table>
                                     <div id="modifyButton" class="btn_confirm mt20" style={{ "margin-bottom": "44px" }}>
-                                        <a href="javascript:" className="bt_ty bt_ty2 submit_ty1 saveclass"
-                                            onClick={(e) => this.submitClick('file', 
-                                            {fileName: this.state.fileName,
-                                            folderPath: this.state.folderPath,
-                                            uuid: this.state.uuid} , e)}>수정</a>
+                                        <Link to={`/NboardModify/${this.state.bno}`} className="bt_ty bt_ty2 submit_ty1 saveclass">수정</Link>
                                         <a href='javascript:' className="bt_ty bt_ty2 submit_ty1 saveclass"
                                             onClick={(e) => this.deleteArticle(e)}>삭제</a>
                                     </div>
