@@ -32,6 +32,7 @@ import FindStation from './FindStation/App';
 import NboardList from './Nboard/NboardList';
 import NboardRegister from './Nboard/NboardRegister';
 import NboardRead from './Nboard/NboardRead';
+import NboardModify from './Nboard/NboardModify';
 
 
 
@@ -94,10 +95,9 @@ class App extends Component {
         <Route path='/NboardList' component={NboardList} />
         <Route path='/NboardRegister' component={NboardRegister} />
         <Route path='/NboardRead/:bno' component={NboardRead} />
-
-
-
+        <Route path='/NboardModify/:bno' component={NboardModify} />
         <Footer />
+
       </div>
 
     );
