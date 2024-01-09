@@ -379,7 +379,7 @@ class NboardRead extends Component {
                                                 <label for="Content">내용</label>
                                             </th>
                                             <td>
-                                                <textarea name="content" id="contentVal" rows="" cols="" readOnly="readonly" value={this.state.content}></textarea>
+                                                <textarea style={{ padding: '15px'}} name="content" id="contentVal" rows="" cols="" readOnly="readonly" value={this.state.content}></textarea>
                                             </td>
                                         </tr>
 
@@ -468,17 +468,39 @@ class NboardRead extends Component {
                     <Modal
                         isOpen={this.state.isEditModalOpen}
                         onRequestClose={this.closeEditModal}
-                        // ... (모달 스타일 및 다른 속성들)
+                        style={{
+                            overlay: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.5)'
+                            },
+                            content: {
+                                width: '30%', // 원하는 너비로 설정하세요
+                                height: '30%', // 원하는 높이로 설정하세요
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                border: '1px solid #ccc',
+                                borderRadius: '4px',
+                                overflow: 'auto',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                backgroundColor: 'white'
+                            }
+                        }}
                     >
                         <h2>댓글 수정</h2>
-                        <input
+                        <br></br>
+                        <input style={{height: '30%', width: '80%', padding: '15px'}}
                             value={this.state.editedContent}
                             onChange={(e) => this.setState({ editedContent: e.target.value })}
                         ></input>
-                        <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={this.handleEditSubmit}>저장</button>
-                        <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={this.closeEditModal}>취소</button>
+                        <br></br>
+                        <div style={{display: 'flex'}}>
+                            <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={this.handleEditSubmit}>저장</button>
+                            <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={this.closeEditModal}>취소</button>
+                        </div>
                     </Modal>
-
                 </article>
             </section>
         );
