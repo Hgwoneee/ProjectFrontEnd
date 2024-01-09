@@ -23,12 +23,20 @@ class NboardRead extends Component {
             modalIsOpen: false,
             selectedImage: '',
             imageList: [],
+            replyer: '',
+            replyText: '',
+            reply_checker: '',
+            isEditModalOpen: false,
+            editedContent: ''
         }
     }
 
     componentDidMount() {
         this.callNboardInfoApi();
+        this.callReplyListApi(this.state.bno);
         $("#modifyButton").hide();
+        $("#replyerDiv").hide();
+        $("#bNoDiv").hide();
     }
 
     callNboardInfoApi = async () => {
@@ -82,10 +90,11 @@ class NboardRead extends Component {
         ));
     };
 
-    
+
+
     deleteArticle = (e) => {
 
-        this.sweetalertDelete('삭제하시겠습니까?', function () {
+        this.sweetalertDelete1('삭제하시겠습니까?', function () {
             axios.post('/api/nBoard/delete', {
                 bNo: this.state.bno
             })
@@ -94,7 +103,7 @@ class NboardRead extends Component {
         }.bind(this))
     }
 
-    sweetalertDelete = (title, callbackFunc) => {
+    sweetalertDelete1 = (title, callbackFunc) => {
         Swal.fire({
             title: title,
             text: "",
@@ -119,10 +128,174 @@ class NboardRead extends Component {
         })
     }
 
+    submitClick = async (e) => {
+
+        this.reply_checker = $('#replyTextVal').val();
+
+        this.fnValidate = (e) => {
+            if (this.reply_checker === '') {
+                $('#replyTextVal').addClass('border_validate_err');
+                this.sweetalert('댓글내용을 입력해주세요.', '', 'error', '닫기')
+                return false;
+            }
+            $('#replyTextVal').removeClass('border_validate_err');
+            return true;
+        }
+
+        if (this.fnValidate()) {
+            var jsonstr = $("form[name='frm2']").serialize();
+            jsonstr = decodeURIComponent(jsonstr);
+            var Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
+            Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
+            var Json_data = JSON.parse(Json_form);
+
+            alert(JSON.stringify(Json_data));
+
+            axios.post('/api/reply/add', Json_data)
+                .then(response => {
+                    try {
+                        if (response.data == "SUCCESS") {
+                            this.sweetalert('등록되었습니다.', '', 'success', '확인')
+                            setTimeout(function () {
+                                window.location.reload();
+                            }.bind(this), 1500
+                            );
+                        }
+                    }
+                    catch (error) {
+                        alert('1. 작업중 오류가 발생하였습니다.')
+                    }
+                })
+                .catch(error => { alert('2. 작업중 오류가 발생하였습니다.'); return false; });
+        }
+    };
 
 
+    sweetalert = (title, contents, icon, confirmButtonText) => {
+        Swal.fire({
+            title: title,
+            text: contents,
+            icon: icon,
+            confirmButtonText: confirmButtonText
+        })
+    }
+
+    sweetalertSucc = (title, showConfirmButton) => {
+        Swal.fire({
+            icon: 'success',
+            title: title,
+            showConfirmButton: showConfirmButton,
+            timer: 1000
+        })
+    }
+
+    callReplyListApi = async (bno) => {
+        axios.get(`/api/reply/list/${bno}`)
+            .then(response => {
+                try {
+                    this.setState({ responseReplyList: response });
+                    this.setState({ append_ReplyList: this.ReplyListAppend() });
+                } catch (error) {
+                    alert('작업중 오류가 발생하였습니다1.');
+                }
+            })
+            .catch(error => { alert('작업중 오류가 발생하였습니다2.'); return false; });
+    }
+
+    ReplyListAppend = () => {
+        let result = []
+        var ReplyList = this.state.responseReplyList.data
+        // var jsonString = JSON.stringify(ReplyList)
+        // alert(jsonString);
+
+        const currentUser = this.state.memNickName;
+
+        for (let i = 0; i < ReplyList.length; i++) {
+            var data = ReplyList[i]
+            const isCurrentUserCommentOwner = data.replyer === currentUser;
+            const formattedDate = new Date(data.regdate).toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+            }).split('.').join('/').replace(/\s/g, '');
+
+            const trimmedDate = formattedDate.slice(0, -1);
+
+            result.push(
+                <li>
+                    <div>
+                        <img src={require(`../../img/댓글이미지.png`)}></img>
+                    </div>
+                    <div>
+                        <h5>{data.replyer}</h5>
+                        {data.replyText}
+                    </div>
+                    <div>
+                        {trimmedDate}
+                    </div>
+                    <div>
+                        {isCurrentUserCommentOwner && (
+                            <div>
+                                <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={() => this.editComment(i)}>수정</button>
+                                <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={() => this.deleteComment(data.rno)}>삭제</button>
+                            </div>
+                        )}
+                    </div>
+                    <br></br>
+                </li>
+            )
+        }
+        return result
+    }
+
+    deleteComment = (rno) => {
+        this.sweetalertDelete2('삭제하시겠습니까?', function () {
+            axios.delete(`/api/reply/${rno}/${this.state.bno}`, {
+                rNo: rno,
+                bNo: this.state.bno
+            })
+                .then(response => {
+                }).catch(error => { alert('작업중 오류가 발생하였습니다.'); return false; });
+        }.bind(this))
+    };
+
+    sweetalertDelete2 = (title, callbackFunc) => {
+        Swal.fire({
+            title: title,
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.value) {
+                Swal.fire(
+                    '삭제되었습니다.',
+                    '',
+                    'success'
+                ).then(() => {
+                    window.location.reload();
+                });
+            } else {
+                return false;
+            }
+            callbackFunc()
+        })
+    }
+
+    
 
     render() {
+
+        const formattedRegidate = new Date(this.state.regidate).toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        }).split('.').join('/').replace(/\s/g, '');
+
+        const trimmedRegidate = formattedRegidate.slice(0, -1);
+
         return (
             <section class="sub_wrap">
                 <article class="s_cnt mp_pro_li ct1">
@@ -147,7 +320,7 @@ class NboardRead extends Component {
                                                 <label for="regDate">작성일</label>
                                             </th>
                                             <td>
-                                                <input type="text" name="regiDate" id="regiDateVal" readOnly="readonly" value={this.state.regidate} />
+                                                <input type="text" name="regiDate" id="regiDateVal" readOnly="readonly" value={trimmedRegidate} />
                                             </td>
                                         </tr>
                                         <tr>
@@ -222,7 +395,35 @@ class NboardRead extends Component {
                                 </div>
                             </article>
                         </form>
+                        <div>댓글</div>
+                        <form name="frm2" id="frm2" action="" onsubmit="" method="post">
+                            <table class="table_ty1">
+                                <tr id='bNoDiv'>
+                                    <td>
+                                        <input type="text" name="bNo" id="bnoVal" value={this.state.bno} />
+                                    </td>
+                                </tr>
+                                <tr id='replyerDiv'>
+                                    <td>
+                                        <input type="text" name="replyer" id="replyerVal" value={this.state.memNickName} />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" name="replyText" id="replyTextVal" placeholder='내용을 입력해주세요.' />
+                                    </td>
+                                </tr>
+                            </table>
+                            <a href="javascript:" className="bt_ty bt_ty2 submit_ty1 saveclass"
+                                onClick={(e) => this.submitClick(e)}>등록</a>
+                        </form>
+                        <div id='replyarea'>
+                            <ul>
+                                {this.state.append_ReplyList}
+                            </ul>
+                        </div>
                     </div>
+                    
                 </article>
             </section>
         );

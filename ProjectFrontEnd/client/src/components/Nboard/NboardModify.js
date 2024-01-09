@@ -96,7 +96,6 @@ class NboardModify extends Component {
                 ...JSON.parse(Json_form),
                 imageDTOList: this.state.imageDTOList,
             };
-            alert(JSON.stringify(Json_data))
             
             
 
@@ -106,7 +105,7 @@ class NboardModify extends Component {
                     if (response.data == "succ") {
                             this.sweetalert('수정되었습니다.','','success','확인' )
                             setTimeout(function () {
-                                this.props.history.push(`NboardRead/${this.state.bno}`);
+                                this.props.history.push(`/NboardRead/${this.state.bno}`);
                             }.bind(this), 1500
                         );
                     }
@@ -272,7 +271,7 @@ class NboardModify extends Component {
                                             {fileName: this.state.fileName,
                                             folderPath: this.state.folderPath,
                                             uuid: this.state.uuid} , e)}>저장</a>
-                                        <Link to={'/NboardList'} className="bt_ty bt_ty2 submit_ty1 saveclass">취소</Link>
+                                        <Link to={`/NboardRead/${this.state.bno}`} className="bt_ty bt_ty2 submit_ty1 saveclass">취소</Link>
                                     </div>
                                 </div>
                             </article>
