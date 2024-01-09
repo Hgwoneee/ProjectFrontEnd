@@ -157,6 +157,7 @@ class NboardRead extends Component {
                             this.sweetalert('등록되었습니다.', '', 'success', '확인')
                             setTimeout(function () {
                                 this.callReplyListApi(this.state.bno);
+                                $('#replyTextVal').val('')
                             }.bind(this), 1500
                             );
                         }
@@ -221,36 +222,35 @@ class NboardRead extends Component {
             const trimmedDate = formattedDate.slice(0, -1);
 
             result.push(
-                <li>
-                    <div>
-                        <img src={require(`../../img/댓글이미지.png`)}></img>
+                <li style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',fontSize: '19px'}}>
+                  <div style={{ display: 'flex', alignItems: 'center'}}>
+                    <div style={{ width: '80px', height: '80px' }}>
+                      <img src={require(`../../img/댓글2.gif`)} alt="댓글 이미지" />
                     </div>
-                    <div>
-                        <h5>{data.replyer}</h5>
-                        {data.replyText}
+                    <div className="cat">
+                    <p style={{ fontSize: '19px'}}>{data.replyer}   <span style={{ fontSize: '12px' }}>{trimmedDate}</span></p> 
+                    <p style={{ color: '#525252'}}>{data.replyText}</p>
                     </div>
-                    <div>
-                        {trimmedDate}
                     </div>
-                    <div>
-                        {isCurrentUserCommentOwner && (
-                            <div>
-                                <button onClick={() => this.openEditModal(i)} className="bt_ty bt_ty2 submit_ty1 saveclass">수정</button>
-                                <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={() => this.deleteComment(data.rno)}>삭제</button>
-                            </div>
-                        )}
-                    </div>
-                    <br></br>
+                  <div>
+                    {isCurrentUserCommentOwner && (
+                      <div>
+                        <button className="catbtn bt_ty2 submit_ty1 saveclass" onClick={() => this.openEditModal(i)}>수정</button>
+                        <button className="catbtn bt_ty2 submit_ty1 saveclass" onClick={() => this.deleteComment(i)}>삭제</button>
+                      </div>
+                    )}
+                  </div>
                 </li>
-            )
+              );
         }
         return result
     }
 
-    deleteComment = (rno) => {
+    deleteComment = (index) => {
         this.sweetalertDelete2('삭제하시겠습니까?', function () {
-            axios.delete(`/api/reply/${rno}/${this.state.bno}`, {
-                rNo: rno,
+            
+            axios.delete(`/api/reply/${this.state.responseReplyList.data[index].rno}/${this.state.bno}`, {
+                rNo: this.state.responseReplyList.data[index].rno,
                 bNo: this.state.bno
             })
                 .then(response => {
@@ -282,6 +282,7 @@ class NboardRead extends Component {
             callbackFunc()
         })
     }
+
 
     openEditModal = (index) => {
         this.setState({
@@ -316,6 +317,7 @@ class NboardRead extends Component {
     };
 
 
+
     render() {
 
         const formattedRegidate = new Date(this.state.regidate).toLocaleDateString('ko-KR', {
@@ -339,36 +341,39 @@ class NboardRead extends Component {
                                     <table class="table_ty1">
                                         <tr>
                                             <th>
-                                                <label for="writer">작성자</label>
-                                            </th>
-                                            <td>
-                                                <input type="text" name="writer" id="writerVal" readOnly="readonly" value={this.state.writer} />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>
-                                                <label for="regDate">작성일</label>
-                                            </th>
-                                            <td>
-                                                <input type="text" name="regiDate" id="regiDateVal" readOnly="readonly" value={trimmedRegidate} />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>
-                                                <label for="writer">조회수</label>
-                                            </th>
-                                            <td>
-                                                <input type="text" name="viewCnt" id="viewCntVal" readOnly="readonly" value={this.state.viewCnt} />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>
                                                 <label for="title">제목</label>
                                             </th>
                                             <td>
                                                 <input type="text" name="title" id="titleVal" readOnly="readonly" value={this.state.title} />
                                             </td>
                                         </tr>
+                                    </table>
+                                    <table class="table_ty1">
+                                        <tr>
+                                            <th>
+                                                <label for="writer">작성자</label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="writer" id="writerVal" readOnly="readonly" value={this.state.writer} />
+                                            </td>
+
+                                            <th style={{ textAlign: "center" }}>
+                                                <label for="regDate">작성일</label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="regiDate" id="regiDateVal" readOnly="readonly" value={trimmedRegidate} />
+                                            </td>
+
+                                            <th style={{ textAlign: "center" }}>
+                                                <label for="writer">조회수</label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="viewCnt" id="viewCntVal" readOnly="readonly" value={this.state.viewCnt} />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table class="table_ty1">
+
                                         <tr>
                                             <th>
                                                 <label for="Content">내용</label>
@@ -377,6 +382,7 @@ class NboardRead extends Component {
                                                 <textarea name="content" id="contentVal" rows="" cols="" readOnly="readonly" value={this.state.content}></textarea>
                                             </td>
                                         </tr>
+
                                         <tr>
                                             <th>
                                                 파일목록
@@ -424,27 +430,33 @@ class NboardRead extends Component {
                                 </div>
                             </article>
                         </form>
-                        <div>댓글</div>
+
+
+                        <div className='table_ty99'>댓글</div>
+
                         <form name="frm2" id="frm2" action="" onsubmit="" method="post">
                             <table class="table_ty1">
                                 <tr id='bNoDiv'>
                                     <td>
                                         <input type="text" name="bNo" id="bnoVal" value={this.state.bno} />
                                     </td>
+
                                 </tr>
                                 <tr id='replyerDiv'>
                                     <td>
                                         <input type="text" name="replyer" id="replyerVal" value={this.state.memNickName} />
                                     </td>
                                 </tr>
+                            
                                 <tr>
-                                    <td>
-                                        <input type="text" name="replyText" id="replyTextVal" placeholder='내용을 입력해주세요.' />
+                                    <td style={{ display: 'flex', alignItems: 'center' }}>
+                                        <input type="text" name="replyText" id="replyTextVal" placeholder='내용을 입력해주세요.' style={{ flex: '1', marginRight: '8px', height:'50px' }} />
+                                        <a href="javascript:" className="bt_ty1 bt_ty3 submit_ty1 saveclass" onClick={(e) => this.submitClick(e)}>등록</a>
                                     </td>
                                 </tr>
+
                             </table>
-                            <a href="javascript:" className="bt_ty bt_ty2 submit_ty1 saveclass"
-                                onClick={(e) => this.submitClick(e)}>등록</a>
+
                         </form>
                         <div id='replyarea'>
                             <ul>
@@ -452,6 +464,7 @@ class NboardRead extends Component {
                             </ul>
                         </div>
                     </div>
+
                     <Modal
                         isOpen={this.state.isEditModalOpen}
                         onRequestClose={this.closeEditModal}
@@ -465,6 +478,7 @@ class NboardRead extends Component {
                         <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={this.handleEditSubmit}>저장</button>
                         <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={this.closeEditModal}>취소</button>
                     </Modal>
+
                 </article>
             </section>
         );
