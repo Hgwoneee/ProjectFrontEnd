@@ -426,6 +426,7 @@ class NboardRead extends Component {
                                         <Link to={`/NboardModify/${this.state.bno}`} className="bt_ty bt_ty2 submit_ty1 saveclass">수정</Link>
                                         <a href='javascript:' className="bt_ty bt_ty2 submit_ty1 saveclass"
                                             onClick={(e) => this.deleteArticle(e)}>삭제</a>
+                                        <Link to={`/NboardList`} className="bt_ty bt_ty2 submit_ty1 saveclass">목록</Link>
                                     </div>
                                 </div>
                             </article>

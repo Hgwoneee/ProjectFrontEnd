@@ -198,7 +198,7 @@ class NboardRegister extends Component {
                                                 <label for="Content">내용</label>
                                             </th>
                                             <td>
-                                                <textarea name="content" id="contentVal" rows="" cols=""></textarea>
+                                                <textarea style={{ padding: '15px'}} name="content" id="contentVal" rows="" cols=""></textarea>
                                             </td>
                                         </tr>
                                         <tr>
