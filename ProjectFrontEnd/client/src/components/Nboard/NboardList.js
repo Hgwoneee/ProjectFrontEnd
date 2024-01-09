@@ -158,21 +158,19 @@ class NboardList extends Component {
             var data = nBoardList[i]
             const formattedDate = new Date(data.regidate).toLocaleDateString('ko-KR', {
                 year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                // hour: '2-digit',
-                // minute: '2-digit',
-                // second: '2-digit',
-                // timeZoneName: 'short'
-            });
+                month: '2-digit',
+                day: '2-digit',
+            }).split('.').join('/').replace(/\s/g, '');
+
+            const trimmedDate = formattedDate.slice(0, -1);
 
             result.push(
                 <tr class="hidden_type">
                     <td>{data.bno}</td>
-                    <td><Link to={`NboardRead/${data.bno}`}>{data.title}{'['}{data.replyCnt}{']'}</Link></td>
+                    <td><Link to={`NboardRead/${data.bno}`}>{data.title}{data.replyCnt > 0 && `[${data.replyCnt}]`}</Link></td>
                     <td>{data.writer}</td>
                     <td>{data.viewCnt}</td>
-                    <td>{formattedDate}</td>
+                    <td>{trimmedDate}</td>
                 </tr>
             )
         }
@@ -189,21 +187,19 @@ class NboardList extends Component {
             var data = sBoardList[i]
             const formattedDate = new Date(data.regidate).toLocaleDateString('ko-KR', {
                 year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                // hour: '2-digit',
-                // minute: '2-digit',
-                // second: '2-digit',
-                // timeZoneName: 'short'
-            });
+                month: '2-digit',
+                day: '2-digit',
+            }).split('.').join('/').replace(/\s/g, '');
+
+            const trimmedDate = formattedDate.slice(0, -1);
 
             result.push(
                 <tr class="hidden_type">
                     <td>{data.bno}</td>
-                    <td><Link to={`NboardRead/${data.bno}`}>{data.title}{'['}{data.replyCnt}{']'}</Link></td>
+                    <td><Link to={`NboardRead/${data.bno}`}>{data.title}{data.replyCnt > 0 && `[${data.replyCnt}]`}</Link></td>
                     <td>{data.writer}</td>
                     <td>{data.viewCnt}</td>
-                    <td>{formattedDate}</td>
+                    <td>{trimmedDate}</td>
                 </tr>
             )
         }

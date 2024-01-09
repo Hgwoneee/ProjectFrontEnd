@@ -105,7 +105,7 @@ class Header extends Component {
                 </div>
                 <div className="h_nav ct1 af">
                     <div className="logo">
-                        <img src={require("../../img/layout/carlogo001.png")} height="65px" width="200px" alt="" />
+                        <img src={require("../../img/layout/자동차2.gif")} height="75px" width="200px" alt="" />
                     </div>
                     <nav className="gnb gnb_admin">
                         <ul className="af">
