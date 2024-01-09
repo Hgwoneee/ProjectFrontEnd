@@ -27,7 +27,8 @@ class NboardRead extends Component {
             replyText: '',
             reply_checker: '',
             isEditModalOpen: false,
-            editedContent: ''
+            editedContent: '',
+            selectRno:''
         }
     }
 
@@ -149,15 +150,13 @@ class NboardRead extends Component {
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
             var Json_data = JSON.parse(Json_form);
 
-            alert(JSON.stringify(Json_data));
-
             axios.post('/api/reply/add', Json_data)
                 .then(response => {
                     try {
                         if (response.data == "SUCCESS") {
                             this.sweetalert('등록되었습니다.', '', 'success', '확인')
                             setTimeout(function () {
-                                window.location.reload();
+                                this.callReplyListApi(this.state.bno);
                             }.bind(this), 1500
                             );
                         }
@@ -236,7 +235,7 @@ class NboardRead extends Component {
                     <div>
                         {isCurrentUserCommentOwner && (
                             <div>
-                                <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={() => this.editComment(i)}>수정</button>
+                                <button onClick={() => this.openEditModal(i)} className="bt_ty bt_ty2 submit_ty1 saveclass">수정</button>
                                 <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={() => this.deleteComment(data.rno)}>삭제</button>
                             </div>
                         )}
@@ -275,7 +274,7 @@ class NboardRead extends Component {
                     '',
                     'success'
                 ).then(() => {
-                    window.location.reload();
+                    this.callReplyListApi(this.state.bno);
                 });
             } else {
                 return false;
@@ -284,7 +283,38 @@ class NboardRead extends Component {
         })
     }
 
-    
+    openEditModal = (index) => {
+        this.setState({
+            selectRno: this.state.responseReplyList.data[index].rno,
+            isEditModalOpen: true,
+            editedContent: this.state.responseReplyList.data[index].replyText,
+        });
+    };
+
+    closeEditModal = () => {
+        this.setState({
+            isEditModalOpen: false,
+            editedContent: '',
+        });
+    };
+
+    handleEditSubmit = () => {
+
+        axios.put(`/api/reply/${this.state.selectRno}`, {
+            rNo: this.state.selectRno,
+            replyText: this.state.editedContent,
+        })
+            .then(response => {
+                if(response.data == "SUCCESS") {
+                    this.setState({
+                        isEditModalOpen: false,
+                    });
+                    this.callReplyListApi(this.state.bno);
+                }    
+            })
+            .catch(error => { alert('댓글수정오류'); return false; });
+    };
+
 
     render() {
 
@@ -385,7 +415,6 @@ class NboardRead extends Component {
                                                 <img src={`/display?fileName=${this.state.selectedImage}`} alt="선택한 썸네일" />
                                             )}
                                         </Modal>
-
                                     </table>
                                     <div id="modifyButton" class="btn_confirm mt20" style={{ "margin-bottom": "44px" }}>
                                         <Link to={`/NboardModify/${this.state.bno}`} className="bt_ty bt_ty2 submit_ty1 saveclass">수정</Link>
@@ -423,7 +452,19 @@ class NboardRead extends Component {
                             </ul>
                         </div>
                     </div>
-                    
+                    <Modal
+                        isOpen={this.state.isEditModalOpen}
+                        onRequestClose={this.closeEditModal}
+                        // ... (모달 스타일 및 다른 속성들)
+                    >
+                        <h2>댓글 수정</h2>
+                        <input
+                            value={this.state.editedContent}
+                            onChange={(e) => this.setState({ editedContent: e.target.value })}
+                        ></input>
+                        <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={this.handleEditSubmit}>저장</button>
+                        <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={this.closeEditModal}>취소</button>
+                    </Modal>
                 </article>
             </section>
         );
