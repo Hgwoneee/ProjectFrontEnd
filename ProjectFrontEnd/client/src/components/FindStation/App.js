@@ -54,7 +54,7 @@ class App extends Component {
     var markers = $(FPList).map(function (i, position) {
       //alert(position.lat);
       //alert(position.lng);
-      var imageSrc = require("./img/carlogo001.png")
+      var imageSrc = require("./img/마킹123.gif")
       var imageSize = new kakao.maps.Size(60, 70)
       var imageOption = { offset: new kakao.maps.Point(27, 69) }
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
