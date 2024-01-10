@@ -4,12 +4,12 @@
 .gnb_box .hd_top{
   background: rgb(164, 209, 174); 
   color: #fff; 
-  padding-top: 10px; 
-  padding-bottom: 10px;}
+  padding-top: 15px; 
+  padding-bottom: 15px;}
 
 /* 로그아웃 버튼 */
-.hd_right{ line-height: 45px; 
-  height: 45px; 
+.hd_right{ line-height: 35px; 
+  height: 35px; 
   font-size: 16px; 
   color: #000; 
   opacity: 0.8; 
@@ -54,6 +54,7 @@ img {width:auto;max-width:100%;vertical-align:top;}
   float: left;
   width: auto;
   padding-top: 8px;
+  padding-left: 15px;
   transition: transform 0.3s;
 }
 .h_nav .logo:hover {

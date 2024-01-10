@@ -154,11 +154,10 @@ class NboardRead extends Component {
                 .then(response => {
                     try {
                         if (response.data == "SUCCESS") {
-                            this.sweetalert('등록되었습니다.', '', 'success', '확인')
                             setTimeout(function () {
                                 this.callReplyListApi(this.state.bno);
                                 $('#replyTextVal').val('')
-                            }.bind(this), 1500
+                            }.bind(this), 1000
                             );
                         }
                     }
