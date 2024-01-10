@@ -46,7 +46,7 @@ class NboardList extends Component {
 
     callSboardListApi = async (page) => {
 
-        if (this.state.searchtype != '') {
+        if (this.state.searchtype != '' && this.state.keyword != '') {
             axios.get(`/api/nBoard/list/${page}?searchType=${this.state.searchtype}&keyword=${this.state.keyword}`)
                 .then(response => {
                     try {
@@ -65,7 +65,7 @@ class NboardList extends Component {
                 })
                 .catch(error => { alert('작업중 오류가 발생하였습니다2.'); return false; });
         } else {
-            this.sweetalert('검색타입을 선택해주세요.', '', 'error', '닫기')
+            this.sweetalert('검색조건을 확인해주세요.', '', 'error', '닫기')
         }
     }
 
