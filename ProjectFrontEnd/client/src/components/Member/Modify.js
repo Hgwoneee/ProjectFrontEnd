@@ -8,8 +8,9 @@ class Modify extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            //state 초기화
             selectedFile: null,
-            memId: '',   //로그인한 이메일
+            memId: '',
             memName: '',
             memNickName: '',
             memNo: '',
@@ -19,6 +20,7 @@ class Modify extends Component {
     }
     componentDidMount = async () => {
 
+        // 쿠키에서 사용자 정보를 로드하고 상태를 설정합니다.
         var cookie_memNickName = await cookie.load('memNickName')
         var cookie_memId = await cookie.load('memId')
         var cookie_memPw = await cookie.load('memPw')
@@ -26,19 +28,21 @@ class Modify extends Component {
         this.setState({ memId: cookie_memId })
         this.setState({ memPw: cookie_memPw })
 
+
         this.callModifyInfoApi()
     }
 
-
+    // 수정을 위해 사용자 정보를 가져오기 위한 API 호출
     callModifyInfoApi = async () => {
 
-        
+
         axios.post('/api/member/readMember', {
             memId: this.state.memId,
         })
             .then(response => {
                 try {
                     var data = response.data
+                    // 사용자 정보로 상태 설정
                     this.setState({ memNickName: data.memNickName })
                     this.setState({ memName: data.memName })
                     this.setState({ memNo: data.memNo })
@@ -51,11 +55,13 @@ class Modify extends Component {
             .catch(error => { alert('2. 작업중 오류가 발생하였습니다.'); return false; });
     }
 
+    // 수정 버튼 클릭 시 호출되는 함수
     submitClick = async (type, e) => {
         this.memPw_val_checker = $('#memPw_val').val();
         this.memPw_cnf_val_checker = $('#memPw_cnf_val').val();
         this.memNickName_val_checker = $('#memNickName_val').val();
 
+        //유효성 검사
         this.fnValidate = (e) => {
             var pattern1 = /[0-9]/;
             var pattern2 = /[a-zA-Z]/;
@@ -119,7 +125,7 @@ class Modify extends Component {
                 .then(response => {
                     try {
                         const memNickNameCk = response.data.memNickName;
-                        
+
                         if (memNickNameCk != null) {
                             $('#memNickName_val').addClass('border_validate_err');
                             this.sweetalert('이미 존재하는 닉네임입니다.', '', 'error', '닫기')
@@ -134,22 +140,25 @@ class Modify extends Component {
                 .catch(response => { return false; });
         }
 
+        // 유효성검사 완료 후 회원 정보 수정 함수
         this.fnSignInsert = async (type, e) => {
+            // 폼 데이터를 JSON 형태로 변환
             var jsonstr = $("form[name='frm']").serialize();
             jsonstr = decodeURIComponent(jsonstr);
             var Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
-            
+
             var Json_data = JSON.parse(Json_form);
 
+            // 회원 정보 수정 API 호출
             await axios.post('/api/member/modifyMember', Json_data)
                 .then(response => {
                     try {
                         if (response.data == "SUCCESS") {
                             if (type == 'modify') {
-                                this.sweetalertModify('수정되었습니다. \n 다시 로그인해주세요.','','success','확인')
+                                this.sweetalertModify('수정되었습니다. \n 다시 로그인해주세요.', '', 'success', '확인')
                             }
-                           
+
                         }
                     }
                     catch (error) {
@@ -194,20 +203,22 @@ class Modify extends Component {
         })
     }
 
+     // 회원 정보 수정 성공 시 SweetAlert로 메시지를 보여주고 로그아웃 후 페이지 이동
     sweetalertModify = (title, contents, icon, confirmButtonText) => {
         Swal.fire({
             title: title,
             text: contents,
             icon: icon,
             confirmButtonText: confirmButtonText
-        }).then(function(){
+        }).then(function () {
             cookie.remove('memId', { path: '/' });
             cookie.remove('memNickName', { path: '/' });
             cookie.remove('memPw', { path: '/' });
             window.location.href = '/login';
-            })
+        })
     }
-    
+
+    // 회원 탈퇴 버튼 클릭 시 호출되는 함수
     deleteMember = (e) => {
         var event_target = e.target
         this.sweetalertDelete('정말 탈퇴하시겠습니까?', function () {
@@ -217,9 +228,9 @@ class Modify extends Component {
                 .then(response => {
                 }).catch(error => { alert('작업중 오류가 발생하였습니다.'); return false; });
         }.bind(this))
-        //alert("email: " + this.state.email)
     }
 
+    //회원탈퇴 완료 시 로그인폼으로 이동
     sweetalertDelete = (title, callbackFunc) => {
         Swal.fire({
             title: title,
@@ -239,7 +250,7 @@ class Modify extends Component {
                 cookie.remove('memId', { path: '/' });
                 cookie.remove('memNickName', { path: '/' });
                 cookie.remove('memPw', { path: '/' });
-                window.location.href = '/MainForm';
+                window.location.href = '/LoginForm';
             } else {
                 return false;
             }

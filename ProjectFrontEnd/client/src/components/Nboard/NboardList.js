@@ -8,6 +8,7 @@ class NboardList extends Component {
     constructor(props) {
         super(props);
 
+        // 상태 초기화
         this.state = {
             responseNboardList: '',
             responseSboardList: '',
@@ -27,6 +28,7 @@ class NboardList extends Component {
         $("#spaging").hide();
     }
 
+    // 일반 게시판 목록을 불러오는 함수
     callNboardListApi = async (page) => {
         axios.get(`/api/nBoard/list/${page}`)
             .then(response => {
@@ -43,13 +45,14 @@ class NboardList extends Component {
             .catch(error => { alert('작업중 오류가 발생하였습니다2.'); return false; });
     }
 
-
+    // 검색된 게시판 목록을 불러오는 함수
     callSboardListApi = async (page) => {
 
         if (this.state.searchtype != '' && this.state.keyword != '') {
             axios.get(`/api/nBoard/list/${page}?searchType=${this.state.searchtype}&keyword=${this.state.keyword}`)
                 .then(response => {
                     try {
+                        // 검색된 목록으로 상태 업데이트
                         this.setState({ responseSboardList: response });
                         this.setState({ append_SboardList: this.sBoardListAppend() });
                         const totalPages = response.data.pageMaker.totalPage;
@@ -75,11 +78,12 @@ class NboardList extends Component {
             text: contents,
             icon: icon,
             confirmButtonText: confirmButtonText
-        }).then(function(){
+        }).then(function () {
             window.location.reload();
         })
     }
 
+    // 페이지 클릭에 대응하는 함수
     handlePageClick = (page) => {
         if (this.state.keyword == '' || this.state.searchtype == '') {
             this.setState({ currentPage: page }, () => {
@@ -92,9 +96,55 @@ class NboardList extends Component {
         }
     }
 
+    // 일반 게시판 페이지 번호 버튼을 렌더링하는 함수
     renderPagination = () => {
         const { currentPage, totalPages } = this.state;
         const pagesPerGroup = 5; // 페이지 그룹 당 페이지 수
+        const pageNumbers = [];
+        const currentPageGroup = Math.ceil(currentPage / pagesPerGroup);
+        let startPage = (currentPageGroup - 1) * pagesPerGroup + 1;
+        let endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
+
+        // 현재 페이지 그룹에 따라 시작 및 끝 페이지 조절
+        if (currentPageGroup > 1) {
+            startPage = (currentPageGroup - 1) * pagesPerGroup + 1;
+            endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
+        }
+
+        // 페이지 번호 버튼 생성
+        for (let i = startPage; i <= endPage; i++) {
+            const isCurrentPage = i === currentPage;
+            pageNumbers.push(
+                <button style={{ margin: 5, backgroundColor: isCurrentPage ? '#a4d1ae' : '' }}
+                    className={`sch_bt99 wi_au ${isCurrentPage ? 'current-page' : ''}`} key={i} onClick={() => this.handlePageClick(i)}>
+                    {i}
+                </button>
+            );
+        }
+
+        // Pagination 컴포넌트 렌더링
+        return (
+            <div className="Paging">
+                {currentPageGroup > 1 && (
+                    <button style={{ margin: 5 }} className="sch_bt99 wi_au" onClick={() => this.handlePageClick(startPage - 1)}>
+                        {'<'}
+                    </button>
+                )}
+                {pageNumbers}
+                {endPage < totalPages && (
+                    <button style={{ margin: 5 }} className="sch_bt99 wi_au" onClick={() => this.handlePageClick(endPage + 1)}>
+                        {'>'}
+                    </button>
+                )}
+            </div>
+        );
+    }
+
+
+    // 검색 결과 페이지 번호 버튼을 렌더링하는 함수
+    renderSearchPagination = () => {
+        const { currentPage, totalPages } = this.state;
+        const pagesPerGroup = 5;
         const pageNumbers = [];
         const currentPageGroup = Math.ceil(currentPage / pagesPerGroup);
         let startPage = (currentPageGroup - 1) * pagesPerGroup + 1;
@@ -132,47 +182,10 @@ class NboardList extends Component {
         );
     }
 
-
-    renderSearchPagination = () => {
-        const { currentPage, totalPages } = this.state;
-        const pagesPerGroup = 5; // 페이지 그룹 당 페이지 수
-        const pageNumbers = [];
-        const currentPageGroup = Math.ceil(currentPage / pagesPerGroup);
-        let startPage = (currentPageGroup - 1) * pagesPerGroup + 1;
-        let endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
-
-        for (let i = startPage; i <= endPage; i++) {
-            const isCurrentPage = i === currentPage;
-            pageNumbers.push(
-                <button style={{ margin: 5, backgroundColor: isCurrentPage ? '#a4d1ae' : '' }}
-                    className={`sch_bt99 wi_au ${isCurrentPage ? 'current-page' : ''}`} key={i} onClick={() => this.handlePageClick(i)}>
-                    {i}
-                </button>
-            );
-        }
-
-        return (
-            <div className="Paging">
-                {currentPageGroup > 1 && (
-                    <button style={{ margin: 5 }} className="sch_bt99 wi_au" onClick={() => this.handlePageClick(startPage - 1)}>
-                        {'<'}
-                    </button>
-                )}
-                {pageNumbers}
-                {endPage < totalPages && (
-                    <button style={{ margin: 5 }} className="sch_bt99 wi_au" onClick={() => this.handlePageClick(endPage + 1)}>
-                        {'>'}
-                    </button>
-                )}
-            </div>
-        );
-    }
-
+    // 일반 게시판 목록을 렌더링하는 함수
     nBoardListAppend = () => {
         let result = []
         var nBoardList = this.state.responseNboardList.data.list
-        // var jsonString = JSON.stringify(nBoardList)
-        // alert(jsonString);
 
         for (let i = 0; i < nBoardList.length; i++) {
             var data = nBoardList[i]
@@ -197,11 +210,10 @@ class NboardList extends Component {
         return result
     }
 
+    // 검색된 게시판 목록을 렌더링하는 함수
     sBoardListAppend = () => {
         let result = []
         var sBoardList = this.state.responseSboardList.data.list
-        // var jsonString = JSON.stringify(nBoardList)
-        // alert(jsonString);
 
         for (let i = 0; i < sBoardList.length; i++) {
             var data = sBoardList[i]
@@ -226,15 +238,17 @@ class NboardList extends Component {
         return result
     }
 
+    // 검색어 입력 값 변경 핸들러
     handleSearchValChange = (e) => {
         this.setState({ keyword: e.target.value });
     };
 
+    // 검색 유형 변경 핸들러
     handleSearchTypeChange = (e) => {
         this.setState({ searchtype: e.target.value });
     };
 
-
+    // 검색 버튼 클릭 핸들러
     handleSearchButtonClick = (e) => {
         e.preventDefault();
         $("#appendNboardList").hide();

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import cookie from 'react-cookies';
 import $ from 'jquery';
-import Swal from 'sweetalert2';
 
 const Header = () => {
+    // useState 훅을 사용하여 상태 변수를 선언합니다.
     const [memNickName, setMemNickName] = useState('');
     const [activeMenu, setActiveMenu] = useState('/');
-    const [menuVisible, setMenuVisible] = useState(false);//햄버거
+    const [menuVisible, setMenuVisible] = useState(false);
 
+    // useEffect 훅을 사용하여 컴포넌트 생명주기 이벤트를 처리합니다.
     useEffect(() => {
         // componentDidMount 역할
         if (
@@ -20,15 +20,18 @@ const Header = () => {
             $('header').hide();
         }
 
+        // 쿠키에서 사용자 데이터를 로드합니다.
         const cookie_memId = cookie.load('memId');
         const cookie_memNickName = cookie.load('memNickName');
         const cookie_memPw = cookie.load('memPw');
         setMemNickName(cookie_memNickName);
 
+        // 'memId' 쿠키의 존재 여부를 확인하여 사용자가 로그인했는지 확인합니다.
         if (cookie_memId !== undefined) {
             const expires = new Date();
             expires.setMinutes(expires.getMinutes() + 60);
 
+            // 사용자 데이터를 쿠키에 저장하고 메뉴 엘리먼트를 표시합니다.
             cookie.save('memId', cookie_memId, { path: '/', expires });
             cookie.save('memNickName', cookie_memNickName, { path: '/', expires });
             cookie.save('memPw', cookie_memPw, { path: '/', expires });
@@ -36,42 +39,13 @@ const Header = () => {
             $('.menulist').show();
             $('.hd_top').show();
         } else {
+            // 사용자가 로그인하지 않은 경우 메뉴 엘리먼트를 숨깁니다.
             $('.menulist').hide();
             $('.hd_top').hide();
         }
     }, []);
 
-    const callSessionInfoApi = (type) => {
-        axios
-            .post('/api/member/loginPost', {
-                token1: cookie.load('memId'),
-                token2: cookie.load('memNickName'),
-            })
-            .then((response) => {
-                setMemNickName(response.data.memNickName);
-            })
-            .catch((error) => {
-                sweetalert('작업중 오류가 발생하였습니다.', '', 'error', '닫기');
-            });
-    };
-
-    const sweetalert = (title, contents, icon, confirmButtonText) => {
-        Swal.fire({
-            title: title,
-            text: contents,
-            icon: icon,
-            confirmButtonText: confirmButtonText,
-        });
-    };
-
-    const myInfoHover = () => {
-        $('.hd_left > li > .box1').stop().fadeIn(400);
-    };
-
-    const myInfoLeave = () => {
-        $('.hd_left > li > .box1').stop().fadeOut(400);
-    };
-
+    // 사용자 로그아웃을 처리하는 함수
     const logout = async () => {
         cookie.remove('memId', { path: '/' });
         cookie.remove('memNickName', { path: '/' });
@@ -79,11 +53,13 @@ const Header = () => {
         window.location.href = '/login';
     };
 
+    // 메뉴 아이템 클릭을 처리하는 함수
     const handleMenuClick = (path) => {
         setActiveMenu(path);
         setMenuVisible(false);
     };
 
+    // 모바일 메뉴의 가시성을 전환하는 함수
     const toggleMenu = () => {
         setMenuVisible(!menuVisible);
     };
@@ -108,7 +84,6 @@ const Header = () => {
                 <div className="logo">
                     <img src={require('../../img/layout/자동차2.gif')} height="65px" width="200px" alt="" />
                 </div>
-                {/* 햄버거 */}
                 <div className={`menu-icon ${menuVisible ? 'open' : ''}`} onClick={toggleMenu}>
                     <div className="bar"></div>
                     <div className="bar"></div>
@@ -133,18 +108,18 @@ const Header = () => {
                                 </Link>
                             </li>
                             <li className="menulist">
-                                <Link to={'/NboardList'} onClick={() => handleMenuClick('')}>
+                                <Link to={'/FboardList'} onClick={() => handleMenuClick('')}>
                                     커뮤니티
                                 </Link>
                             </li>
                             <li className="menulist">
-                                <Link to={'/NboardList'} onClick={() => handleMenuClick('')}>
-                                    리뷰
+                                <Link to={'/VboardList'} onClick={() => handleMenuClick('')}>
+                                    리뷰쓰기
                                 </Link>
                             </li>
                             <li className="menulist">
-                                <Link to={'/NboardList'} onClick={() => handleMenuClick('')}>
-                                    문의
+                                <Link to={'/QboardList'} onClick={() => handleMenuClick('')}>
+                                    문의하기
                                 </Link>
                             </li>
                             <li className={`menulist ${window.location.pathname === '/MyPage' ? 'active' : ''}`}>

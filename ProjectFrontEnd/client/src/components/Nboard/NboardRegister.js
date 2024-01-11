@@ -9,9 +9,9 @@ class NboardRegister extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedFile: null,
-            memNickName: cookie.load('memNickName'),
-            imageDTOList:[],
+            selectedFile: null, // 파일 업로드를 위한 상태 변수
+            memNickName: cookie.load('memNickName'), // 쿠키에서 사용자 닉네임을 가져옴
+            imageDTOList:[], // 업로드된 이미지 정보를 저장하는 배열
         }
     }
 
@@ -19,8 +19,10 @@ class NboardRegister extends Component {
 
     }
 
+    // 등록 버튼 클릭 시 실행되는 메서드
     submitClick = async (type, e) => {
 
+        // 입력값 유효성 검사 함수
         this.title_checker = $('#titleVal').val();
         this.content_checker = $('#contentVal').val();
 
@@ -42,6 +44,7 @@ class NboardRegister extends Component {
             return true;
         }
 
+        // 유효성 검사 후 서버에 데이터 전송
         if (this.fnValidate()) {
             var jsonstr = $("form[name='frm']").serialize();
             jsonstr = decodeURIComponent(jsonstr);
@@ -53,7 +56,6 @@ class NboardRegister extends Component {
             };
             
             
-
             axios.post('/api/nBoard/write', Json_data)
             .then(response => {
                 try {
@@ -91,6 +93,7 @@ class NboardRegister extends Component {
         })
     }
 
+    // 파일 선택 input의 값이 변경될 때 실행되는 메서드
     handleFileInput(type, e) {
         if (type == 'file') {
             $('#imagefile').val(e.target.files[0].name)
@@ -110,19 +113,7 @@ class NboardRegister extends Component {
         );
     }
 
-    handlePostMenual() {
-        const formData = new FormData();
-        formData.append('file', this.state.selectedFile);
-        return axios.post("/api/upload?type=uploads/swmanual/", formData).then(res => {
-            this.setState({ menualName: res.data.filename })
-            $('#is_MenualName').remove()
-            $('#upload_menual').prepend('<input id="is_MenualName" type="hidden"'
-                + 'name="is_MenualName" value="/swmanual/' + this.state.menualName + '"}/>')
-        }).catch(error => {
-            alert('작업중 오류가 발생하였습니다.', error, 'error', '닫기')
-        })
-    }
-
+    // 이미지 파일 업로드 처리 메서드
     handlePostImage(type) {
         const formData = new FormData();
         formData.append('uploadFiles', this.state.selectedFile);
@@ -146,7 +137,7 @@ class NboardRegister extends Component {
                     imgName: this.state.fileName,
                     path: this.state.path,
                     uuid: this.state.uuid,
-                    // 다른 필요한 이미지 데이터 추가
+                    
                 };
                 this.setState(prevState => ({
                     imageDTOList: [...prevState.imageDTOList, imageInfo], // 이미지 정보를 배열에 추가
@@ -219,7 +210,7 @@ class NboardRegister extends Component {
                                         </tr>
 
                                     </table>
-                                    <div class="btn_confirm mt20" style={{ "margin-bottom": "44px" }}>
+                                    <div class="btn_confirm mt20" style={{ "margin-bottom": "44px", textAlign : "center" }}>
                                         <a href="javascript:" className="bt_ty bt_ty2 submit_ty1 saveclass"
                                             onClick={(e) => this.submitClick('file', 
                                             {fileName: this.state.fileName,

@@ -12,8 +12,10 @@ class Register extends Component {
         }
     }
 
+    // 회원가입 버튼 클릭 시 실행되는 함수
     submitClick = async (type, e) => {
 
+        // 각 입력 필드의 값을 변수에 저장
         this.memId_val_checker = $('#memId_val').val();
         this.memId2_val_checker = $('#memId2_val').val();
         this.memPw_val_checker = $('#memPw_val').val();
@@ -21,6 +23,7 @@ class Register extends Component {
         this.memName_val_checker = $('#memName_val').val();
         this.memNickName_val_checker = $('#memNickName_val').val();
 
+        // 유효성 검사 함수 호출
         this.fnValidate = (e) => {
             var pattern1 = /[0-9]/;
             var pattern2 = /[a-zA-Z]/;
@@ -36,6 +39,14 @@ class Register extends Component {
                 this.sweetalert('이메일 공백을 제거해 주세요.', '', 'error', '닫기')
                 return false;
             }
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailPattern.test(this.memId_val_checker)) {
+                $('#memId_val').addClass('border_validate_err');
+                this.sweetalert('올바른 이메일 형식을 입력해주세요.', '', 'error', '닫기');
+                return false;
+            }
+
             $('#memId_val').removeClass('border_validate_err');
 
 
@@ -99,17 +110,17 @@ class Register extends Component {
         }
 
 
-
+        // 유효성 검사 통과 시 이메일 중복 확인 및 닉네임 중복 확인
         if (this.fnValidate()) {
             this.state.full_memId = this.memId_val_checker
             axios.post('/api/member/emailCk', {
                 memId: this.memId_val_checker
-                
+
             })
                 .then(response => {
                     try {
                         const memIdCk = response.data.memId;
-                        
+
                         if (memIdCk != null) {
                             $('#memId_val').addClass('border_validate_err');
                             this.sweetalert('이미 존재하는 이메일입니다.', '', 'error', '닫기')
@@ -123,57 +134,58 @@ class Register extends Component {
                 })
                 .catch(response => { return false; });
 
-                this.setState({ full_memNickName: this.memNickName_val_checker });
+            this.setState({ full_memNickName: this.memNickName_val_checker });
 
-                axios.post('/api/member/ninameCk', {
-                    memNickName: this.memNickName_val_checker
-                    
-                })
-                    .then(response => {
-                        try {
-                            const memNickNameCk = response.data.memNickName;
-                            
-                            if (memNickNameCk != null) {
-                                $('#memNickName_val').addClass('border_validate_err');
-                                this.sweetalert('이미 존재하는 닉네임입니다.', '', 'error', '닫기')
-                            } else {
-                                $('#memNickName_val').removeClass('border_validate_err');
-                                this.fnSignInsert('signup', e)
-                            }
-                        } catch (error) {
-                            this.sweetalert('작업중 오류가 발생하였습니다.', error, 'error', '닫기')
+            axios.post('/api/member/ninameCk', {
+                memNickName: this.memNickName_val_checker
+
+            })
+                .then(response => {
+                    try {
+                        const memNickNameCk = response.data.memNickName;
+
+                        if (memNickNameCk != null) {
+                            $('#memNickName_val').addClass('border_validate_err');
+                            this.sweetalert('이미 존재하는 닉네임입니다.', '', 'error', '닫기')
+                        } else {
+                            $('#memNickName_val').removeClass('border_validate_err');
+                            this.fnSignInsert('signup', e)
                         }
-                    })
-                    .catch(response => { return false; });
+                    } catch (error) {
+                        this.sweetalert('작업중 오류가 발생하였습니다.', error, 'error', '닫기')
+                    }
+                })
+                .catch(response => { return false; });
         }
 
         this.fnSignInsert = async (type, e) => {
+            //form 데이터 Json 형태로 변환
             var jsonstr = $("form[name='frm']").serialize();
             jsonstr = decodeURIComponent(jsonstr);
             var Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
 
-            //alert(Json_form);
             var Json_data = JSON.parse(Json_form);
 
+            //변환한 데이터 서버에 전송
             axios.post('/api/member/register', Json_data)
-            .then(response => {
-                try {
-                    if (response.data == "success") {
-                        if (type == 'signup') {
-                            this.sweetalert('회원가입 되었습니다.','','success','확인' )
+                .then(response => {
+                    try {
+                        if (response.data == "success") {
+                            if (type == 'signup') {
+                                this.sweetalert('회원가입 되었습니다.', '', 'success', '확인')
+                            }
+                            setTimeout(function () {
+                                this.props.history.push('/login');
+                            }.bind(this), 1500
+                            );
                         }
-                        setTimeout(function () {
-                            this.props.history.push('/login');
-                        }.bind(this), 1500
-                        );
                     }
-                }
-                catch (error) {
-                    alert('1. 작업중 오류가 발생하였습니다.')
-                }
-            })
-            .catch(error => { alert('2. 작업중 오류가 발생하였습니다.'); return false; });
+                    catch (error) {
+                        alert('1. 작업중 오류가 발생하였습니다.')
+                    }
+                })
+                .catch(error => { alert('2. 작업중 오류가 발생하였습니다.'); return false; });
         }
     };
 
@@ -209,7 +221,7 @@ class Register extends Component {
             confirmButtonText: confirmButtonText
         })
     }
-    
+
 
     render() {
         return (
@@ -225,8 +237,9 @@ class Register extends Component {
                                             <tr>
                                                 <th>이메일</th>
                                                 <td>
-                                                    <input id="memId_val" type="email" name="memId"
-                                                        placeholder="이메일을 입력해주세요." onKeyPress={this.memIdKeyPress} />
+                                                    <input id="memId_val" type="text" name="memId"
+                                                        placeholder="이메일을 입력해주세요." onKeyPress={this.memIdKeyPress}
+                                                    />
                                                 </td>
                                             </tr>
                                             <tr>
