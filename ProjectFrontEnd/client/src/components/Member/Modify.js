@@ -214,7 +214,7 @@ class Modify extends Component {
             cookie.remove('memId', { path: '/' });
             cookie.remove('memNickName', { path: '/' });
             cookie.remove('memPw', { path: '/' });
-            window.location.href = '/login';
+            window.location.href = '/';
         })
     }
 
@@ -250,7 +250,7 @@ class Modify extends Component {
                 cookie.remove('memId', { path: '/' });
                 cookie.remove('memNickName', { path: '/' });
                 cookie.remove('memPw', { path: '/' });
-                window.location.href = '/LoginForm';
+                window.location.href = '/MainForm';
             } else {
                 return false;
             }
