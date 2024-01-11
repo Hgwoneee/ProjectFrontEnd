@@ -6,12 +6,18 @@ import Swal from 'sweetalert2';
 import $ from 'jquery';
 
 class LoginForm extends Component {
+
+    // 로그인 버튼 클릭 시 수행되는 함수
     submitClick = (e) => {
+        // 입력된 이메일과 비밀번호 값 가져오기
         this.memId_val = $('#memId_val').val();
         this.memPw_val = $('#memPw_val').val();
+
+        // 이메일과 비밀번호가 빈 값인지 확인
         if (this.memId_val === '' || this.memPw_val === '') {
-            this.sweetalert('이메일과 비밀번호를 입력해주세요.', '', 'error', '닫기') 
+            this.sweetalert('이메일과 비밀번호를 입력해주세요.', '', 'error', '닫기')
         } else {
+            // 서버에 로그인 정보 전송
             axios.post('/api/member/loginPost', {
                 memId: this.memId_val,
                 memPw: this.memPw_val
@@ -21,6 +27,7 @@ class LoginForm extends Component {
                     var memNickName = response.data.memNickName
                     var memPw = response.data.memPw
 
+                    // 로그인 성공 시 쿠키에 저장하고 MainForm으로 이동
                     if (response.data.memId != undefined) {
                         const expires = new Date()
                         expires.setMinutes(expires.getMinutes() + 60)
@@ -30,9 +37,9 @@ class LoginForm extends Component {
                             , { path: '/', expires })
                         cookie.save('memPw', memPw
                             , { path: '/', expires })
-                        
+
                         window.location.href = '/MainForm';
-                        
+
                     } else {
                         this.sweetalert('이메일과 비밀번호를 확인해주세요.', '', 'error', '닫기')
                     }
@@ -41,6 +48,7 @@ class LoginForm extends Component {
         }
     }
 
+    // SweetAlert 팝업을 띄우기 위한 함수
     sweetalert = (title, contents, icon, confirmButtonText) => {
         Swal.fire({
             title: title,
@@ -49,24 +57,25 @@ class LoginForm extends Component {
             confirmButtonText: confirmButtonText
         })
     }
-   
+
+    // Enter 키 입력 시 submitClick 함수 실행
     handleOnKeyPress = e => {
         if (e.key === 'Enter') {
             this.submitClick(); // Enter 입력이 되면 클릭 이벤트 실행
         }
-      };
+    };
 
     render() {
         return (
             <section className="main">
 
                 <div className="m_login signin">
-                <span className="logo-image">
+                    <span className="logo-image">
                         <img
                             src={require("../img/layout/어디야로고.png")}
                             style={{ width: '350px', height: 'auto', marginBottom: '0px' }}
                         />
-                        
+
                     </span>
                     {/* <span><img src={require("../img/layout/carlogo001.png")}></img></span> */}
                     <h3>LOGIN</h3>
@@ -79,12 +88,12 @@ class LoginForm extends Component {
                             <span className="ic_2">
                                 <img src={require("../img/main/m_log_i2.png")} alt="" />
                             </span>
-                            <input type="password" id="memPw_val" placeholder="비밀번호"  onKeyPress={this.handleOnKeyPress} />
+                            <input type="password" id="memPw_val" placeholder="비밀번호" onKeyPress={this.handleOnKeyPress} />
                         </div>
-                        
+
                         <br></br>
                         <Link>
-                        <div className="s_bt" type="button" onClick={(e) => this.submitClick(e)} >로그인</div>
+                            <div className="s_bt" type="button" onClick={(e) => this.submitClick(e)} >로그인</div>
                         </Link>
                         <br></br>
                         <Link to={"/Register"}>

@@ -10,9 +10,10 @@ class NboardRead extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            bno: props.match.params.bno,
+            // 상태 변수 초기화
+            bno: props.match.params.bno, // URL에서 게시글 번호를 가져옴
             selectedFile: null,
-            memNickName: cookie.load('memNickName'),
+            memNickName: cookie.load('memNickName'), // 쿠키에서 회원 닉네임을 가져옴
             thumbnailURL: '',
             title: '',
             content: '',
@@ -28,7 +29,7 @@ class NboardRead extends Component {
             reply_checker: '',
             isEditModalOpen: false,
             editedContent: '',
-            selectRno:''
+            selectRno: ''
         }
     }
 
@@ -40,6 +41,7 @@ class NboardRead extends Component {
         $("#bNoDiv").hide();
     }
 
+    // Nboard 정보를 가져오는 API 호출
     callNboardInfoApi = async () => {
 
 
@@ -68,15 +70,17 @@ class NboardRead extends Component {
 
     }
 
+    // 썸네일 클릭 시 모달 열기
     handleThumbnailClick = (thumbnailURL) => {
         this.setState({ modalIsOpen: true, selectedImage: thumbnailURL });
     };
 
+    // 이미지 모달 닫기
     closeImageModal = () => {
         this.setState({ modalIsOpen: false, selectedImage: '' });
     };
 
-
+    // 이미지 목록 렌더링
     renderImages = () => {
         const { imageList } = this.state;
 
@@ -92,7 +96,7 @@ class NboardRead extends Component {
     };
 
 
-
+    //게시물 삭제 함수
     deleteArticle = (e) => {
 
         this.sweetalertDelete1('삭제하시겠습니까?', function () {
@@ -129,6 +133,7 @@ class NboardRead extends Component {
         })
     }
 
+    //댓글작성 함수
     submitClick = async (e) => {
 
         this.reply_checker = $('#replyTextVal').val();
@@ -150,7 +155,8 @@ class NboardRead extends Component {
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
             var Json_data = JSON.parse(Json_form);
 
-            axios.post('/api/reply/add', Json_data)
+            //댓글내용을 Json데이터로 변환해 서버에 전송
+            axios.post('/api/nreply/add', Json_data)
                 .then(response => {
                     try {
                         if (response.data == "SUCCESS") {
@@ -188,8 +194,9 @@ class NboardRead extends Component {
         })
     }
 
+    // 댓글 목록을 가져오는 API 호출
     callReplyListApi = async (bno) => {
-        axios.get(`/api/reply/list/${bno}`)
+        axios.get(`/api/nreply/list/${bno}`)
             .then(response => {
                 try {
                     this.setState({ responseReplyList: response });
@@ -201,11 +208,11 @@ class NboardRead extends Component {
             .catch(error => { alert('작업중 오류가 발생하였습니다2.'); return false; });
     }
 
+    // 댓글 목록을 렌더링
     ReplyListAppend = () => {
         let result = []
         var ReplyList = this.state.responseReplyList.data
-        // var jsonString = JSON.stringify(ReplyList)
-        // alert(jsonString);
+
 
         const currentUser = this.state.memNickName;
 
@@ -221,34 +228,35 @@ class NboardRead extends Component {
             const trimmedDate = formattedDate.slice(0, -1);
 
             result.push(
-                <li style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',fontSize: '19px'}}>
-                  <div style={{ display: 'flex', alignItems: 'center'}}>
-                    <div style={{ width: '80px', height: '80px' }}>
-                      <img src={require(`../../img/댓글2.gif`)} alt="댓글 이미지" />
+                <li style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '19px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div style={{ width: '80px', height: '80px' }}>
+                            <img src={require(`../../img/댓글2.gif`)} alt="댓글 이미지" />
+                        </div>
+                        <div className="cat">
+                            <p style={{ fontSize: '19px' }}>{data.replyer}   <span style={{ fontSize: '12px' }}>{trimmedDate}</span></p>
+                            <p style={{ color: '#525252' }}>{data.replyText}</p>
+                        </div>
                     </div>
-                    <div className="cat">
-                    <p style={{ fontSize: '19px'}}>{data.replyer}   <span style={{ fontSize: '12px' }}>{trimmedDate}</span></p> 
-                    <p style={{ color: '#525252'}}>{data.replyText}</p>
+                    <div>
+                        {isCurrentUserCommentOwner && (
+                            <div>
+                                <button className="catbtn bt_ty2 submit_ty1 saveclass" onClick={() => this.openEditModal(i)}>수정</button>
+                                <button className="catbtn bt_ty2 submit_ty1 saveclass" onClick={() => this.deleteComment(i)}>삭제</button>
+                            </div>
+                        )}
                     </div>
-                    </div>
-                  <div>
-                    {isCurrentUserCommentOwner && (
-                      <div>
-                        <button className="catbtn bt_ty2 submit_ty1 saveclass" onClick={() => this.openEditModal(i)}>수정</button>
-                        <button className="catbtn bt_ty2 submit_ty1 saveclass" onClick={() => this.deleteComment(i)}>삭제</button>
-                      </div>
-                    )}
-                  </div>
                 </li>
-              );
+            );
         }
         return result
     }
 
+    // 댓글 삭제
     deleteComment = (index) => {
         this.sweetalertDelete2('삭제하시겠습니까?', function () {
-            
-            axios.delete(`/api/reply/${this.state.responseReplyList.data[index].rno}/${this.state.bno}`, {
+
+            axios.delete(`/api/nreply/${this.state.responseReplyList.data[index].rno}/${this.state.bno}`, {
                 rNo: this.state.responseReplyList.data[index].rno,
                 bNo: this.state.bno
             })
@@ -283,6 +291,7 @@ class NboardRead extends Component {
     }
 
 
+    // 댓글 수정 모달 열기
     openEditModal = (index) => {
         this.setState({
             selectRno: this.state.responseReplyList.data[index].rno,
@@ -291,6 +300,7 @@ class NboardRead extends Component {
         });
     };
 
+    // 댓글 수정 모달 닫기
     closeEditModal = () => {
         this.setState({
             isEditModalOpen: false,
@@ -298,19 +308,20 @@ class NboardRead extends Component {
         });
     };
 
+    // 댓글 수정 저장
     handleEditSubmit = () => {
 
-        axios.put(`/api/reply/${this.state.selectRno}`, {
+        axios.put(`/api/nreply/${this.state.selectRno}`, {
             rNo: this.state.selectRno,
             replyText: this.state.editedContent,
         })
             .then(response => {
-                if(response.data == "SUCCESS") {
+                if (response.data == "SUCCESS") {
                     this.setState({
                         isEditModalOpen: false,
                     });
                     this.callReplyListApi(this.state.bno);
-                }    
+                }
             })
             .catch(error => { alert('댓글수정오류'); return false; });
     };
@@ -319,6 +330,7 @@ class NboardRead extends Component {
 
     render() {
 
+        // 날짜표시방법
         const formattedRegidate = new Date(this.state.regidate).toLocaleDateString('ko-KR', {
             year: 'numeric',
             month: '2-digit',
@@ -378,7 +390,7 @@ class NboardRead extends Component {
                                                 <label for="Content">내용</label>
                                             </th>
                                             <td>
-                                                <textarea style={{ padding: '15px'}} name="content" id="contentVal" rows="" cols="" readOnly="readonly" value={this.state.content}></textarea>
+                                                <textarea style={{ padding: '15px' }} name="content" id="contentVal" rows="" cols="" readOnly="readonly" value={this.state.content}></textarea>
                                             </td>
                                         </tr>
 
@@ -421,7 +433,7 @@ class NboardRead extends Component {
                                             )}
                                         </Modal>
                                     </table>
-                                    <div id="modifyButton" class="btn_confirm mt20" style={{ "margin-bottom": "44px" }}>
+                                    <div id="modifyButton" class="btn_confirm mt20" style={{ "margin-bottom": "44px", textAlign: "center" }}>
                                         <Link to={`/NboardModify/${this.state.bno}`} className="bt_ty bt_ty2 submit_ty1 saveclass">수정</Link>
                                         <a href='javascript:' className="bt_ty bt_ty2 submit_ty1 saveclass"
                                             onClick={(e) => this.deleteArticle(e)}>삭제</a>
@@ -435,6 +447,7 @@ class NboardRead extends Component {
                         <div className='table_ty99'>댓글</div>
 
                         <form name="frm2" id="frm2" action="" onsubmit="" method="post">
+                            <div className='line'></div>
                             <table class="table_ty1">
                                 <tr id='bNoDiv'>
                                     <td>
@@ -447,10 +460,10 @@ class NboardRead extends Component {
                                         <input type="text" name="replyer" id="replyerVal" value={this.state.memNickName} />
                                     </td>
                                 </tr>
-                            
+
                                 <tr>
                                     <td style={{ display: 'flex', alignItems: 'center' }}>
-                                        <input type="text" name="replyText" id="replyTextVal" placeholder='내용을 입력해주세요.' style={{ flex: '1', marginRight: '8px', height:'50px' }} />
+                                        <input type="text" name="replyText" id="replyTextVal" placeholder='내용을 입력해주세요.' style={{ flex: '1', marginRight: '8px', height: '50px' }} />
                                         <a href="javascript:" className="bt_ty1 bt_ty3 submit_ty1 saveclass" onClick={(e) => this.submitClick(e)}>등록</a>
                                     </td>
                                 </tr>
@@ -491,12 +504,12 @@ class NboardRead extends Component {
                     >
                         <h2>댓글 수정</h2>
                         <br></br>
-                        <input style={{height: '30%', width: '80%', padding: '15px'}}
+                        <input style={{ height: '30%', width: '80%', padding: '15px' }}
                             value={this.state.editedContent}
                             onChange={(e) => this.setState({ editedContent: e.target.value })}
                         ></input>
                         <br></br>
-                        <div style={{display: 'flex'}}>
+                        <div style={{ display: 'flex' }}>
                             <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={this.handleEditSubmit}>저장</button>
                             <button className="bt_ty bt_ty2 submit_ty1 saveclass" onClick={this.closeEditModal}>취소</button>
                         </div>

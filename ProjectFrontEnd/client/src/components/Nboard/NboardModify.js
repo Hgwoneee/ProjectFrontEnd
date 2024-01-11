@@ -11,7 +11,7 @@ class NboardModify extends Component {
         this.state = {
             bno: props.match.params.bno,
             selectedFile: null,
-            imageDTOList:[],
+            imageDTOList: [],
             imageList: [],
             title: '',
             content: '',
@@ -24,6 +24,7 @@ class NboardModify extends Component {
         $('#articleNo').hide();
     }
 
+    // 게시글 정보를 서버에서 불러와 상태를 업데이트하는 함수
     callNboardInfoApi = async () => {
 
 
@@ -33,7 +34,7 @@ class NboardModify extends Component {
             .then(response => {
                 try {
                     var data = response.data
-                    this.setState({ 
+                    this.setState({
                         title: data.title,
                         content: data.content,
                         writer: data.writer,
@@ -51,6 +52,7 @@ class NboardModify extends Component {
 
     }
 
+    // 이미지 목록을 렌더링하는 함수
     renderImages = () => {
         const { imageList } = this.state;
 
@@ -64,8 +66,10 @@ class NboardModify extends Component {
         ));
     };
 
+    // 수정 버튼 클릭 시 실행되는 함수
     submitClick = async (type, e) => {
 
+        // 유효성 검사
         this.title_checker = $('#titleVal').val();
         this.content_checker = $('#contentVal').val();
 
@@ -87,6 +91,7 @@ class NboardModify extends Component {
             return true;
         }
 
+        // 유효성 검사 통과 시 서버에 수정 요청
         if (this.fnValidate()) {
             var jsonstr = $("form[name='frm']").serialize();
             jsonstr = decodeURIComponent(jsonstr);
@@ -96,25 +101,25 @@ class NboardModify extends Component {
                 ...JSON.parse(Json_form),
                 imageDTOList: this.state.imageDTOList,
             };
-            
-            
+
+
 
             axios.post('/api/nBoard/modify', Json_data)
-            .then(response => {
-                try {
-                    if (response.data == "succ") {
-                            this.sweetalert('수정되었습니다.','','success','확인' )
+                .then(response => {
+                    try {
+                        if (response.data == "succ") {
+                            this.sweetalert('수정되었습니다.', '', 'success', '확인')
                             setTimeout(function () {
                                 this.props.history.push(`/NboardRead/${this.state.bno}`);
                             }.bind(this), 1500
-                        );
+                            );
+                        }
                     }
-                }
-                catch (error) {
-                    alert('1. 작업중 오류가 발생하였습니다.')
-                }
-            })
-            .catch(error => { alert('2. 작업중 오류가 발생하였습니다.'); return false; });
+                    catch (error) {
+                        alert('1. 작업중 오류가 발생하였습니다.')
+                    }
+                })
+                .catch(error => { alert('2. 작업중 오류가 발생하였습니다.'); return false; });
         }
     };
 
@@ -136,6 +141,7 @@ class NboardModify extends Component {
         })
     }
 
+    // 파일 선택 시 실행되는 함수
     handleFileInput(type, e) {
         if (type == 'file') {
             $('#imagefile').val(e.target.files[0].name)
@@ -155,46 +161,35 @@ class NboardModify extends Component {
         );
     }
 
-    handlePostMenual() {
-        const formData = new FormData();
-        formData.append('file', this.state.selectedFile);
-        return axios.post("/api/upload?type=uploads/swmanual/", formData).then(res => {
-            this.setState({ menualName: res.data.filename })
-            $('#is_MenualName').remove()
-            $('#upload_menual').prepend('<input id="is_MenualName" type="hidden"'
-                + 'name="is_MenualName" value="/swmanual/' + this.state.menualName + '"}/>')
-        }).catch(error => {
-            alert('작업중 오류가 발생하였습니다.', error, 'error', '닫기')
-        })
-    }
-
+    // 이미지 업로드를 처리하는 함수
     handlePostImage(type) {
         const formData = new FormData();
         formData.append('uploadFiles', this.state.selectedFile);
         return axios.post("/uploadAjax", formData).then(res => {
             if (type == 'file') {
+                // 이미지 정보를 상태에 업데이트
                 this.setState({ fileName: res.data[0].fileName })
-                this.setState({ uuid: res.data[0].uuid })                
-                this.setState({ path: res.data[0].folderPath })                
-                this.setState({ thumbnailURL: res.data[0].thumbnailURL })                
+                this.setState({ uuid: res.data[0].uuid })
+                this.setState({ path: res.data[0].folderPath })
+                this.setState({ thumbnailURL: res.data[0].thumbnailURL })
                 this.setState({ imageURL: res.data[0].imageURL })
-                
-                var str ="";
 
-                str += "<li data-name='" + this.state.fileName + "' data-path='"+this.state.folderPath+"' data-uuid='"+this.state.uuid+"'>";
+                var str = "";
+
+                str += "<li data-name='" + this.state.fileName + "' data-path='" + this.state.folderPath + "' data-uuid='" + this.state.uuid + "'>";
                 str += "<img src='/display?fileName=" + this.state.thumbnailURL + "'>";
                 str += "</li>";
 
                 $('#upload_img').append(str)
 
+                // 업로드된 이미지 정보를 배열에 추가
                 const imageInfo = {
                     imgName: this.state.fileName,
                     path: this.state.path,
                     uuid: this.state.uuid,
-                    // 다른 필요한 이미지 데이터 추가
                 };
                 this.setState(prevState => ({
-                    imageDTOList: [...prevState.imageDTOList, imageInfo], // 이미지 정보를 배열에 추가
+                    imageDTOList: [...prevState.imageDTOList, imageInfo], 
                 }));
 
             }
@@ -203,8 +198,8 @@ class NboardModify extends Component {
         })
     }
 
+    // 모든 썸네일을 제거하고 imageDTOList를 비우는 함수
     handleRemoveAllThumbnails = () => {
-        // 모든 썸네일을 제거하고 imageDTOList를 비웁니다.
         $('.fileBox1 ul').empty();
         $('#imagefile').val('');
         this.setState({ imageDTOList: [] });
@@ -243,7 +238,7 @@ class NboardModify extends Component {
                                                 <label for="Content">내용</label>
                                             </th>
                                             <td>
-                                                <textarea name="content" id="contentVal" rows="" cols="" defaultValue={this.state.content}></textarea>
+                                                <textarea style={{ padding: '15px' }} name="content" id="contentVal" rows="" cols="" defaultValue={this.state.content} ></textarea>
                                             </td>
                                         </tr>
                                         <tr>
@@ -255,8 +250,8 @@ class NboardModify extends Component {
                                                 <input type="text" id="imagefile" className="fileName fileName1"
                                                     readOnly="readonly" placeholder="선택된 파일 없음" />
                                                 <input type="file" id="imageSelect" className="uploadBtn uploadBtn1"
-                                                    onChange={e => this.handleFileInput('file', e)} multiple/>
-                                                <button type="button" className='bt_ty2' style={{paddingTop:5,paddingLeft:10,paddingRight:10}}
+                                                    onChange={e => this.handleFileInput('file', e)} multiple />
+                                                <button type="button" className='bt_ty2' style={{ paddingTop: 5, paddingLeft: 10, paddingRight: 10 }}
                                                     onClick={this.handleRemoveAllThumbnails}>X</button>
                                                 <ul id="upload_img">
                                                     {this.renderImages()}
@@ -265,12 +260,14 @@ class NboardModify extends Component {
                                         </tr>
 
                                     </table>
-                                    <div class="btn_confirm mt20" style={{ "margin-bottom": "44px" }}>
+                                    <div class="btn_confirm mt20" style={{ "margin-bottom": "44px", textAlign: "center" }}>
                                         <a href="javascript:" className="bt_ty bt_ty2 submit_ty1 saveclass"
-                                            onClick={(e) => this.submitClick('file', 
-                                            {fileName: this.state.fileName,
-                                            folderPath: this.state.folderPath,
-                                            uuid: this.state.uuid} , e)}>저장</a>
+                                            onClick={(e) => this.submitClick('file',
+                                                {
+                                                    fileName: this.state.fileName,
+                                                    folderPath: this.state.folderPath,
+                                                    uuid: this.state.uuid
+                                                }, e)}>저장</a>
                                         <Link to={`/NboardRead/${this.state.bno}`} className="bt_ty bt_ty2 submit_ty1 saveclass">취소</Link>
                                     </div>
                                 </div>

@@ -1,5 +1,7 @@
 /* MainForm CSS */
 
+
+
 .image-container,
 .mainimage {
   width: 100%;
@@ -106,3 +108,58 @@
 }
 
 
+
+/* 반응형 */
+@media screen and (max-width: 1680px) {
+  .maincontainer {margin-left: 90px;margin-right: 90px; width: calc(100% - 180px);}
+
+  .bottom-image-container {height: 45vh;}
+  .bottom-text,.bottom-text2 {font-size: 1em;}
+  .maintext {font-size: 1.6em; }
+  .image-container:hover .maintext {font-size: 1.7em;}
+  }
+
+@media screen and (max-width: 1380px) {
+  .maincontainer {margin-left: 80px;margin-right: 80px; width: calc(100% - 160px);}
+
+  .bottom-image-container {height: 40vh;}
+  .bottom-text,.bottom-text2 {font-size: 0.7em;}
+  .maintext {font-size: 1.5em; }
+  .image-container:hover .maintext {font-size: 1.6em;}
+  }
+
+@media screen and (max-width: 1080px) {
+  .maincontainer {margin-left: 70px;margin-right: 70px; width: calc(100% - 130px);}
+
+  .bottom-image-container {height: 35vh;}
+  .bottom-text,.bottom-text2 {font-size: 0.5em;}
+  .maintext {font-size: 1.3em; }
+  .image-container:hover .maintext {font-size: 1.4em;}
+  }
+
+@media screen and (max-width: 780px) {
+  .maincontainer {margin-left: 60px;margin-right: 60px; width: calc(100% - 100px);}
+
+  .bottom-image-container {height: 30vh;}
+  .bottom-text,.bottom-text2 {font-size: 0.4em;}
+  .maintext {font-size: 1em; }
+  .image-container:hover .maintext {font-size: 1.1em;}
+  }
+
+@media screen and (max-width: 480px) {
+  .maincontainer {margin-left: 40px;margin-right: 40px; width: calc(100% - 100px);}
+
+.bottom-image-container {height: 30vh;}
+.bottom-text,.bottom-text2 {font-size: 0.3em;}
+.maintext {font-size: 0.6em; }
+.image-container:hover .maintext {font-size: 0.7em;}
+}
+
+@media screen and (max-width: 400px) {
+  .maincontainer {margin-left: 20px;margin-right: 20px; width: calc(100% - 100px);}
+
+  .bottom-image-container {height: 30vh;}
+  .bottom-text,.bottom-text2 {font-size: 0.2em;}
+  .maintext {font-size: 0.5em;}
+  .image-container:hover .maintext {font-size: 0.6em;}
+  }

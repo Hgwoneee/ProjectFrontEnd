@@ -1,21 +1,26 @@
 /* Header.css */
 
 /* 헤더 맨위 */
-.gnb_box .hd_top{
-  background: rgb(164, 209, 174); 
-  color: #fff; 
-  padding-top: 15px; 
-  padding-bottom: 15px;}
+.gnb_box .hd_top {
+  background: rgb(164, 209, 174);
+  color: #fff;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
 
 /* 로그아웃 버튼 */
-.hd_right{ line-height: 35px; 
-  height: 35px; 
-  font-size: 16px; 
-  color: #000; 
-  opacity: 0.8; 
-  font-weight: 400;; 
-  box-sizing: border-box;  
-  opacity: 0.8;}
+.hd_right {
+  line-height: 35px;
+  height: 35px;
+  font-size: 16px;
+  color: #000;
+  opacity: 0.8;
+  font-weight: 400;
+  ;
+  box-sizing: border-box;
+  opacity: 0.8;
+}
 
 .hd_right {
   display: flex;
@@ -34,7 +39,7 @@
   border: none;
   cursor: pointer;
   margin-right: 10px;
-  padding: 5px 10px; 
+  padding: 5px 10px;
   font-size: 15px;
   transition: background-color 0.3s;
 }
@@ -48,15 +53,20 @@
 }
 
 /* 자동차로고*/
-img {width:auto;max-width:100%;vertical-align:top;}
+img {
+  width: auto;
+  max-width: 100%;
+  vertical-align: top;
+}
 
 .h_nav .logo {
   float: left;
   width: auto;
-  padding-top: 8px;
   padding-left: 15px;
+  padding-top: 8px;
   transition: transform 0.3s;
 }
+
 .h_nav .logo:hover {
   transform: scale(1.2);
   margin-left: 10px;
@@ -67,9 +77,10 @@ img {width:auto;max-width:100%;vertical-align:top;}
 /* 햄버거 */
 
 
-.hbrfont{
+.hbrfont {
   font-size: 17px;
-  line-height: 80px; /* 흰색부분 */
+  line-height: 80px;
+  /* 흰색부분 */
   color: #333;
   background: #fff;
   padding: 5px 18px;
@@ -78,30 +89,29 @@ img {width:auto;max-width:100%;vertical-align:top;}
   text-align: right;
 }
 
-
-.hbrfont > ul > li.on > a:hover,
-.menulist > a:hover {
+.hbrfont>ul>li.on>a:hover,
+.menulist>a:hover {
   margin-top: 18px;
   margin-right: 1px;
   font-size: 20px;
   line-height: 50px;
   color: rgb(255, 255, 255);
   background: #a4d1ae;
-  padding: 2px 18px;
+  padding: 5px 18px;
   letter-spacing: -0.03em;
   transition: .3s;
   border-radius: 10px;
 }
 
-.hbrfont > ul > li.on > a,
-.menulist.active > a {
+.hbrfont>ul>li.on>a,
+.menulist.active>a {
   margin-top: 18px;
   margin-right: 1px;
   font-size: 20px;
   line-height: 50px;
   color: rgb(255, 255, 255);
   background: #77a581;
-  padding: 2px 18px;
+  padding: 5px 18px;
   letter-spacing: -0.03em;
   transition: .3s;
   border-radius: 10px;
@@ -130,7 +140,7 @@ img {width:auto;max-width:100%;vertical-align:top;}
 }
 
 .open .bar:nth-child(1) {
-  transform: rotate(-45deg) translate(-10px, 10px);
+  transform: rotate(-45deg) translate(-10px, 9px);
 }
 
 .open .bar:nth-child(2) {
@@ -138,8 +148,9 @@ img {width:auto;max-width:100%;vertical-align:top;}
 }
 
 .open .bar:nth-child(3) {
-  transform: rotate(45deg) translate(-10px, -10px);
+  transform: rotate(45deg) translate(-10px, -9px);
 }
+
 
 .nav {
   display: flex;
@@ -149,7 +160,8 @@ img {width:auto;max-width:100%;vertical-align:top;}
   list-style-type: none;
   padding: 0;
   margin: 0;
-  margin-left: auto; /* 메뉴를 오른쪽으로 이동 */
+  margin-left: auto;
+  /* 메뉴를 오른쪽으로 이동 */
   display: flex;
 }
 
@@ -160,47 +172,11 @@ img {width:auto;max-width:100%;vertical-align:top;}
 /* 반응형 스타일 추가 */
 @media screen and (max-width: 768px) {
 
-  .hbrfont{
-    font-size: 12px;
-    line-height: 4; /* 간격을 조절하는 부분 */
-  }
-  
-  .menulist {
-    margin-top: 5px;
-    font-size: 13px;
-    line-height: 1.2; /* 간격을 조절하는 부분 */
-  }
-
-  .hbrfont > ul > li.on > a:hover,
-.menulist > a:hover {
-  margin-top: 2px;
-  font-size: 13px;
-  line-height: 1.2; /* 간격을 조절하는 부분 */
-}
-
-  .hbrfont > ul > li.on > a,
-  .menulist.active > a {
-    margin-top: 2px;
-    font-size: 13px;
-    line-height: 1.2; /* 간격을 조절하는 부분 */
-  }
-
-  .h_nav {
+  /* 메뉴 아이콘을 클릭할 때 나타나는 세로로 정렬된 드롭다운 메뉴 */
+  .show-menu .nav {
     display: flex;
-    justify-content: space-between;
-  }
-
-  .logo {
-    margin-top: px;
-    margin-bottom: 10px;
-  }
-  .img {
-    margin-top: 10px;
-  }
-  .menu-icon {
-    margin-top: 20px;
-    display: flex;
-    margin-left: auto; /* 메뉴를 오른쪽으로 이동 */
+    flex-direction: column;
+    align-items: center;
   }
 
   .nav {
@@ -210,9 +186,86 @@ img {width:auto;max-width:100%;vertical-align:top;}
     top: 70px;
     right: 0;
     width: 100%;
-    background-color: #eee;
+    background-color: rgba(238, 238, 238, 0.9); /* 배경색을 투명하게 설정 */
     z-index: 1;
     padding: 10px;
+  }
+
+  .menubar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hbrfont {
+    font-size: 17px;
+    line-height: 80px;
+    color: #333;
+    background: rgba(255, 255, 255, 0.8); /* 배경색을 투명하게 설정 */
+    padding: 5px 18px;
+    letter-spacing: -0.03em;
+    transition: 0.3s;
+    text-align: right;
+  }
+
+  .menulist {
+    margin: 10px;
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 1.5;
+    /* 간격을 조절하는 부분 */
+  }
+
+  .hbrfont>ul>li.on>a:hover,
+  .menulist>a:hover {
+    margin-top: -3px;
+    font-size: 13px;
+    line-height: 1.5;
+    /* 간격을 조절하는 부분 */
+  }
+
+  .hbrfont>ul>li.on>a,
+  .menulist.active>a {
+    margin-top: -2px;
+    font-size: 13px;
+    line-height: 1.2;
+    /* 간격을 조절하는 부분 */
+  }
+
+  .h_nav {
+    display: flex;
+    justify-content: space-between;
+  }
+
+
+  .logo {
+    margin-top: px;
+    margin-bottom: 10px;
+  }
+
+  .img {
+    margin-top: 10px;
+  }
+
+  .menu-icon {
+    margin-top: 20px;
+    display: flex;
+    margin-left: auto;
+    /* 메뉴를 오른쪽으로 이동 */
+  }
+
+  .nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 130px; /* 조절된 값 */
+    right: 0;
+    width: auto;
+    background-color: rgba(238, 238, 238, 0.9); /* 배경색을 투명하게 설정 */
+    z-index: 1;
+    padding: 10px;
+    border-radius: 5px; /* 테두리를 둥글게 만듭니다. */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과를 추가합니다. */
   }
 
   .nav.show-menu {
@@ -220,13 +273,23 @@ img {width:auto;max-width:100%;vertical-align:top;}
   }
 
   .nav ul {
-    padding: 10px;
+    list-style-type: none;
+    padding: 0;
     margin: 0;
-    margin-left: auto; /* 메뉴를 오른쪽으로 이동 */
-    justify-content: flex-end; /* 메뉴를 오른쪽으로 정렬 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .nav li {
-    margin-right: 20px;
+    margin-bottom: 10px;
   }
+
+  .nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 15px;
+    transition: color 0.3s;
+  }
+  
 }
