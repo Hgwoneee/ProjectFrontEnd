@@ -5,6 +5,8 @@ import $ from 'jquery';
 import Swal from 'sweetalert2'
 import cookie from 'react-cookies';
 import Modal from 'react-modal';
+import moment from 'moment';
+import 'moment/locale/ko'; // 한국어 설정 (선택 사항)
 
 class NboardRead extends Component {
     constructor(props) {
@@ -219,13 +221,7 @@ class NboardRead extends Component {
         for (let i = 0; i < ReplyList.length; i++) {
             var data = ReplyList[i]
             const isCurrentUserCommentOwner = data.replyer === currentUser;
-            const formattedDate = new Date(data.regdate).toLocaleDateString('ko-KR', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-            }).split('.').join('/').replace(/\s/g, '');
-
-            const trimmedDate = formattedDate.slice(0, -1);
+            const formattedDate = moment(data.regdate).fromNow(); // "몇 시간 전", "몇 주 전" 등으로 변환
 
             result.push(
                 <li style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '19px' }}>
@@ -234,7 +230,20 @@ class NboardRead extends Component {
                             <img src={require(`../../img/댓글2.gif`)} alt="댓글 이미지" />
                         </div>
                         <div className="cat">
-                            <p style={{ fontSize: '19px' }}>{data.replyer}   <span style={{ fontSize: '12px' }}>{trimmedDate}</span></p>
+                            <p style={{ fontSize: '19px' }}>
+                                {data.replyer}{' '}
+                                <span style={{ fontSize: '12px' }}>
+                                    {formattedDate}
+                                    {data.modidate && (
+                                        <>
+                                            <span style={{ marginLeft: '5px', color: 'grey' }}>(수정됨)</span>
+                                            <span style={{ fontSize: '10px', color: 'grey' }}>
+                                                {moment(data.modidate).fromNow()}
+                                            </span>
+                                        </>
+                                    )}
+                                </span>
+                            </p>
                             <p style={{ color: '#525252' }}>{data.replyText}</p>
                         </div>
                     </div>
