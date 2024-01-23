@@ -10,4 +10,6 @@
 ## 시연동영상
 https://youtu.be/F-7U2uUm3aY?si=HtSKNcBCeUgTa4Z7
 ## 개요
-<img src="./어디야/개요이미지.png", height="100x", width="100px">
+<p align="center">
+  <img width="460" height="300" src="./어디야/개요이미지.png">
+</p>
