@@ -8,4 +8,4 @@
 - Git/GitHub
 - SourceTree
 ## 시연동영상
-
+[보러가기]https://youtu.be/F-7U2uUm3aY?si=HtSKNcBCeUgTa4Z7
