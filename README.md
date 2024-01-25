@@ -1,6 +1,6 @@
 # '어디야?'(Where) - 전기차 충전소
 - 개발기간 : 2023/12/28 ~ 2024/01/12
-- 인원 : 9명
+- 인원 : 9명 (FrontEnd 3명, BackEnd 6명)
 ## 프레임워크 / 언어 / 개발환경
 - FrontEnd : (React / JavaScript / VSCode)
 - BackEnd : (Spring Boot / Java / STS), (Django / Python / PyCharm)
@@ -11,5 +11,5 @@
 https://youtu.be/F-7U2uUm3aY?si=HtSKNcBCeUgTa4Z7
 ## 개요
 <p align="center">
-  <img width="500" height="500" src="./어디야/개요이미지.png">
+  <img width="500" height="750" src="./어디야/개요이미지.png">
 </p>
