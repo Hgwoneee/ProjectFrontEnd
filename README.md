@@ -11,5 +11,5 @@
 https://youtu.be/F-7U2uUm3aY?si=HtSKNcBCeUgTa4Z7
 ## 개요
 <p align="center">
-  <img width="500" height="750" src="./어디야/개요이미지.png">
+  <img width="750" height="500" src="./어디야/개요이미지.png">
 </p>
