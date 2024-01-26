@@ -28,7 +28,7 @@ class NboardModify extends Component {
     callNboardInfoApi = async () => {
 
 
-        axios.post('/api/nBoard/read', {
+        axios.post('/api/nBoards/read', {
             bNo: this.state.bno,
         })
             .then(response => {
@@ -104,7 +104,7 @@ class NboardModify extends Component {
 
 
 
-            axios.post('/api/nBoard/modify', Json_data)
+            axios.post('/api/nBoards/modify', Json_data)
                 .then(response => {
                     try {
                         if (response.data == "succ") {

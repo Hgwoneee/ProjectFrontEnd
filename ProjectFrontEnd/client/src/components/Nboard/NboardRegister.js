@@ -56,7 +56,7 @@ class NboardRegister extends Component {
             };
             
             
-            axios.post('/api/nBoard/write', Json_data)
+            axios.post('/api/nBoards/write', Json_data)
             .then(response => {
                 try {
                     if (response.data == "succ") {

@@ -40,7 +40,7 @@ class MyPage extends Component {
     callMemberInfoApi = async () => {
 
         // 사용자 정보 API 호출
-        axios.post('/api/member/readMember', {
+        axios.post('/api/members/read', {
             memId: this.state.memId,
         })
             .then(response => {
@@ -57,7 +57,7 @@ class MyPage extends Component {
             .catch(error => { alert('회원데이터 받기 오류2'); return false; });
 
         // 차량 정보 API 호출
-        axios.post('/api/car/read', {
+        axios.post('/api/cars/read', {
             memId: this.state.memId,
         })
             .then(response => {
@@ -98,7 +98,7 @@ class MyPage extends Component {
 
     // 차량 삭제 기능을 수행하는 함수
     deleteCar = (carNum) => {
-        axios.post('/api/car/remove', {
+        axios.post('/api/cars/remove', {
             memId: this.state.memId,
             carNum: carNum
         })

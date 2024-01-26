@@ -30,7 +30,7 @@ class NboardList extends Component {
 
     // 일반 게시판 목록을 불러오는 함수
     callNboardListApi = async (page) => {
-        axios.get(`/api/nBoard/list/${page}`)
+        axios.get(`/api/nBoards/list/${page}`)
             .then(response => {
                 try {
                     this.setState({ responseNboardList: response });
@@ -49,7 +49,7 @@ class NboardList extends Component {
     callSboardListApi = async (page) => {
 
         if (this.state.searchtype != '' && this.state.keyword != '') {
-            axios.get(`/api/nBoard/list/${page}?searchType=${this.state.searchtype}&keyword=${this.state.keyword}`)
+            axios.get(`/api/nBoards/list/${page}?searchType=${this.state.searchtype}&keyword=${this.state.keyword}`)
                 .then(response => {
                     try {
                         // 검색된 목록으로 상태 업데이트

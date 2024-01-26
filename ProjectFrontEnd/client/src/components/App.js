@@ -60,7 +60,7 @@ class App extends Component {
       || window.location.pathname.includes('/NboardRead')
       || window.location.pathname.includes('/NboardModify')) {
 
-      axios.post('/api/member/loginCookie', {
+      axios.post('/api/members/loginCookie', {
         memId: cookie.load('memId'),
         memPw: cookie.load('memPw')
       }).then(response => {

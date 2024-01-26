@@ -43,7 +43,7 @@ class CarRegister extends Component {
 
         // 검증 함수 호출 및 통과 시 서버에 차량번호 중복 확인 요청
         if (this.fnValidate()) {
-            axios.post('/api/car/carNumCK', {
+            axios.post('/api/cars/carNumCK', {
                 carNum: this.carNum_val_checker
             })
                 .then(response => {
@@ -74,7 +74,7 @@ class CarRegister extends Component {
             var Json_data = JSON.parse(Json_form);
 
             // 서버에 차량 등록 요청
-            axios.post('/api/car/regi', Json_data)
+            axios.post('/api/cars/regi', Json_data)
                 .then(response => {
                     try {
                         if (response.data == "succ") {

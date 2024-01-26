@@ -18,7 +18,7 @@ class LoginForm extends Component {
             this.sweetalert('이메일과 비밀번호를 입력해주세요.', '', 'error', '닫기')
         } else {
             // 서버에 로그인 정보 전송
-            axios.post('/api/member/loginPost', {
+            axios.post('/api/members/loginPost', {
                 memId: this.memId_val,
                 memPw: this.memPw_val
             })

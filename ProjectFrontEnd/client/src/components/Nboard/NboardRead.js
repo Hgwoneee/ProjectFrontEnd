@@ -47,7 +47,7 @@ class NboardRead extends Component {
     callNboardInfoApi = async () => {
 
 
-        axios.post('/api/nBoard/read', {
+        axios.post('/api/nBoards/read', {
             bNo: this.state.bno,
         })
             .then(response => {
@@ -102,7 +102,7 @@ class NboardRead extends Component {
     deleteArticle = (e) => {
 
         this.sweetalertDelete1('삭제하시겠습니까?', function () {
-            axios.post('/api/nBoard/delete', {
+            axios.post('/api/nBoards/remove', {
                 bNo: this.state.bno
             })
                 .then(response => {
@@ -158,7 +158,7 @@ class NboardRead extends Component {
             var Json_data = JSON.parse(Json_form);
 
             //댓글내용을 Json데이터로 변환해 서버에 전송
-            axios.post('/api/nreply/add', Json_data)
+            axios.post('/api/nreplys/add', Json_data)
                 .then(response => {
                     try {
                         if (response.data == "SUCCESS") {
@@ -198,7 +198,7 @@ class NboardRead extends Component {
 
     // 댓글 목록을 가져오는 API 호출
     callReplyListApi = async (bno) => {
-        axios.get(`/api/nreply/list/${bno}`)
+        axios.get(`/api/nreplys/list/${bno}`)
             .then(response => {
                 try {
                     this.setState({ responseReplyList: response });
@@ -265,7 +265,7 @@ class NboardRead extends Component {
     deleteComment = (index) => {
         this.sweetalertDelete2('삭제하시겠습니까?', function () {
 
-            axios.delete(`/api/nreply/${this.state.responseReplyList.data[index].rno}/${this.state.bno}`, {
+            axios.delete(`/api/nreplys/${this.state.responseReplyList.data[index].rno}/${this.state.bno}`, {
                 rNo: this.state.responseReplyList.data[index].rno,
                 bNo: this.state.bno
             })
@@ -320,7 +320,7 @@ class NboardRead extends Component {
     // 댓글 수정 저장
     handleEditSubmit = () => {
 
-        axios.put(`/api/nreply/${this.state.selectRno}`, {
+        axios.put(`/api/nreplys/${this.state.selectRno}`, {
             rNo: this.state.selectRno,
             replyText: this.state.editedContent,
         })

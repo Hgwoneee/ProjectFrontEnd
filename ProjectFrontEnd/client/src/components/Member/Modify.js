@@ -36,7 +36,7 @@ class Modify extends Component {
     callModifyInfoApi = async () => {
 
 
-        axios.post('/api/member/readMember', {
+        axios.post('/api/members/read', {
             memId: this.state.memId,
         })
             .then(response => {
@@ -119,7 +119,7 @@ class Modify extends Component {
             this.setState({ full_memNickName: this.memNickName_val_checker })
             //this.state.full_memNickName = this.memNickName_val_checker
             this.state.memNickName = this.memNickName_val_checker
-            axios.post('/api/member/ninameCk', {
+            axios.post('/api/members/ninameCk', {
                 memNickName: this.memNickName_val_checker
             })
                 .then(response => {
@@ -151,7 +151,7 @@ class Modify extends Component {
             var Json_data = JSON.parse(Json_form);
 
             // 회원 정보 수정 API 호출
-            await axios.post('/api/member/modifyMember', Json_data)
+            await axios.post('/api/members/modify', Json_data)
                 .then(response => {
                     try {
                         if (response.data == "SUCCESS") {
@@ -222,7 +222,7 @@ class Modify extends Component {
     deleteMember = (e) => {
         var event_target = e.target
         this.sweetalertDelete('정말 탈퇴하시겠습니까?', function () {
-            axios.post('/api/member/deleteMember', {
+            axios.post('/api/members/remove', {
                 memId: this.state.memId
             })
                 .then(response => {

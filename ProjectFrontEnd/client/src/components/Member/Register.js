@@ -113,7 +113,7 @@ class Register extends Component {
         // 유효성 검사 통과 시 이메일 중복 확인 및 닉네임 중복 확인
         if (this.fnValidate()) {
             this.state.full_memId = this.memId_val_checker
-            axios.post('/api/member/emailCk', {
+            axios.post('/api/members/emailCk', {
                 memId: this.memId_val_checker
 
             })
@@ -136,7 +136,7 @@ class Register extends Component {
 
             this.setState({ full_memNickName: this.memNickName_val_checker });
 
-            axios.post('/api/member/ninameCk', {
+            axios.post('/api/members/ninameCk', {
                 memNickName: this.memNickName_val_checker
 
             })
@@ -168,7 +168,7 @@ class Register extends Component {
             var Json_data = JSON.parse(Json_form);
 
             //변환한 데이터 서버에 전송
-            axios.post('/api/member/register', Json_data)
+            axios.post('/api/members/register', Json_data)
                 .then(response => {
                     try {
                         if (response.data == "success") {
