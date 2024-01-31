@@ -4,14 +4,13 @@ import cookie from 'react-cookies';
 import $ from 'jquery';
 
 const Header = () => {
-    // useState 훅을 사용하여 상태 변수를 선언합니다.
+
     const [memNickName, setMemNickName] = useState('');
     const [activeMenu, setActiveMenu] = useState('/');
     const [menuVisible, setMenuVisible] = useState(false);
 
-    // useEffect 훅을 사용하여 컴포넌트 생명주기 이벤트를 처리합니다.
     useEffect(() => {
-        // componentDidMount 역할
+
         if (
             window.location.pathname.endsWith('/') ||
             window.location.pathname.includes('/login') ||
@@ -46,7 +45,7 @@ const Header = () => {
     }, []);
 
     // 사용자 로그아웃을 처리하는 함수
-    const logout = async () => {
+    const logout = () => {
         cookie.remove('memId', { path: '/' });
         cookie.remove('memNickName', { path: '/' });
         cookie.remove('memPw', { path: '/' });

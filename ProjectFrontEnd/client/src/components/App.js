@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { Route } from "react-router-dom";
 import cookie from 'react-cookies';
 import axios from "axios";
-import $ from 'jquery';
 
 // CSS 파일 import
 import '../css/new.css';
@@ -36,89 +35,69 @@ import NboardModify from './Nboard/NboardModify';
 
 
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    // State 초기화
-    this.state = {
-      memId: '',
-      memPw: '',
+const App = () => {
+ 
+  useEffect(() => {
+    if (
+      window.location.pathname.includes('/MainForm') ||
+      window.location.pathname.includes('/MyPage') ||
+      window.location.pathname.includes('/MyPage') ||
+      window.location.pathname.includes('/Modify/') ||
+      window.location.pathname.includes('/CarRegister') ||
+      window.location.pathname.includes('/findStation') ||
+      window.location.pathname.includes('/NboardList') ||
+      window.location.pathname.includes('/NboardRegister') ||
+      window.location.pathname.includes('/NboardRead') ||
+      window.location.pathname.includes('/NboardModify')
+    ) {
+      axios
+        .post('/api/members/loginCookie', {
+          memId: cookie.load('memId'),
+          memPw: cookie.load('memPw')
+        })
+        .then(response => {
+          if (response.data.memId === undefined) {
+            noPermission();
+          } 
+        })
+        .catch(error => {
+          noPermission();
+        });
     }
-  }
+  }, []);
 
-  componentDidMount() {
-
-    // 특정 경로에 접근 시 로그인 쿠키 확인
-    if (window.location.pathname.includes('/MainForm')
-      || window.location.pathname.includes('/MyPage')
-      || window.location.pathname.includes('/MyPage')
-      || window.location.pathname.includes('/Modify/')
-      || window.location.pathname.includes('/CarRegister')
-      || window.location.pathname.includes('/findStation')
-      || window.location.pathname.includes('/NboardList')
-      || window.location.pathname.includes('/NboardRegister')
-      || window.location.pathname.includes('/NboardRead')
-      || window.location.pathname.includes('/NboardModify')) {
-
-      axios.post('/api/members/loginCookie', {
-        memId: cookie.load('memId'),
-        memPw: cookie.load('memPw')
-      }).then(response => {
-        if (response.data.memId == undefined) {
-          this.noPermission();
-        } else {
-
-        }
-      }).catch(error => {
-        this.noPermission();
-      })
-    }
-  }
-
-  // 권한 없음 시 처리 함수
-  noPermission = (e) => {
-    if (window.location.hash != 'nocookie') {
-      this.remove_cookie();
+  const noPermission = () => {
+    if (window.location.hash !== 'nocookie') {
+      removeCookie();
       window.location.href = '/login/#nocookie';
     }
   };
 
-  // 쿠키 삭제 함수
-  remove_cookie = (e) => {
+  const removeCookie = () => {
     cookie.remove('memId', { path: '/' });
     cookie.remove('memNickName', { path: '/' });
     cookie.remove('memPw', { path: '/' });
-  }
-
-  render() {
-    return (
-
-      <div className="App">
-
-        <Header />
-        <Route exact path='/' component={LoginForm} />
-        <Route path='/login' component={LoginForm} />
-        <Route path='/MainForm' component={MainForm} />
-        <Route path='/Register' component={Register} />
-        <Route path='/MyPage' component={MyPage} />
-        <Route path='/Modify/' component={Modify} />
-        <Route path='/CarRegister' component={CarRegister} />
-
-        <Route path='/FindStation' component={FindStation} />
-
-        <Route path='/NboardList' component={NboardList} />
-        <Route path='/NboardRegister' component={NboardRegister} />
-        <Route path='/NboardRead/:bno' component={NboardRead} />
-        <Route path='/NboardModify/:bno' component={NboardModify} />
-
-        <Footer />
-
-      </div>
-
-    );
-
   };
-}
+
+  return (
+    <div className="App">
+      <Header />
+      <Route exact path='/' component={LoginForm} />
+      <Route path='/login' component={LoginForm} />
+      <Route path='/MainForm' component={MainForm} />
+      <Route path='/Register' component={Register} />
+      <Route path='/MyPage' component={MyPage} />
+      <Route path='/Modify/' component={Modify} />
+      <Route path='/CarRegister' component={CarRegister} />
+      <Route path='/FindStation' component={FindStation} />
+      <Route path='/NboardList' component={NboardList} />
+      <Route path='/NboardRegister' component={NboardRegister} />
+      <Route path='/NboardRead/:bno' component={NboardRead} />
+      <Route path='/NboardModify/:bno' component={NboardModify} />
+      <Footer />
+    </div>
+  );
+};
 
 export default App;
 
