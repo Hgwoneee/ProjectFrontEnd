@@ -19,6 +19,7 @@ class MainForm extends Component {
         super(props);
         this.state = {
             showBottomImage: false,
+            
         };
     }
 
