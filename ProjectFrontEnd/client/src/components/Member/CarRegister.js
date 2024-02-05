@@ -1,40 +1,34 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Swal from 'sweetalert2';
 import $ from 'jquery';
 import cookie from 'react-cookies';
 
-class CarRegister extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            // 컴포넌트의 상태 초기화
-            selectedBrand: '',
-            selectedModel: '',
-            subCarOptionsList: [],
-            memId: cookie.load('memId') // 쿠키에서 memId를 가져와 상태에 저장
-        };
-    }
+const CarRegister = () => {
 
+    const [selectedBrand, setSelectedBrand] = useState('');
+    const [selectedModel, setSelectedModel] = useState('');
+    const [subCarOptionsList, setSubCarOptionList] = useState([]);
+    const [memId, setMemid] = useState(cookie.load('memId'));
 
 
     // 차량 정보를 서버에 제출하는 메서드
-    submitClick = async (type, e) => {
+    const submitClick = async (type, e) => {
 
         // 차량 번호 입력값 검증을 위한 변수 초기화
-        this.carNum_val_checker = $('#carNum_val').val()
+        const carNum_val_checker = $('#carNum_val').val()
 
         // 입력값 검증 함수 정의
-        this.fnValidate = (e) => {
-            if (this.carNum_val_checker === '') {
+        const fnValidate = (e) => {
+            if (carNum_val_checker === '') {
                 $('#carNum_val').addClass('border_validate_err');
-                this.sweetalert('차량번호를 입력해주세요.', '', 'error', '닫기')
+                sweetalert('차량번호를 입력해주세요.', '', 'error', '닫기')
                 return false;
             }
 
-            if (this.carNum_val_checker.search(/\s/) !== -1) {
+            if (carNum_val_checker.search(/\s/) !== -1) {
                 $('#carNum_val').addClass('border_validate_err');
-                this.sweetalert('차량번호 공백없이 입력해주세요.', '', 'error', '닫기')
+                sweetalert('차량번호 공백없이 입력해주세요.', '', 'error', '닫기')
                 return false;
             }
             $('#carNum_val').removeClass('border_validate_err');
@@ -42,9 +36,9 @@ class CarRegister extends Component {
         }
 
         // 검증 함수 호출 및 통과 시 서버에 차량번호 중복 확인 요청
-        if (this.fnValidate()) {
+        if (fnValidate()) {
             axios.post('/api/cars/carNumCK', {
-                carNum: this.carNum_val_checker
+                carNum: carNum_val_checker
             })
                 .then(response => {
                     try {
@@ -52,25 +46,20 @@ class CarRegister extends Component {
 
                         if (carNumck != null) {
                             $('#carNum_val').addClass('border_validate_err');
-                            this.sweetalert('이미 존재하는 차량번호입니다.', '', 'error', '닫기')
+                            sweetalert('이미 존재하는 차량번호입니다.', '', 'error', '닫기')
                             return false;
                         } else {
                             $('#carNum_val').removeClass('border_validate_err');
                         }
                     } catch (error) {
-                        this.sweetalert('작업중 오류가 발생하였습니다.', error, 'error', '닫기')
+                        sweetalert('작업중 오류가 발생하였습니다.', error, 'error', '닫기')
                     }
                 })
-
-
-
-
 
             var jsonstr = $("form[name='frm']").serialize();
             jsonstr = decodeURIComponent(jsonstr);
             var Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
-
             var Json_data = JSON.parse(Json_form);
 
             // 서버에 차량 등록 요청
@@ -79,7 +68,7 @@ class CarRegister extends Component {
                     try {
                         if (response.data == "succ") {
                             if (type == 'signup') {
-                                this.sweetalertSucc('차량정보가 등록 되었습니다.', true)
+                                sweetalertSucc('차량정보가 등록 되었습니다.', true)
                             }
                         }
                     }
@@ -87,12 +76,12 @@ class CarRegister extends Component {
                         alert('1. 작업중 오류가 발생하였습니다.')
                     }
                 })
-                .catch(error => { this.sweetalert('입력사항을 확인해주세요.', '', 'error', '닫기'); return false; });
+                .catch(error => { sweetalert('입력사항을 확인해주세요.', '', 'error', '닫기'); return false; });
         };
     }
 
     // SweetAlert로 메시지를 표시하는 함수
-    sweetalert = (title, contents, icon, confirmButtonText) => {
+    const sweetalert = (title, contents, icon, confirmButtonText) => {
         Swal.fire({
             title: title,
             text: contents,
@@ -102,7 +91,7 @@ class CarRegister extends Component {
     }
 
     // 등록 성공 시 SweetAlert로 메시지를 표시하고 페이지를 이동하는 함수
-    sweetalertSucc = (title, showConfirmButton) => {
+    const sweetalertSucc = (title, showConfirmButton) => {
         Swal.fire({
             icon: 'success',
             title: title,
@@ -113,120 +102,117 @@ class CarRegister extends Component {
     }
 
     // 브랜드 선택 시 호출되는 이벤트 핸들러
-    handleBrandChange = (event) => {
+    const handleBrandChange = (event) => {
         const brand = event.target.value;
-        this.setState({ selectedBrand: brand, selectedModel: '' });
+        setSelectedBrand(brand)
 
         // 선택한 브랜드에 따라 가능한 모델 목록 업데이트
         switch (brand) {
             case 'Hyundai':
-                this.setState({ subCarOptionsList: ['아이오닉 5', '아이오닉 일렉트릭', '코나 일렉트릭', '포터2 EV', '아이오닉 6'] });
+                setSubCarOptionList(['아이오닉 5', '아이오닉 일렉트릭', '코나 일렉트릭', '포터2 EV', '아이오닉 6'])
                 break;
             case 'Kia':
-                this.setState({ subCarOptionsList: ['EV6', 'EV6 GT', '니로 EV', '쏘울 부스터 EV', '봉고 3 EV', '쏘울 EV', '레이 EV', '니로 플러스', 'EV9'] });
+                setSubCarOptionList(['EV6', 'EV6 GT', '니로 EV', '쏘울 부스터 EV', '봉고 3 EV', '쏘울 EV', '레이 EV', '니로 플러스', 'EV9'])
                 break;
             case 'Genesis':
-                this.setState({ subCarOptionsList: ['일렉트리파이드 G80', 'GV60', '일렉트리파이드 GV70'] });
+                setSubCarOptionList(['일렉트리파이드 G80', 'GV60', '일렉트리파이드 GV70'])
                 break;
             case 'tesla':
-                this.setState({ subCarOptionsList: ['모델 3', '모델 S', '모델 X', '모델 Y'] });
+                setSubCarOptionList(['모델 3', '모델 S', '모델 X', '모델 Y'])
                 break;
             case 'Renault Samsung':
-                this.setState({ subCarOptionsList: ['트위지', '조에', 'SM3 전기차', 'SM3 네오전기차'] });
+                setSubCarOptionList(['트위지', '조에', 'SM3 전기차', 'SM3 네오전기차'])
                 break;
             case 'BMW':
-                this.setState({ subCarOptionsList: ['i3', 'i3S', 'BMW 530a', 'i4', 'iX', 'iX3', 'BMW 330e', 'BMW320e'] });
+                setSubCarOptionList(['i3', 'i3S', 'BMW 530a', 'i4', 'iX', 'iX3', 'BMW 330e', 'BMW320e'])
                 break;
             case 'Benz':
-                this.setState({ subCarOptionsList: ['EQC', 'EQA', 'EQS', 'EQE', 'GLC 350E', 'EQB'] });
+                setSubCarOptionList(['EQC', 'EQA', 'EQS', 'EQE', 'GLC 350E', 'EQB'])
                 break;
             case 'Nissan':
-                this.setState({ subCarOptionsList: ['리프'] });
+                setSubCarOptionList(['리프'])
                 break;
             case 'Chevrolet':
-                this.setState({ subCarOptionsList: ['볼트 EV', '스파크 EV', '볼트 EUV'] });
+                setSubCarOptionList(['볼트 EV', '스파크 EV', '볼트 EUV'])
                 break;
             case 'Audi':
-                this.setState({ subCarOptionsList: ['E-트론', 'E-트론 스포트백'] });
+                setSubCarOptionList(['E-트론', 'E-트론 스포트백'])
                 break;
             case 'Peugeot':
-                this.setState({ subCarOptionsList: ['e-208', 'e-2008'] });
+                setSubCarOptionList(['e-208', 'e-2008'])
                 break;
             case 'Jaguar':
-                this.setState({ subCarOptionsList: ['I-페이스'] });
+                setSubCarOptionList(['I-페이스'])
                 break;
             case 'Porsche':
-                this.setState({ subCarOptionsList: ['타이칸', '파나메라 HEV'] });
+                setSubCarOptionList(['타이칸', '파나메라 HEV'])
                 break;
             case 'Volkswagen':
-                this.setState({ subCarOptionsList: ['ID.4'] });
+                setSubCarOptionList(['ID.4'])
                 break;
             case 'DS':
-                this.setState({ subCarOptionsList: ['3 크로스백 E-텐스'] });
+                setSubCarOptionList(['3 크로스백 E-텐스'])
                 break;
             case 'Dipico':
-                this.setState({ subCarOptionsList: ['포트로 EV 픽업', '포트로 EV 탑'] });
+                setSubCarOptionList(['포트로 EV 픽업', '포트로 EV 탑'])
                 break;
             case 'Zidou':
-                this.setState({ subCarOptionsList: ['D2'] });
+                setSubCarOptionList(['D2'])
                 break;
             case 'Mia':
-                this.setState({ subCarOptionsList: ['미아 파리', '미아 블루스타', '미아 카다브라', '미아 L'] });
+                setSubCarOptionList(['미아 파리', '미아 블루스타', '미아 카다브라', '미아 L'])
                 break;
             case 'Edison motors':
-                this.setState({ subCarOptionsList: ['SMART T1'] });
+                setSubCarOptionList(['SMART T1'])
                 break;
             case 'Jeep':
-                this.setState({ subCarOptionsList: ['랭글러 4XE'] });
+                setSubCarOptionList(['랭글러 4XE'])
                 break;
             case 'Volvo':
-                this.setState({ subCarOptionsList: ['C40 리차지', 'XC40 리차지', 'XC60', 'XC90'] });
+                setSubCarOptionList(['C40 리차지', 'XC40 리차지', 'XC60', 'XC90'])
                 break;
             case 'EV KMC':
-                this.setState({ subCarOptionsList: ['MASADA 2인승 벤'] });
+                setSubCarOptionList(['MASADA 2인승 벤'])
                 break;
             case 'Polestar':
-                this.setState({ subCarOptionsList: ['폴스타1', '폴스타2'] });
+                setSubCarOptionList(['폴스타1', '폴스타2'])
                 break;
             case 'Mini':
-                this.setState({ subCarOptionsList: ['쿠퍼 SE 일렉트릭'] });
+                setSubCarOptionList(['쿠퍼 SE 일렉트릭'])
                 break;
             case 'Lexus':
-                this.setState({ subCarOptionsList: ['UX 300e'] });
+                setSubCarOptionList(['UX 300e'])
                 break;
             case 'Viva Mobility':
-                this.setState({ subCarOptionsList: ['젤라 EV'] });
+                setSubCarOptionList(['젤라 EV'])
                 break;
             case 'Myve':
-                this.setState({ subCarOptionsList: ['M1'] });
+                setSubCarOptionList(['M1'])
                 break;
             case 'Ibion':
-                this.setState({ subCarOptionsList: ['E6'] });
+                setSubCarOptionList(['E6'])
                 break;
             case 'Jayce Mobility':
-                this.setState({ subCarOptionsList: ['ETVAN'] });
+                setSubCarOptionList(['ETVAN'])
                 break;
             case 'Daechang Motors':
-                this.setState({ subCarOptionsList: ['다니고 C', '다니고 C2', '다니고 T', '다니고 R', '다니고 R2', '다니고 L', '다니고 W'] });
+                setSubCarOptionList(['다니고 C', '다니고 C2', '다니고 T', '다니고 R', '다니고 R2', '다니고 L', '다니고 W'])
                 break;
             case 'KG mobility':
-                this.setState({ subCarOptionsList: ['토레스 EVX'] });
+                setSubCarOptionList(['토레스 EVX'])
                 break;
 
             default:
-                this.setState({ subCarOptionsList: [] });
+                setSubCarOptionList([])
                 break;
         }
     };
 
     // 모델 선택 시 호출되는 이벤트 핸들러
-    handleModelChange = (event) => {
+    const handleModelChange = (event) => {
         const model = event.target.value;
-        this.setState({ selectedModel: model });
+        setSelectedModel(model)
     };
-
-    render() {
-        const { selectedBrand, selectedModel, subCarOptionsList } = this.state;
 
         return (
             <div>
@@ -242,7 +228,7 @@ class CarRegister extends Component {
 
                                                 <th>브랜드</th>
                                                 <td>
-                                                    <select value={selectedBrand} onChange={this.handleBrandChange} id="email2_val" name="carBrand" className="main-car" >
+                                                    <select value={selectedBrand} onChange={handleBrandChange} id="email2_val" name="carBrand" className="main-car" >
                                                         <option value="">브랜드를 선택하세요</option>
                                                         <option value='Hyundai'>현대자동차</option>
                                                         <option value='Kia'>기아자동차</option>
@@ -281,7 +267,7 @@ class CarRegister extends Component {
                                             <tr>
                                                 <th>차량 모델</th>
                                                 <td>
-                                                    <select value={selectedModel} onChange={this.handleModelChange} id="email2_val" name="carModel" className="sub-car" >
+                                                    <select value={selectedModel} onChange={handleModelChange} id="email2_val" name="carModel" className="sub-car" >
                                                         <option value="">모델을 선택하세요</option>
                                                         {subCarOptionsList.map((option) => (
                                                             <option key={option} value={option}>
@@ -302,7 +288,7 @@ class CarRegister extends Component {
                                             <tr style={{ display: 'none' }}>
                                                 <th>아이디</th>
                                                 <td>
-                                                    <input id="memId_val" type="text" name="memId" value={this.state.memId} />
+                                                    <input id="memId_val" type="text" name="memId" value={memId} />
                                                 </td>
                                             </tr>
                                             <tr className="tr_tel">
@@ -324,7 +310,7 @@ class CarRegister extends Component {
                                 </div>
                                 <div className="btn_confirm">
                                     <a href="javascript:" className="bt_ty bt_ty2 submit_ty1 modifyclass"
-                                        onClick={(e) => this.submitClick('signup', e)}>등록</a>
+                                        onClick={(e) => submitClick('signup', e)}>등록</a>
                                 </div>
                             </form>
                         </div>
@@ -332,7 +318,7 @@ class CarRegister extends Component {
                 </section >
             </div >
         );
-    };
-}
+};
+
 
 export default CarRegister;
