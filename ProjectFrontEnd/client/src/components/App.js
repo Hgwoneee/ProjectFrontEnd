@@ -38,6 +38,7 @@ import NboardModify from './Nboard/NboardModify';
 const App = () => {
  
   useEffect(() => {
+    
     if (
       window.location.pathname.includes('/MainForm') ||
       window.location.pathname.includes('/MyPage') ||

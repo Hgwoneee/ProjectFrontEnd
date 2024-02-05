@@ -4,7 +4,8 @@ import $ from 'jquery';
 const Footer = () => {
 
   useEffect(() => {
-    // 홈 화면 또는 로그인 페이지 또는 회원가입 페이지에서는 푸터 숨김
+    
+    
     if (window.location.pathname.endsWith('/')) {
       $('footer').hide()
 
