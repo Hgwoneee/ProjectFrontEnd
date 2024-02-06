@@ -112,16 +112,16 @@ const App = () => {
         }
 
         str +=
-          '<tr>' +
-          '<td colspan="2" style="background-color: #a4d1ae">충전기[No.' + value.chgerId + ']</td>' +
-          '</tr>' +
-          '<tr>' +
-          '<td>충전타입</td>' +
-          '<td>' + chargeType + '</td>' +
-          '</tr>' +
-          '<td>충전기상태</td>' +
-          '<td>' + chargeStat + '</td>' +
-          '</tr>'
+          `<tr> 
+          <td colspan="2" style="background-color: #a4d1ae">충전기[No.${value.chgerId}]</td>
+          </tr>
+          <tr> 
+          <td>충전타입</td>
+          <td>${chargeType}</td>
+          </tr>
+          <td>충전기상태</td>
+          <td>${chargeStat}</td>
+          </tr>`
       })
 
       var parkingStatus;
@@ -133,25 +133,27 @@ const App = () => {
       }
 
       // 각 충전소에 대한 오버레이 컨텐츠 생성
-      var content = '<div class="overlaybox">' +
-        ' <table border="1"> ' +
-        ' <tr>' +
-        ' <td colspan="2" class="boxtitle2" style="background-color: #103f05; color: white; text-align: center;">[X]</td>' +
-        ' </tr>' +
-        '<tr>' +
-        '<td colspan="2" class="boxtitle" style="text-align: center;">' + position.statNm + '</td>' +
-        '</tr>' +
-        '<tr>' +
-        '   <td colspan="2">' + position.addr + '</td>' +
-        '</tr>' +
-        '<tr>' +
-        '    <td colspan="2">충전소 ID - ' + position.statId + '</td>' +
-        '</tr>' + str +
-        '<tr>' +
-        '    <td colspan="2">' + parkingStatus + '</td>' +
-        '</tr>' +
-        '</table>' +
-        '</div>';
+      var content = 
+        `<div class="overlaybox">
+          <table border="1">
+        <tr> 
+          <td colspan="2" class="boxtitle2" style="background-color: #103f05; color: white; text-align: center;">[X]</td>
+        </tr>
+        <tr>
+          <td colspan="2" class="boxtitle" style="text-align: center;">${position.statNm}</td>
+        </tr>
+        <tr>
+          <td colspan="2">${position.addr}</td>
+        </tr>
+        <tr>
+          <td colspan="2">충전소 ID -${position.statId}</td>
+        </tr>
+          ${str}
+        <tr>
+          <td colspan="2">${parkingStatus}</td>
+        </tr>
+        </table>
+        </div>`;
 
 
       // 위도와 경도를 문자열로 변환
