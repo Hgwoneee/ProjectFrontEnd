@@ -28,34 +28,34 @@ const App = () => {
   }
 
   const StationListAppend = (STList) => {
-    var mapContainer = document.getElementById('map'),
+    const mapContainer = document.getElementById('map'),
       mapOption = {
         center: new kakao.maps.LatLng(37.505496, 127.005116),
         level: 9
       }
-    var map = new kakao.maps.Map(mapContainer, mapOption)
-    var clusterer = new kakao.maps.MarkerClusterer({
+    const map = new kakao.maps.Map(mapContainer, mapOption)
+    const clusterer = new kakao.maps.MarkerClusterer({
       map: map,
       averageCenter: true,
       minLevel: 5
     });
 
 
-    var markers = $(STList).map(function (i, position) {
-      var imageSrc = require("./img/마킹123.gif")
-      var imageSize = new kakao.maps.Size(60, 70)
-      var imageOption = { offset: new kakao.maps.Point(27, 69) }
-      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
-      var marker = new kakao.maps.Marker({
+    const markers = $(STList).map(function (i, position) {
+      const imageSrc = require("./img/마킹123.gif")
+      const imageSize = new kakao.maps.Size(60, 70)
+      const imageOption = { offset: new kakao.maps.Point(27, 69) }
+      const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
+      const marker = new kakao.maps.Marker({
         map: map,
         position: new kakao.maps.LatLng(position.lat, position.lng),
         image: markerImage
       });
 
-      var str = '';
+      let str = '';
       $.each(position.charger, function (index, value) {
 
-        var chargeType;
+        let chargeType;
 
         switch (value.chgerType) {
           case '01':
@@ -86,7 +86,7 @@ const App = () => {
             chargeType = '???';
         }
 
-        var chargeStat;
+        let chargeStat;
 
         switch (value.stat) {
           case '1':
@@ -124,7 +124,7 @@ const App = () => {
           </tr>`
       })
 
-      var parkingStatus;
+      let parkingStatus;
 
       if (position.parkingFree === 'Y') {
         parkingStatus = '주차장 - 무료';
@@ -132,8 +132,8 @@ const App = () => {
         parkingStatus = '주차장 - 유료';
       }
 
-      // 각 충전소에 대한 오버레이 컨텐츠 생성
-      var content = 
+      
+      const content = 
         `<div class="overlaybox">
           <table border="1">
         <tr> 
@@ -156,22 +156,22 @@ const App = () => {
         </div>`;
 
 
-      // 위도와 경도를 문자열로 변환
-      var lat = Number(position.lat)
-      var lng = Number(position.lng)
-      var lat_string = lat.toString()
-      var lng_string = lng.toString()
+      
+      const lat = Number(position.lat)
+      const lng = Number(position.lng)
+      const lat_string = lat.toString()
+      const lng_string = lng.toString()
 
-      // 각 충전소에 대한 사용자 정의 오버레이 생성
-      var customOverlay = new kakao.maps.CustomOverlay({
+      
+      const customOverlay = new kakao.maps.CustomOverlay({
         position: new kakao.maps.LatLng(lat_string, lng_string),
         content: content,
         xAnchor: 0,
         yAnchor: 0,
       });
 
-      // 마커에 대한 클릭 이벤트 핸들러
-      var clickHandler1 = function (event) {
+      
+      const clickHandler1 = function (event) {
         customOverlay.setMap(map);
 
         $(".boxtitle2").click(function () {

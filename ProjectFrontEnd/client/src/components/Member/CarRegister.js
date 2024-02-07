@@ -12,13 +12,10 @@ const CarRegister = () => {
     const [memId, setMemid] = useState(cookie.load('memId'));
 
 
-    // 차량 정보를 서버에 제출하는 메서드
     const submitClick = async (type, e) => {
 
-        // 차량 번호 입력값 검증을 위한 변수 초기화
         const carNum_val_checker = $('#carNum_val').val()
 
-        // 입력값 검증 함수 정의
         const fnValidate = (e) => {
             if (carNum_val_checker === '') {
                 $('#carNum_val').addClass('border_validate_err');
@@ -35,7 +32,6 @@ const CarRegister = () => {
             return true;
         }
 
-        // 검증 함수 호출 및 통과 시 서버에 차량번호 중복 확인 요청
         if (fnValidate()) {
             axios.post('/api/cars/carNumCK', {
                 carNum: carNum_val_checker
@@ -56,11 +52,11 @@ const CarRegister = () => {
                     }
                 })
 
-            var jsonstr = $("form[name='frm']").serialize();
+            let jsonstr = $("form[name='frm']").serialize();
             jsonstr = decodeURIComponent(jsonstr);
-            var Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
+            let Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
-            var Json_data = JSON.parse(Json_form);
+            let Json_data = JSON.parse(Json_form);
 
             // 서버에 차량 등록 요청
             axios.post('/api/cars/regi', Json_data)
@@ -80,7 +76,6 @@ const CarRegister = () => {
         };
     }
 
-    // SweetAlert로 메시지를 표시하는 함수
     const sweetalert = (title, contents, icon, confirmButtonText) => {
         Swal.fire({
             title: title,
@@ -90,7 +85,6 @@ const CarRegister = () => {
         })
     }
 
-    // 등록 성공 시 SweetAlert로 메시지를 표시하고 페이지를 이동하는 함수
     const sweetalertSucc = (title, showConfirmButton) => {
         Swal.fire({
             icon: 'success',
@@ -101,12 +95,10 @@ const CarRegister = () => {
         })
     }
 
-    // 브랜드 선택 시 호출되는 이벤트 핸들러
     const handleBrandChange = (event) => {
         const brand = event.target.value;
         setSelectedBrand(brand)
 
-        // 선택한 브랜드에 따라 가능한 모델 목록 업데이트
         switch (brand) {
             case 'Hyundai':
                 setSubCarOptionList(['아이오닉 5', '아이오닉 일렉트릭', '코나 일렉트릭', '포터2 EV', '아이오닉 6'])
@@ -208,7 +200,6 @@ const CarRegister = () => {
         }
     };
 
-    // 모델 선택 시 호출되는 이벤트 핸들러
     const handleModelChange = (event) => {
         const model = event.target.value;
         setSelectedModel(model)
@@ -255,11 +246,11 @@ const CarRegister = () => {
                                                         <option value='Polestar'>폴스타</option>
                                                         <option value='Mini'>미니</option>
                                                         <option value='Lexus'>렉서스</option>
-                                                        <option value='Viva Mobility'>비바모빌리티</option>
+                                                        <option value='Viva Mobility'>비바 모빌리티</option>
                                                         <option value='Myve'>마이브</option>
                                                         <option value='Ibion'>이비온</option>
                                                         <option value='Jayce Mobility'>제이스 모빌리티</option>
-                                                        <option value='Daechang Motors'>대창모터스</option>
+                                                        <option value='Daechang Motors'>대창 모터스</option>
                                                         <option value='KG mobility'>KG 모빌리티</option>
                                                     </select>
                                                 </td>
