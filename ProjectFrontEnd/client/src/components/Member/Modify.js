@@ -32,17 +32,15 @@ const Modify = () => {
             .catch(error => { alert('2. 작업중 오류가 발생하였습니다.'); return false; });
     }
 
-    // 수정 버튼 클릭 시 호출되는 함수
     const submitClick = (type, e) => {
         const memPw_val_checker = $('#memPw_val').val();
         const memPw_cnf_val_checker = $('#memPw_cnf_val').val();
         const memNickName_val_checker = $('#memNickName_val').val();
 
-        //유효성 검사
         const fnValidate = (e) => {
-            var pattern1 = /[0-9]/;
-            var pattern2 = /[a-zA-Z]/;
-            var pattern3 = /[~!@#$%^&*()_+|<>?:{}]/;
+            const pattern1 = /[0-9]/;
+            const pattern2 = /[a-zA-Z]/;
+            const pattern3 = /[~!@#$%^&*()_+|<>?:{}]/;
 
             if (memNickName_val_checker === '') {
                 $('#memNickName_val').addClass('border_validate_err');
@@ -62,7 +60,7 @@ const Modify = () => {
                 return false;
             }
             if (memPw_val_checker !== '') {
-                var str = memPw_val_checker;
+                const str = memPw_val_checker;
                 if (str.search(/\s/) !== -1) {
                     $('#memPw_val').addClass('border_validate_err');
                     sweetalert('비밀번호 공백을 제거해 주세요.', '', 'error', '닫기')
@@ -115,17 +113,14 @@ const Modify = () => {
                 .catch(response => { return false; });
         }
 
-        // 유효성검사 완료 후 회원 정보 수정 함수
         const fnSignInsert = (type, e) => {
-            // 폼 데이터를 JSON 형태로 변환
-            var jsonstr = $("form[name='frm']").serialize();
+            let jsonstr = $("form[name='frm']").serialize();
             jsonstr = decodeURIComponent(jsonstr);
-            var Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
+            let Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
+            let Json_data = JSON.parse(Json_form);
 
-            var Json_data = JSON.parse(Json_form);
-
-            // 회원 정보 수정 API 호출
+        
             axios.post('/api/members/modify', Json_data)
                 .then(response => {
                     try {
@@ -156,18 +151,6 @@ const Modify = () => {
         $('#memNickName_val').removeClass('border_validate_err');
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-    };
-
-    const mustNumber = (id) => {
-        var pattern1 = /[0-9]/;
-        var str = $('#' + id).val();
-        if (!pattern1.test(str.substr(str.length - 1, 1))) {
-            $('#' + id).val(str.substr(0, str.length - 1));
-        }
-    }
-
     const sweetalert = (title, contents, icon, confirmButtonText) => {
         Swal.fire({
             title: title,
@@ -177,7 +160,6 @@ const Modify = () => {
         })
     }
 
-    // 회원 정보 수정 성공 시 SweetAlert로 메시지를 보여주고 로그아웃 후 페이지 이동
     const sweetalertModify = (title, contents, icon, confirmButtonText) => {
         Swal.fire({
             title: title,
@@ -192,19 +174,17 @@ const Modify = () => {
         })
     }
 
-    // 회원 탈퇴 버튼 클릭 시 호출되는 함수
-    const deleteMember = (e) => {
-        var event_target = e.target
+    
+    const deleteMember = () => {
         sweetalertDelete('정말 탈퇴하시겠습니까?', function () {
             axios.post('/api/members/remove', {
                 memId: memId
             })
                 .then(response => {
                 }).catch(error => { alert('작업중 오류가 발생하였습니다.'); return false; });
-        }.bind(this))
+        })
     }
 
-    //회원탈퇴 완료 시 로그인폼으로 이동
     const sweetalertDelete = (title, callbackFunc) => {
         Swal.fire({
             title: title,
@@ -282,7 +262,7 @@ const Modify = () => {
                                     onClick={(e) => submitClick('modify', e)}>수정</a>
 
                                 <a href="javascript:" className="bt_ty bt_ty2 submit_ty1 deleteclass"
-                                    onClick={(e) => deleteMember('delete', e)}>탈퇴</a>
+                                    onClick={(e) => deleteMember()}>탈퇴</a>
                             </div>
                         </form>
                     </div>

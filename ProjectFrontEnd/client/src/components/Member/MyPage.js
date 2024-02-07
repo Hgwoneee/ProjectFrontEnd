@@ -1,54 +1,30 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import cookie from 'react-cookies';
 
-class MyPage extends Component {
-    constructor(props) {
-        super(props);
-        //state 초기화
-        this.state = {
-            memId: '',
-            memName: '',
-            memNickName: '',
-            memNo: '',
-            memPw: '',
-            carNum: '',
-            carBrand: '',
-            carModel: '',
-            charType: '',
-            responseCarList: '',
-            appendCarList: '',
+const MyPage = () => {
 
-        }
-    }
+    const [memId, setMemId] = useState(cookie.load('memId'))
+    const [memNickName, setMemNickName] = useState(cookie.load('memNickName'))
+    const [memName, setMemName] = useState('')
+    const [responseCarList, setResponseCarList] = useState('')
+    const [appendCarList, setAppendCarList] = useState([])
 
-    componentDidMount = async () => {
 
-        // 쿠키에서 사용자 정보를 로드하고 상태를 설정합니다.
-        var cookie_memNickName = await cookie.load('memNickName')
-        var cookie_memId = await cookie.load('memId')
-        var cookie_memPw = await cookie.load('memPw')
-        this.setState({ memNickName: cookie_memNickName })
-        this.setState({ memId: cookie_memId })
-        this.setState({ memPw: cookie_memPw })
+    useEffect(() => {
+        callMemberInfoApi()
+    }, [])
 
-        this.callMemberInfoApi()
-    }
+    const callMemberInfoApi = () => {
 
-    // 사용자 정보와 차량 정보를 가져오는 API 호출
-    callMemberInfoApi = async () => {
-
-        // 사용자 정보 API 호출
         axios.post('/api/members/read', {
-            memId: this.state.memId,
+            memId: memId,
         })
             .then(response => {
                 try {
-                    var data1 = response.data
-                    this.setState({ memNickName: data1.memNickName })
-                    this.setState({ memName: data1.memName })
-                    this.setState({ memNo: data1.memNo })
+                    setMemNickName(response.data.memNickName)
+                    setMemName(response.data.memName)
                 }
                 catch (error) {
                     alert('회원데이터 받기 오류')
@@ -56,14 +32,14 @@ class MyPage extends Component {
             })
             .catch(error => { alert('회원데이터 받기 오류2'); return false; });
 
-        // 차량 정보 API 호출
+
         axios.post('/api/cars/read', {
-            memId: this.state.memId,
+            memId: memId,
         })
             .then(response => {
                 try {
-                    this.setState({ responseCarList: response });
-                    this.setState({ appendCarList: this.carListAppend() });
+                    setResponseCarList(response)
+                    setAppendCarList(carListAppend(response.data))
                 }
                 catch (error) {
                     alert('차량데이터 받기 오류')
@@ -74,21 +50,19 @@ class MyPage extends Component {
 
     }
 
-    // 차량 정보를 화면에 표시하기 위해 JSX를 반환하는 함수
-    carListAppend = () => {
-        let result = []
-        var carList = this.state.responseCarList.data
+    const carListAppend = (carList) => {
+        const result = []
 
         for (let i = 0; i < carList.length; i++) {
-            var data2 = carList[i]
+            let data = carList[i]
 
             result.push(
                 <tr class="hidden_type">
                     <th>차량{'['}{i + 1}{']'}</th>
                     <td className='name-container'>
                         <input name="carInfo" id="carInfo_val" readOnly="readonly"
-                            value={data2.carBrand + ' ' + '/' + ' ' + data2.carModel + ' ' + '/' + ' ' + data2.carNum + ' ' + '/' + ' ' + '충전타입 : ' + data2.charType} />
-                        <button type="button" onClick={() => this.deleteCar(data2.carNum)}>X</button>
+                            value={`${data.carBrand} / ${data.carModel} / ${data.carNum} / 충전타입 : ${data.charType}`}/>
+                        <button type="button" onClick={() => deleteCar(data.carNum)}>X</button>
                     </td>
                 </tr>
             )
@@ -96,10 +70,9 @@ class MyPage extends Component {
         return result
     }
 
-    // 차량 삭제 기능을 수행하는 함수
-    deleteCar = (carNum) => {
+    const deleteCar = (carNum) => {
         axios.post('/api/cars/remove', {
-            memId: this.state.memId,
+            memId: memId,
             carNum: carNum
         })
             .then(response => {
@@ -112,8 +85,7 @@ class MyPage extends Component {
                 }
             })
     }
-
-    render() {
+    
         return (
             <div>
                 <section className="sub_wrap" >
@@ -127,23 +99,23 @@ class MyPage extends Component {
                                             <tr className="re_email">
                                                 <th>이메일</th>
                                                 <td>
-                                                    <input name="memId" id="memId_val" readOnly="readonly" value={this.state.memId} />
+                                                    <input name="memId" id="memId_val" readOnly="readonly" value={memId} />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>이름</th>
                                                 <td>
-                                                    <input name="memName" id="memName_val" readOnly="readonly" value={this.state.memName} />
+                                                    <input name="memName" id="memName_val" readOnly="readonly" value={memName} />
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>닉네임</th>
                                                 <td>
-                                                    <input id="memNickName_val" type="text" name="memNickName" readOnly="readonly" value={this.state.memNickName}
+                                                    <input id="memNickName_val" type="text" name="memNickName" readOnly="readonly" value={memNickName}
                                                     />
                                                 </td>
                                             </tr>
-                                            {this.state.appendCarList}
+                                            {appendCarList}
                                         </table>
                                     </div>
                                 </div>
@@ -158,6 +130,5 @@ class MyPage extends Component {
             </div>
         );
     }
-}
 
 export default MyPage;
