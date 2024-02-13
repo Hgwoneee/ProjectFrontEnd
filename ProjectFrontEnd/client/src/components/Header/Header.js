@@ -5,7 +5,8 @@ import $ from 'jquery';
 
 const Header = () => {
 
-    const [memNickName, setMemNickName] = useState('');
+    const [memId, setMemId] = useState(cookie.load('memId'))
+    const [memNickName, setMemNickName] = useState(cookie.load('memNickName'));
     const [activeMenu, setActiveMenu] = useState('/');
     const [menuVisible, setMenuVisible] = useState(false);
 
@@ -19,19 +20,7 @@ const Header = () => {
             $('header').hide();
         }
 
-        const cookie_memId = cookie.load('memId');
-        const cookie_memNickName = cookie.load('memNickName');
-        const cookie_memPw = cookie.load('memPw');
-        setMemNickName(cookie_memNickName);
-
-        if (cookie_memId !== undefined) {
-            const expires = new Date();
-            expires.setMinutes(expires.getMinutes() + 60);
-
-            cookie.save('memId', cookie_memId, { path: '/', expires });
-            cookie.save('memNickName', cookie_memNickName, { path: '/', expires });
-            cookie.save('memPw', cookie_memPw, { path: '/', expires });
-
+        if (memId !== undefined) {
             $('.menulist').show();
             $('.hd_top').show();
         } else {

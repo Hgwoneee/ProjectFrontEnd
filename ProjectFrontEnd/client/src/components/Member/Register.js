@@ -5,19 +5,19 @@ import $ from 'jquery';
 
 const Register = () => {
 
-    const [memId_val_checker, setMemId_val_checker] = useState('')
-    const [memPw_val_checker, setMemPw_val_checker] = useState('')
-    const [memPw_cnf_val_checker, setMemPw_cnf_val_checker] = useState('')
-    const [memName_val_checker, setMemName_val_checker] = useState('')
-    const [memNickName_val_checker, setMemNickName_val_checker] = useState('')
+    const [memId_val_checker, setMemId_val_checker] = useState('');
+    const [memPw_val_checker, setMemPw_val_checker] = useState('');
+    const [memPw_cnf_val_checker, setMemPw_cnf_val_checker] = useState('');
+    const [memName_val_checker, setMemName_val_checker] = useState('');
+    const [memNickName_val_checker, setMemNickName_val_checker] = useState('');
 
     const submitClick = () => {
-        
-        setMemId_val_checker($('#memId_val').val())
-        setMemPw_val_checker($('#memPw_val').val())
-        setMemPw_cnf_val_checker($('#memPw_cnf_val').val())
-        setMemName_val_checker($('#memName_val').val())
-        setMemNickName_val_checker($('#memNickName_val').val())
+
+        setMemId_val_checker($('#memId_val').val());
+        setMemPw_val_checker($('#memPw_val').val());
+        setMemPw_cnf_val_checker($('#memPw_cnf_val').val());
+        setMemName_val_checker($('#memName_val').val());
+        setMemNickName_val_checker($('#memNickName_val').val());
 
         const fnValidate = () => {
             const pattern1 = /[0-9]/;
@@ -26,12 +26,12 @@ const Register = () => {
 
             if (memId_val_checker === '') {
                 $('#memId_val').addClass('border_validate_err');
-                sweetalert('이메일 주소를 다시 확인해주세요.', '', 'error', '닫기')
+                sweetalert('이메일 주소를 다시 확인해주세요.', '', 'error', '닫기');
                 return false;
             }
             if (memId_val_checker.search(/\s/) !== -1) {
                 $('#memId_val').addClass('border_validate_err');
-                sweetalert('이메일 공백을 제거해 주세요.', '', 'error', '닫기')
+                sweetalert('이메일 공백을 제거해 주세요.', '', 'error', '닫기');
                 return false;
             }
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -47,20 +47,20 @@ const Register = () => {
 
             if (memPw_val_checker === '') {
                 $('#memPw_val').addClass('border_validate_err');
-                sweetalert('비밀번호를 입력해주세요.', '', 'error', '닫기')
+                sweetalert('비밀번호를 입력해주세요.', '', 'error', '닫기');
                 return false;
             }
             if (memPw_val_checker !== '') {
                 const str = memPw_val_checker;
                 if (str.search(/\s/) !== -1) {
                     $('#memPw_val').addClass('border_validate_err');
-                    sweetalert('비밀번호 공백을 제거해 주세요.', '', 'error', '닫기')
+                    sweetalert('비밀번호 공백을 제거해 주세요.', '', 'error', '닫기');
                     return false;
                 }
                 if (!pattern1.test(str) || !pattern2.test(str) || !pattern3.test(str)
                     || str.length < 8 || str.length > 16) {
                     $('#memPw_val').addClass('border_validate_err');
-                    sweetalert('8~16자 영문 대 소문자\n숫자, 특수문자를 사용하세요.', '', 'error', '닫기')
+                    sweetalert('8~16자 영문 대 소문자\n숫자, 특수문자를 사용하세요.', '', 'error', '닫기');
                     return false;
                 }
             }
@@ -68,36 +68,36 @@ const Register = () => {
 
             if (memPw_cnf_val_checker === '') {
                 $('#memPw_cnf_val').addClass('border_validate_err');
-                sweetalert('비밀번호를 한번 더 입력해주세요.', '', 'error', '닫기')
+                sweetalert('비밀번호를 한번 더 입력해주세요.', '', 'error', '닫기');
                 return false;
             }
             if (memPw_val_checker !== memPw_cnf_val_checker) {
                 $('#memPW_val').addClass('border_validate_err');
                 $('#memPw_cnf_val').addClass('border_validate_err');
-                sweetalert('비밀번호가 일치하지 않습니다.', '', 'error', '닫기')
+                sweetalert('비밀번호가 일치하지 않습니다.', '', 'error', '닫기');
                 return false;
             }
             $('#memPw_cnf_val').removeClass('border_validate_err');
 
             if (memName_val_checker === '') {
                 $('#memName_val').addClass('border_validate_err');
-                sweetalert('이름을 입력해주세요.', '', 'error', '닫기')
+                sweetalert('이름을 입력해주세요.', '', 'error', '닫기');
                 return false;
             }
             if (memName_val_checker.search(/\s/) !== -1) {
                 $('#memName_val').addClass('border_validate_err');
-                sweetalert('이름에 공백을 제거해 주세요.', '', 'error', '닫기')
+                sweetalert('이름에 공백을 제거해 주세요.', '', 'error', '닫기');
                 return false;
             }
             $('#memNickName_val').removeClass('border_validate_err');
             if (memNickName_val_checker === '') {
                 $('#memNickName_val').addClass('border_validate_err');
-                sweetalert('닉네임을 입력해주세요.', '', 'error', '닫기')
+                sweetalert('닉네임을 입력해주세요.', '', 'error', '닫기');
                 return false;
             }
             if (memNickName_val_checker.search(/\s/) !== -1) {
                 $('#memNickName_val').addClass('border_validate_err');
-                sweetalert('닉네임에 공백을 제거해 주세요.', '', 'error', '닫기')
+                sweetalert('닉네임에 공백을 제거해 주세요.', '', 'error', '닫기');
                 return false;
             }
             $('#memNickName_val').removeClass('border_validate_err');
@@ -115,12 +115,12 @@ const Register = () => {
 
                         if (memIdCk != null) {
                             $('#memId_val').addClass('border_validate_err');
-                            sweetalert('이미 존재하는 이메일입니다.', '', 'error', '닫기')
+                            sweetalert('이미 존재하는 이메일입니다.', '', 'error', '닫기');
                         } else {
                             $('#memId_val').removeClass('border_validate_err');
                         }
                     } catch (error) {
-                        sweetalert('작업중 오류가 발생하였습니다.', error, 'error', '닫기')
+                        sweetalert('작업중 오류가 발생하였습니다.', error, 'error', '닫기');
                     }
                 })
                 .catch(response => { return false; });
@@ -134,13 +134,13 @@ const Register = () => {
 
                         if (memNickNameCk != null) {
                             $('#memNickName_val').addClass('border_validate_err');
-                            sweetalert('이미 존재하는 닉네임입니다.', '', 'error', '닫기')
+                            sweetalert('이미 존재하는 닉네임입니다.', '', 'error', '닫기');
                         } else {
                             $('#memNickName_val').removeClass('border_validate_err');
-                            fnSignInsert()
+                            fnSignInsert();
                         }
                     } catch (error) {
-                        sweetalert('작업중 오류가 발생하였습니다.', error, 'error', '닫기')
+                        sweetalert('작업중 오류가 발생하였습니다.', error, 'error', '닫기');
                     }
                 })
                 .catch(response => { return false; });
@@ -150,7 +150,7 @@ const Register = () => {
 
             let jsonstr = $("form[name='frm']").serialize();
             jsonstr = decodeURIComponent(jsonstr);
-            let Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
+            let Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '');
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
             let Json_data = JSON.parse(Json_form);
 
@@ -158,11 +158,11 @@ const Register = () => {
                 .then(response => {
                     try {
                         if (response.data == "success") {
-                            sweetalertRegister('회원가입 되었습니다.', '', 'success', '확인')
+                            sweetalertRegister('회원가입 되었습니다.', '', 'success', '확인');
                         }
                     }
                     catch (error) {
-                        alert('1. 작업중 오류가 발생하였습니다.')
+                        alert('1. 작업중 오류가 발생하였습니다.');
                     }
                 })
                 .catch(error => { alert('2. 작업중 오류가 발생하였습니다.'); return false; });
@@ -195,8 +195,8 @@ const Register = () => {
             text: contents,
             icon: icon,
             confirmButtonText: confirmButtonText
-        })
-    }
+        });
+    };
 
     const sweetalertRegister = (title, contents, icon, confirmButtonText) => {
         Swal.fire({
@@ -206,8 +206,8 @@ const Register = () => {
             confirmButtonText: confirmButtonText
         }).then(function () {
             window.location.href = '/';
-        })
-    }
+        });
+    };
 
     return (
         <div>
@@ -223,7 +223,7 @@ const Register = () => {
                                             <th>이메일</th>
                                             <td className='displayflex'>
                                                 <input id="memId_val" type="text" name="memId"
-                                                    placeholder="이메일을 입력해주세요." onKeyPress={memIdKeyPress}/>
+                                                    placeholder="이메일을 입력해주세요." onKeyPress={memIdKeyPress} />
                                             </td>
                                         </tr>
                                         <tr>

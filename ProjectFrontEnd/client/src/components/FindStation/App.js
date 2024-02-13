@@ -1,5 +1,5 @@
 /*global kakao*/
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import $ from 'jquery';
 import './App.css';
 import axios from "axios";
@@ -7,10 +7,8 @@ const { kakao } = window;
 
 const App = () => {
 
-  const [responseStationList, setresponseStationList] = useState('');
-
   useEffect(() => {
-    callStationListApi()
+    callStationListApi();
   }, []);
 
   const callStationListApi = () => {
@@ -18,10 +16,9 @@ const App = () => {
     })
       .then(response => {
         try {
-          setresponseStationList(response.data);
           StationListAppend(response.data);
         } catch (error) {
-          alert(error)
+          alert(error);
         }
       })
       .catch(error => { alert(error); return false; });
@@ -122,7 +119,7 @@ const App = () => {
           <td>충전기상태</td>
           <td>${chargeStat}</td>
           </tr>`
-      })
+      });
 
       let parkingStatus;
 
@@ -132,8 +129,8 @@ const App = () => {
         parkingStatus = '주차장 - 유료';
       }
 
-      
-      const content = 
+
+      const content =
         `<div class="overlaybox">
           <table border="1">
         <tr> 
@@ -152,17 +149,19 @@ const App = () => {
         <tr>
           <td colspan="2">${parkingStatus}</td>
         </tr>
+        <tr>
+          <td colspan="2">${position.useTime}
+        </tr>
         </table>
         </div>`;
 
 
-      
-      const lat = Number(position.lat)
-      const lng = Number(position.lng)
-      const lat_string = lat.toString()
-      const lng_string = lng.toString()
+      const lat = Number(position.lat);
+      const lng = Number(position.lng);
+      const lat_string = lat.toString();
+      const lng_string = lng.toString();
 
-      
+
       const customOverlay = new kakao.maps.CustomOverlay({
         position: new kakao.maps.LatLng(lat_string, lng_string),
         content: content,
@@ -170,7 +169,7 @@ const App = () => {
         yAnchor: 0,
       });
 
-      
+
       const clickHandler1 = function (event) {
         customOverlay.setMap(map);
 
@@ -184,18 +183,17 @@ const App = () => {
         });
       };
 
-      kakao.maps.event.addListener(marker, 'click', clickHandler1)
+      kakao.maps.event.addListener(marker, 'click', clickHandler1);
       return marker;
     })
-    // 마커를 마커 클러스터러에 추가
+
     clusterer.addMarkers(markers);
 
   }
 
-  // 지도 컨테이너 렌더링
-    return (
-      <div id="map" style={{ "width": "100%", "height": "700px" }}></div>
-    )
-  }
+  return (
+    <div id="map" style={{ "width": "100%", "height": "700px" }}></div>
+  )
+}
 
-  export default App;
+export default App;

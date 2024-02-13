@@ -6,14 +6,13 @@ import cookie from 'react-cookies';
 
 const Modify = () => {
 
-    const [memId, setMemId] = useState(cookie.load('memId'))
-    const [memName, setMemName] = useState(cookie.load('memName'))
-    const [memNickName, setMemNickName] = useState(cookie.load('memNickName'))
-
+    const [memId, setMemId] = useState(cookie.load('memId'));
+    const [memName, setMemName] = useState(cookie.load('memName'));
+    const [memNickName, setMemNickName] = useState(cookie.load('memNickName'));
 
     useEffect(() => {
-        callModifyInfoApi()
-    },[]);
+        callModifyInfoApi();
+    }, []);
 
     const callModifyInfoApi = () => {
         axios.post('/api/members/read', {
@@ -21,9 +20,9 @@ const Modify = () => {
         })
             .then(response => {
                 try {
-                    setMemName(response.data.memName)
-                    setMemNickName(response.data.memNickName)
-                    $('#is_memNickName').val(response.data.memNickName)
+                    setMemName(response.data.memName);
+                    setMemNickName(response.data.memNickName);
+                    $('#is_memNickName').val(response.data.memNickName);
                 }
                 catch (error) {
                     alert('1. 작업중 오류가 발생하였습니다.')
@@ -44,32 +43,32 @@ const Modify = () => {
 
             if (memNickName_val_checker === '') {
                 $('#memNickName_val').addClass('border_validate_err');
-                sweetalert('닉네임을 입력해주세요.', '', 'error', '닫기')
+                sweetalert('닉네임을 입력해주세요.', '', 'error', '닫기');
                 return false;
             }
             if (memNickName_val_checker.search(/\s/) !== -1) {
                 $('#memNickName_val').addClass('border_validate_err');
-                sweetalert('닉네임에 공백을 제거해 주세요.', '', 'error', '닫기')
+                sweetalert('닉네임에 공백을 제거해 주세요.', '', 'error', '닫기');
                 return false;
             }
             $('#memNickName_val').removeClass('border_validate_err');
 
             if (memPw_val_checker === '') {
                 $('#memPw_val').addClass('border_validate_err');
-                sweetalert('비밀번호를 입력해주세요.', '', 'error', '닫기')
+                sweetalert('비밀번호를 입력해주세요.', '', 'error', '닫기');
                 return false;
             }
             if (memPw_val_checker !== '') {
                 const str = memPw_val_checker;
                 if (str.search(/\s/) !== -1) {
                     $('#memPw_val').addClass('border_validate_err');
-                    sweetalert('비밀번호 공백을 제거해 주세요.', '', 'error', '닫기')
+                    sweetalert('비밀번호 공백을 제거해 주세요.', '', 'error', '닫기');
                     return false;
                 }
                 if (!pattern1.test(str) || !pattern2.test(str) || !pattern3.test(str)
                     || str.length < 8 || str.length > 16) {
                     $('#memPw_val').addClass('border_validate_err');
-                    sweetalert('8~16자 영문 대 소문자\n숫자, 특수문자를 사용하세요.', '', 'error', '닫기')
+                    sweetalert('8~16자 영문 대 소문자 \n 숫자, 특수문자를 사용하세요.', '', 'error', '닫기');
                     return false;
                 }
             }
@@ -77,13 +76,13 @@ const Modify = () => {
 
             if (memPw_cnf_val_checker === '') {
                 $('#memPw_cnf_val').addClass('border_validate_err');
-                sweetalert('비밀번호 확인을 입력해주세요.', '', 'error', '닫기')
+                sweetalert('비밀번호 확인을 입력해주세요.', '', 'error', '닫기');
                 return false;
             }
             if (memPw_val_checker !== memPw_cnf_val_checker) {
                 $('#memPw_val').addClass('border_validate_err');
                 $('#memPw_cnf_val').addClass('border_validate_err');
-                sweetalert('비밀번호가 일치하지 않습니다.', '', 'error', '닫기')
+                sweetalert('비밀번호가 일치하지 않습니다.', '', 'error', '닫기');
                 return false;
             }
             $('#memPw_cnf_val').removeClass('border_validate_err');
@@ -101,13 +100,13 @@ const Modify = () => {
 
                         if (memNickNameCk != null) {
                             $('#memNickName_val').addClass('border_validate_err');
-                            sweetalert('이미 존재하는 닉네임입니다.', '', 'error', '닫기')
+                            sweetalert('이미 존재하는 닉네임입니다.', '', 'error', '닫기');
                         } else {
                             $('#memNickName_val').removeClass('border_validate_err');
-                            fnSignInsert('modify', e)
+                            fnSignInsert('modify', e);
                         }
                     } catch (error) {
-                        sweetalert('작업중 오류가 발생하였습니다.', error, 'error', '닫기')
+                        sweetalert('작업중 오류가 발생하였습니다.', error, 'error', '닫기');
                     }
                 })
                 .catch(response => { return false; });
@@ -116,22 +115,22 @@ const Modify = () => {
         const fnSignInsert = (type, e) => {
             let jsonstr = $("form[name='frm']").serialize();
             jsonstr = decodeURIComponent(jsonstr);
-            let Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '')
+            let Json_form = JSON.stringify(jsonstr).replace(/\"/gi, '');
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
             let Json_data = JSON.parse(Json_form);
 
-        
+
             axios.post('/api/members/modify', Json_data)
                 .then(response => {
                     try {
                         if (response.data == "SUCCESS") {
                             if (type == 'modify') {
-                                sweetalertModify('수정되었습니다. \n 다시 로그인해주세요.', '', 'success', '확인')
+                                sweetalertModify('수정되었습니다. \n 다시 로그인해주세요.', '', 'success', '확인');
                             }
                         }
                     }
                     catch (error) {
-                        alert('1. 작업중 오류가 발생하였습니다.')
+                        alert('1. 작업중 오류가 발생하였습니다.');
                     }
                 })
                 .catch(error => { alert('2. 작업중 오류가 발생하였습니다.'); return false; });
@@ -157,8 +156,8 @@ const Modify = () => {
             text: contents,
             icon: icon,
             confirmButtonText: confirmButtonText
-        })
-    }
+        });
+    };
 
     const sweetalertModify = (title, contents, icon, confirmButtonText) => {
         Swal.fire({
@@ -171,10 +170,9 @@ const Modify = () => {
             cookie.remove('memNickName', { path: '/' });
             cookie.remove('memPw', { path: '/' });
             window.location.href = '/';
-        })
-    }
+        });
+    };
 
-    
     const deleteMember = () => {
         sweetalertDelete('정말 탈퇴하시겠습니까?', function () {
             axios.post('/api/members/remove', {
@@ -182,8 +180,8 @@ const Modify = () => {
             })
                 .then(response => {
                 }).catch(error => { alert('작업중 오류가 발생하였습니다.'); return false; });
-        })
-    }
+        });
+    };
 
     const sweetalertDelete = (title, callbackFunc) => {
         Swal.fire({
@@ -200,7 +198,7 @@ const Modify = () => {
                     '탈퇴되었습니다.',
                     '',
                     'success'
-                )
+                );
                 cookie.remove('memId', { path: '/' });
                 cookie.remove('memNickName', { path: '/' });
                 cookie.remove('memPw', { path: '/' });
@@ -208,9 +206,9 @@ const Modify = () => {
             } else {
                 return false;
             }
-            callbackFunc()
-        })
-    }
+            callbackFunc();
+        });
+    };
     return (
         <div>
             <section className="sub_wrap" >

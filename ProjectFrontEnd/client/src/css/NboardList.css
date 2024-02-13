@@ -7,7 +7,9 @@
 .li_top_sch .input_ty1{width: 402px; float: left;}
 .li_top_sch .sch_bt{float: left;}
 .li_top_sch .sch_bt2{float: right;}
-
+.sch_bt2:hover {
+  background-color: #77a581;
+}
 .listbtn{
   font-size: 15px;
   background-color: #517749;
@@ -27,7 +29,7 @@
 .af:after{display: block; clear: both; content:'';}
 
 /* 검색 */
-.sch_bt99{font-size: 16px; color: #fff; background: #103f05; border-radius: 5px; height: 45px; line-height: 45px; text-align: center; position: relative; width: 172px; font-weight: 400; transition:.3s;}
+.sch_bt99{font-size: 16px; color: #fff; background: #103f05; border-radius: 5px; height: 45px; line-height: 45px; text-align: center; position: relative; width: 172px; font-weight: 400; transition:.3s; cursor : pointer}
 .sch_bt99:hover{background: #517749;}
 
 .sch_bt{

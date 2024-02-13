@@ -15,7 +15,7 @@ const LoginForm = () => {
             icon: icon,
             confirmButtonText: confirmButtonText
         });
-    }
+    };
 
     const submitClick = () => {
         if (memId === '' || memPw === '') {
@@ -43,7 +43,7 @@ const LoginForm = () => {
         }
     }
 
-    const handleOnKeyPress = e => {
+    const handleOnKeyPress = (e) => {
         if (e.key === 'Enter') {
             submitClick();
         }
