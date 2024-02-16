@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from "axios";
 import $ from 'jquery';
@@ -7,8 +7,10 @@ import cookie from 'react-cookies';
 
 const NboardRegister = () => {
 
+    
     let history = useHistory();
 
+    const [selectedFile, setSelectedFile] = useState(null);
     const [memNickName] = useState(cookie.load('memNickName'));
     const [imageDTOList, setImageDTOList] = useState([]);
 
@@ -73,69 +75,41 @@ const NboardRegister = () => {
         })
     }
 
-    const sweetalertSucc = (title, showConfirmButton) => {
-        Swal.fire({
-            icon: 'success',
-            title: title,
-            showConfirmButton: showConfirmButton,
-            timer: 1000
-        })
+    
+    // 파일 선택 input의 값이 변경될 때 실행되는 메서드
+    const handleFileInput = (type, e) => {
+        const selected = e.target.files[0];
+        $('#imagefile').val(selected ? selected.name : '');
+        setSelectedFile(selected);
     }
 
-    // 파일 선택 input의 값이 변경될 때 실행되는 메서드
-    const handleFileInput = async (type, e) => {
-        try {
-            if (type === 'file') {
-                $('#imagefile').val(e.target.files[0].name);
-            } else if (type === 'manual') {
-                $('#manualfile').val(e.target.files[0].name);
+    useEffect(() => {
+        if (selectedFile) {
+                handlePostImage();
             }
+    }, [selectedFile]);
     
-            if (type === 'file') {
-                handlePostImage(type, e.target.files[0]);
-            }
+
+    const handlePostImage = async () => {
+        const formData = new FormData();
+        formData.append('uploadFiles', selectedFile);
+
+        try {
+            const res = await axios.post("/uploadAjax", formData);
+            const { fileName, uuid, folderPath, thumbnailURL } = res.data[0];
+
+            setImageDTOList((prevImageDTOList) => [
+                ...prevImageDTOList,
+                { imgName: fileName, path: folderPath, uuid: uuid },
+            ]);
+
+            const str = `<li data-name='${fileName}' data-path='${folderPath}' data-uuid='${uuid}'>
+                            <img src='/display?fileName=${thumbnailURL}'>
+                          </li>`;
+            $('#upload_img').append(str);
         } catch (error) {
             alert('작업 중 오류가 발생하였습니다.');
         }
-    }
-
-    const [fileName, setFileName] = useState('');
-    const [uuid, setUuid] = useState('');
-    const [path, setPath] = useState('');
-    const [thumbnailURL, setThumbnailURL] = useState('');
-    const [imageURL, setImageURL] = useState('');
-
-    // 이미지 파일 업로드 처리 메서드
-    const handlePostImage = (type, file) => {
-        const formData = new FormData();
-        formData.append('uploadFiles', file);
-        return axios.post("/uploadAjax", formData).then(res => {
-            if (type == 'file') {
-                setFileName(res.data[0].fileName);
-                setUuid(res.data[0].uuid);
-                setPath(res.data[0].folderPath);
-                setThumbnailURL(res.data[0].thumbnailURL);
-                setImageURL(res.data[0].imageURL);
-
-                let str = "";
-
-                str += `<li data-name='${fileName}' data-path='${path}' data-uuid='${uuid}'>
-                        <img src='/display?fileName=${thumbnailURL}'>
-                        </li>`;
-
-                $('#upload_img').append(str)
-
-                const imageInfo = {
-                    imgName: fileName,
-                    path: path,
-                    uuid: uuid,
-
-                };
-                setImageDTOList(prevImageDTOList => [...prevImageDTOList, imageInfo]);
-            }
-        }).catch(error => {
-            alert('작업중 오류가 발생하였습니다.3')
-        })
     }
 
     const handleRemoveAllThumbnails = () => {
@@ -199,12 +173,7 @@ const NboardRegister = () => {
                                 </table>
                                 <div class="btn_confirm mt20" style={{ "margin-bottom": "44px", textAlign: "center" }}>
                                     <a href="javascript:" className="bt_ty bt_ty2 submit_ty1 saveclass"
-                                        onClick={(e) => submitClick('file',
-                                            {
-                                                fileName: fileName,
-                                                folderPath: path,
-                                                uuid: uuid
-                                            }, e)}>저장</a>
+                                        onClick={(e) => submitClick('file', e)}>저장</a>
                                     <Link to={'/NboardList'} className="bt_ty bt_ty2 submit_ty1 saveclass">취소</Link>
                                 </div>
                             </div>
