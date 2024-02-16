@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from "axios";
 import Swal from 'sweetalert2';
 import $ from 'jquery';
@@ -6,10 +7,14 @@ import cookie from 'react-cookies';
 
 const CarRegister = () => {
 
+    let history = useHistory();
+
     const [selectedBrand, setSelectedBrand] = useState('');
     const [selectedModel, setSelectedModel] = useState('');
     const [subCarOptionsList, setSubCarOptionList] = useState([]);
     const [memId, setMemid] = useState(cookie.load('memId'));
+    const [file, setFile] = useState(null);
+    const [ckCarNum, setCkCarNum] = useState('')
 
 
     const submitClick = (type, e) => {
@@ -23,11 +28,6 @@ const CarRegister = () => {
                 return false;
             }
 
-            if (carNum_val_checker.search(/\s/) !== -1) {
-                $('#carNum_val').addClass('border_validate_err');
-                sweetalert('차량번호 공백없이 입력해주세요.', '', 'error', '닫기');
-                return false;
-            }
             $('#carNum_val').removeClass('border_validate_err');
             return true;
         }
@@ -206,15 +206,39 @@ const CarRegister = () => {
         setSelectedModel(model);
     };
 
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
+
+    const handleUpload = async () => {
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            const res = await axios.post("http://localhost:5001/upload_and_extract_license_plate_text", formData);
+            handleCkCarNumChange(res.data.plate_text);
+            $('#selectCarNum').hide();
+            sweetalert('차량번호 인증완료.', '', 'success', '닫기');
+
+        } catch (error) {
+            alert("파일 전송 실패")
+        }
+    };
+
+    const handleCkCarNumChange = (e) => {
+        setCkCarNum(e);
+    };
+
     return (
         <div>
             <section className="sub_wrap" >
                 <article className="s_cnt re_1 ct1">
                     <div className="li_top">
                         <h2 className="s_tit1">차량정보등록</h2>
-                        <form method="post" name="frm">
-                            <div className="re1_wrap">
-                                <div className="re_cnt ct2">
+
+                        <div className="re1_wrap">
+
+                            <div className="re_cnt ct2">
+                                <form method="post" name="frm">
                                     <table className="table_ty1">
                                         <tr className="re_email">
 
@@ -268,20 +292,6 @@ const CarRegister = () => {
                                                     ))}
                                                 </select>
                                             </td>
-
-                                        </tr>
-                                        <tr>
-                                            <th>차량번호</th>
-                                            <td>
-                                                <input id="carNum_val" type="text" name="carNum"
-                                                    placeholder="예) 123가4567 (공백없이)" />
-                                            </td>
-                                        </tr>
-                                        <tr style={{ display: 'none' }}>
-                                            <th>아이디</th>
-                                            <td>
-                                                <input id="memId_val" type="text" name="memId" value={memId} />
-                                            </td>
                                         </tr>
                                         <tr className="tr_tel">
                                             <th>충전방식</th>
@@ -294,17 +304,44 @@ const CarRegister = () => {
                                                     <option value="AC완속">AC완속</option>
                                                     <option value="슈퍼차저">슈퍼차저</option>
                                                 </select>
-
+                                            </td>
+                                        </tr>
+                                        <tr style={{ display: 'none' }}>
+                                            <th>아이디</th>
+                                            <td>
+                                                <input id="memId_val" type="text" name="memId" value={memId} />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>차량번호</th>
+                                            <td>
+                                                <input id="carNum_val" type="text" name="carNum" readOnly="readonly"
+                                                    value={ckCarNum} placeholder="미인증" />
                                             </td>
                                         </tr>
                                     </table>
-                                </div>
+                                </form>
+                            </div>
+
+                            <div className="re_cnt ct2">
+                                <table className="table_ty1">
+                                    <div id="selectCarNum">
+                                        <tr className="re1_wrap">
+                                            <td>
+                                                <input type="file" onChange={(e) => handleFileChange(e)} />
+                                            </td>
+                                            <td>
+                                                <button className="bt_ty bt_ty2" onClick={() => handleUpload()}>차량번호 인증</button>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                </table>
                             </div>
                             <div className="btn_confirm">
                                 <a href="javascript:" className="bt_ty bt_ty2 submit_ty1 modifyclass"
                                     onClick={(e) => submitClick('signup', e)}>등록</a>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </article >
             </section >
