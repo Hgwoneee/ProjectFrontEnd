@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from "axios";
 import $ from 'jquery';
 import Swal from 'sweetalert2'
-import cookie from 'react-cookies';
+
 
 class NboardModify extends Component {
     constructor(props) {
@@ -24,7 +24,7 @@ class NboardModify extends Component {
         $('#articleNo').hide();
     }
 
-    // 게시글 정보를 서버에서 불러와 상태를 업데이트하는 함수
+    
     callNboardInfoApi = async () => {
 
 
@@ -52,7 +52,7 @@ class NboardModify extends Component {
 
     }
 
-    // 이미지 목록을 렌더링하는 함수
+    
     renderImages = () => {
         const { imageList } = this.state;
 
@@ -66,10 +66,10 @@ class NboardModify extends Component {
         ));
     };
 
-    // 수정 버튼 클릭 시 실행되는 함수
+   
     submitClick = async (type, e) => {
 
-        // 유효성 검사
+        
         this.title_checker = $('#titleVal').val();
         this.content_checker = $('#contentVal').val();
 
@@ -91,7 +91,7 @@ class NboardModify extends Component {
             return true;
         }
 
-        // 유효성 검사 통과 시 서버에 수정 요청
+        
         if (this.fnValidate()) {
             var jsonstr = $("form[name='frm']").serialize();
             jsonstr = decodeURIComponent(jsonstr);
@@ -141,7 +141,7 @@ class NboardModify extends Component {
         })
     }
 
-    // 파일 선택 시 실행되는 함수
+    
     handleFileInput(type, e) {
         if (type == 'file') {
             $('#imagefile').val(e.target.files[0].name)
@@ -161,7 +161,7 @@ class NboardModify extends Component {
         );
     }
 
-    // 이미지 업로드를 처리하는 함수
+    
     handlePostImage(type) {
         const formData = new FormData();
         formData.append('uploadFiles', this.state.selectedFile);
@@ -182,7 +182,7 @@ class NboardModify extends Component {
 
                 $('#upload_img').append(str)
 
-                // 업로드된 이미지 정보를 배열에 추가
+                
                 const imageInfo = {
                     imgName: this.state.fileName,
                     path: this.state.path,
@@ -198,7 +198,7 @@ class NboardModify extends Component {
         })
     }
 
-    // 모든 썸네일을 제거하고 imageDTOList를 비우는 함수
+    
     handleRemoveAllThumbnails = () => {
         $('.fileBox1 ul').empty();
         $('#imagefile').val('');

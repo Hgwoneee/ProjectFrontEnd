@@ -6,16 +6,16 @@ import Swal from 'sweetalert2'
 import cookie from 'react-cookies';
 import Modal from 'react-modal';
 import moment from 'moment';
-import 'moment/locale/ko'; // 한국어 설정 (선택 사항)
+import 'moment/locale/ko';
 
 class NboardRead extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // 상태 변수 초기화
-            bno: props.match.params.bno, // URL에서 게시글 번호를 가져옴
+            
+            bno: props.match.params.bno, 
             selectedFile: null,
-            memNickName: cookie.load('memNickName'), // 쿠키에서 회원 닉네임을 가져옴
+            memNickName: cookie.load('memNickName'),
             thumbnailURL: '',
             title: '',
             content: '',
@@ -43,7 +43,7 @@ class NboardRead extends Component {
         $("#bNoDiv").hide();
     }
 
-    // Nboard 정보를 가져오는 API 호출
+    
     callNboardInfoApi = async () => {
 
 
@@ -72,17 +72,17 @@ class NboardRead extends Component {
 
     }
 
-    // 썸네일 클릭 시 모달 열기
+    
     handleThumbnailClick = (thumbnailURL) => {
         this.setState({ modalIsOpen: true, selectedImage: thumbnailURL });
     };
 
-    // 이미지 모달 닫기
+   
     closeImageModal = () => {
         this.setState({ modalIsOpen: false, selectedImage: '' });
     };
 
-    // 이미지 목록 렌더링
+    
     renderImages = () => {
         const { imageList } = this.state;
 
@@ -98,7 +98,7 @@ class NboardRead extends Component {
     };
 
 
-    //게시물 삭제 함수
+    
     deleteArticle = (e) => {
 
         this.sweetalertDelete1('삭제하시겠습니까?', function () {
@@ -135,7 +135,7 @@ class NboardRead extends Component {
         })
     }
 
-    //댓글작성 함수
+    
     submitClick = async (e) => {
 
         this.reply_checker = $('#replyTextVal').val();
@@ -157,7 +157,7 @@ class NboardRead extends Component {
             Json_form = "{\"" + Json_form.replace(/\&/g, '\",\"').replace(/=/gi, '\":"') + "\"}";
             var Json_data = JSON.parse(Json_form);
 
-            //댓글내용을 Json데이터로 변환해 서버에 전송
+           
             axios.post('/api/nreplys/add', Json_data)
                 .then(response => {
                     try {
@@ -196,7 +196,7 @@ class NboardRead extends Component {
         })
     }
 
-    // 댓글 목록을 가져오는 API 호출
+   
     callReplyListApi = async (bno) => {
         axios.get(`/api/nreplys/list/${bno}`)
             .then(response => {
@@ -210,7 +210,7 @@ class NboardRead extends Component {
             .catch(error => { alert('작업중 오류가 발생하였습니다2.'); return false; });
     }
 
-    // 댓글 목록을 렌더링
+    
     ReplyListAppend = () => {
         let result = []
         var ReplyList = this.state.responseReplyList.data
@@ -221,7 +221,7 @@ class NboardRead extends Component {
         for (let i = 0; i < ReplyList.length; i++) {
             var data = ReplyList[i]
             const isCurrentUserCommentOwner = data.replyer === currentUser;
-            const formattedDate = moment(data.regdate).fromNow(); // "몇 시간 전", "몇 주 전" 등으로 변환
+            const formattedDate = moment(data.regdate).fromNow();
 
             result.push(
                 <li style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '19px' }}>
@@ -261,7 +261,7 @@ class NboardRead extends Component {
         return result
     }
 
-    // 댓글 삭제
+    
     deleteComment = (index) => {
         this.sweetalertDelete2('삭제하시겠습니까?', function () {
 
@@ -300,7 +300,7 @@ class NboardRead extends Component {
     }
 
 
-    // 댓글 수정 모달 열기
+    
     openEditModal = (index) => {
         this.setState({
             selectRno: this.state.responseReplyList.data[index].rno,
@@ -309,7 +309,7 @@ class NboardRead extends Component {
         });
     };
 
-    // 댓글 수정 모달 닫기
+    
     closeEditModal = () => {
         this.setState({
             isEditModalOpen: false,
@@ -317,7 +317,7 @@ class NboardRead extends Component {
         });
     };
 
-    // 댓글 수정 저장
+    
     handleEditSubmit = () => {
 
         axios.put(`/api/nreplys/${this.state.selectRno}`, {
@@ -339,7 +339,7 @@ class NboardRead extends Component {
 
     render() {
 
-        // 날짜표시방법
+        
         const formattedRegidate = new Date(this.state.regidate).toLocaleDateString('ko-KR', {
             year: 'numeric',
             month: '2-digit',
@@ -358,6 +358,9 @@ class NboardRead extends Component {
                         <form name="frm" id="frm" action="" onsubmit="" method="post" >
                             <article class="res_w">
                                 <div class="tb_outline">
+                                <div style={{textAlign: "Right"}}>
+                                        <Link to={`/NboardList`} className="bt_ty bt_ty2 submit_ty1 saveclass">목록</Link>
+                                    </div>
                                     <table class="table_ty1">
                                         <tr>
                                             <th>
@@ -422,8 +425,8 @@ class NboardRead extends Component {
                                                     backgroundColor: 'rgba(0, 0, 0, 0.5)'
                                                 },
                                                 content: {
-                                                    width: '75%', // 원하는 너비로 설정하세요
-                                                    height: '75%', // 원하는 높이로 설정하세요
+                                                    width: '75%',
+                                                    height: '75%', 
                                                     top: '50%',
                                                     left: '50%',
                                                     transform: 'translate(-50%, -50%)',
@@ -446,7 +449,6 @@ class NboardRead extends Component {
                                         <Link to={`/NboardModify/${this.state.bno}`} className="bt_ty bt_ty2 submit_ty1 saveclass">수정</Link>
                                         <a href='javascript:' className="bt_ty bt_ty2 submit_ty1 saveclass"
                                             onClick={(e) => this.deleteArticle(e)}>삭제</a>
-                                        <Link to={`/NboardList`} className="bt_ty bt_ty2 submit_ty1 saveclass">목록</Link>
                                     </div>
                                 </div>
                             </article>
@@ -495,8 +497,8 @@ class NboardRead extends Component {
                                 backgroundColor: 'rgba(0, 0, 0, 0.5)'
                             },
                             content: {
-                                width: '30%', // 원하는 너비로 설정하세요
-                                height: '30%', // 원하는 높이로 설정하세요
+                                width: '30%', 
+                                height: '30%',
                                 top: '50%',
                                 left: '50%',
                                 transform: 'translate(-50%, -50%)',
