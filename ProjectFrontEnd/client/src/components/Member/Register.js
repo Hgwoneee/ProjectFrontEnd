@@ -1,25 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, {} from 'react';
 import axios from "axios";
 import Swal from 'sweetalert2';
 import $ from 'jquery';
 
 const Register = () => {
 
-    const [memId_val_checker, setMemId_val_checker] = useState('');
-    const [memPw_val_checker, setMemPw_val_checker] = useState('');
-    const [memPw_cnf_val_checker, setMemPw_cnf_val_checker] = useState('');
-    const [memName_val_checker, setMemName_val_checker] = useState('');
-    const [memNickName_val_checker, setMemNickName_val_checker] = useState('');
-
     const submitClick = () => {
 
-        setMemId_val_checker($('#memId_val').val());
-        setMemPw_val_checker($('#memPw_val').val());
-        setMemPw_cnf_val_checker($('#memPw_cnf_val').val());
-        setMemName_val_checker($('#memName_val').val());
-        setMemNickName_val_checker($('#memNickName_val').val());
+        const memId_val_checker = $('#memId_val').val();
+        const memPw_val_checker = $('#memPw_val').val();
+        const memPw_cnf_val_checker = $('#memPw_cnf_val').val();
+        const memName_val_checker = $('#memName_val').val();
+        const memNickName_val_checker = $('#memNickName_val').val();
 
-        const fnValidate = () => {
+        const fnValidate = () => { 
             const pattern1 = /[0-9]/;
             const pattern2 = /[a-zA-Z]/;
             const pattern3 = /[~!@#$%^&*()_+|<>?:{}]/;
