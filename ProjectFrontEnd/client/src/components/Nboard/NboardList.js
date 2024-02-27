@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from "axios";
 import $ from 'jquery';
-import Swal from 'sweetalert2'
 
 const NboardList = () => {
 
@@ -219,15 +218,6 @@ const NboardList = () => {
         callSboardListApi(1);
 
     };
-
-    const sweetalert = (title, contents, icon, confirmButtonText) => {
-        Swal.fire({
-            title: title,
-            text: contents,
-            icon: icon,
-            confirmButtonText: confirmButtonText
-        })
-    }
 
     return (
         <section class="sub_wrap" >
