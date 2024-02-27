@@ -9,7 +9,7 @@
 - Git/GitHub
 - SourceTree
 ## 시연동영상
-https://youtu.be/F-7U2uUm3aY?si=HtSKNcBCeUgTa4Z7
+[https://youtu.be/F-7U2uUm3aY?si=HtSKNcBCeUgTa4Z7](https://youtu.be/IDKniCvzYz0)
 ## 개요
 <p align="center">
   <img width="750" height="500" src="./어디야/개요이미지.png">
