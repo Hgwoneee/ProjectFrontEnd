@@ -18,10 +18,10 @@ const App = () => {
         try {
           StationListAppend(response.data);
         } catch (error) {
-          alert(error);
+          alert("충전소 정보 입력 오류");
         }
       })
-      .catch(error => { alert(error); return false; });
+      .catch(error => { alert("서버데이터 조회 실패"); return false; });
   }
 
   const StationListAppend = (STList) => {

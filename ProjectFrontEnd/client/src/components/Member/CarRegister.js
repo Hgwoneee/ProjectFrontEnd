@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import axios from "axios";
 import Swal from 'sweetalert2';
 import $ from 'jquery';
 import cookie from 'react-cookies';
 
 const CarRegister = () => {
-
-    let history = useHistory();
 
     const [selectedBrand, setSelectedBrand] = useState('');
     const [selectedModel, setSelectedModel] = useState('');
