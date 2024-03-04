@@ -8,10 +8,10 @@ import Modal from 'react-modal';
 import moment from 'moment';
 import 'moment/locale/ko';
 
-const NboardRead = () => {
+const NboardRead = (props) => {
     const [bno] = useState(props.match.params.bno);
     const [memNickName] = useState(cookie.load('memNickName'));
-    const [title] = useState('');
+    const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [writer, setWriter] = useState('');
     const [viewCnt, setViewCnt] = useState('');
@@ -19,7 +19,6 @@ const NboardRead = () => {
     const [imageDTOList, setImageDTOList] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
-    const [imageList, setImageList] = useState('');
     const [append_ReplyList, setAppend_ReplyList] = useState([]);
     const [responseReplyList, setResponseReplyList] = useState([]);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -35,25 +34,23 @@ const NboardRead = () => {
         $("#bNoDiv").hide();
     }, [])
 
-
-    const callNboardInfoApi = async() => {
+    const callNboardInfoApi = async () => {
         axios.post('/api/nBoards/read', {
             bNo: bno,
         })
             .then(response => {
                 try {
-                    setImageDTOList(response.imageDTOList);
-                    setImageList(response.imageList);
-                    setContent(response.content);
-                    setWriter(response.writer);
-                    setViewCnt(response.viewCnt);
-                    setRegidate(response.regidate);
-                    setImageDTOList(response.imageDTOList);
+                    setTitle(response.data.title);
+                    setContent(response.data.content);
+                    setWriter(response.data.writer);
+                    setViewCnt(response.data.viewCnt);
+                    setRegidate(response.data.regidate);
+                    setImageDTOList(response.data.imageDTOList);
                 }
                 catch (error) {
                     alert('게시글데이터 받기 오류')
                 }
-                if(memNickName === writer) {
+                if (memNickName === writer) {
                     $("#modifyButton").show();
                 }
             })
@@ -74,6 +71,7 @@ const NboardRead = () => {
 
 
     const renderImages = () => {
+        const imageList = imageDTOList;
         return imageList.map((image, index) => (
             <li className="hidden_type" key={index}>
                 <img
@@ -178,7 +176,7 @@ const NboardRead = () => {
         axios.get(`/api/nreplys/list/${bno}`)
             .then(response => {
                 try {
-                    setResponseReplyList(response.data);
+                    setResponseReplyList(response);
                     setAppend_ReplyList(ReplyListAppend(response.data));
                 } catch (error) {
                     alert('작업중 오류가 발생하였습니다1.');
@@ -268,8 +266,8 @@ const NboardRead = () => {
 
 
     const openEditModal = (index) => {
-        setSelectRno(responseReplyList.data[index].rno);
         setIsEditModalOpen(true);
+        setSelectRno(responseReplyList.data[index].rno);
         setEditedContent(responseReplyList.data[index].replyText)
     };
 
@@ -295,7 +293,7 @@ const NboardRead = () => {
             .catch(error => { alert('댓글수정오류'); return false; });
     };
 
-    const formattedRegidate = new Date(this.state.regidate).toLocaleDateString('ko-KR', {
+    const formattedRegidate = new Date(regidate).toLocaleDateString('ko-KR', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
